@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Family Grocery List</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #f4f4f6; min-height: 100vh; }
+    .app { max-width: 480px; margin: 0 auto; }
+
+    /* Header */
+    .header { background: #fff; padding: 18px 20px 0; border-bottom: 1px solid #e8e8ec; }
+    .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .header h1 { font-size: 22px; font-weight: 700; color: #111; letter-spacing: -0.5px; }
+    .header p { font-size: 12px; color: #888; margin-top: 2px; }
+    .header-right { font-size: 11px; color: #aaa; text-align: right; line-height: 1.5; flex-shrink:0; }
+    .sync-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+      background: #34A853; margin-right: 4px; animation: pulse 2s infinite; vertical-align:middle; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    /* Store Tabs */
+    .store-tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; margin-top: 12px; }
+    .store-tabs::-webkit-scrollbar { display: none; }
+    .store-tab { padding: 8px 12px; border-radius: 10px 10px 0 0; font-size: 12px; font-weight: 500;
+      color: #777; border: none; border-bottom: 3px solid transparent; background: transparent;
+      white-space: nowrap; display: flex; align-items: center; gap: 4px; flex-shrink: 0;
+      cursor: pointer; transition: all 0.15s ease; font-family: inherit; }
+    .store-tab.active { font-weight: 700; }
+    .badge { border-radius: 20px; font-size: 10px; font-weight: 700; padding: 1px 6px; color: #fff; }
+
+    /* Add Bar */
+    .add-bar { padding: 14px 16px; border-bottom: 2px solid rgba(0,0,0,0.05); }
+    .add-form { display: flex; gap: 8px; }
+    .add-input { flex: 1; padding: 11px 14px; border-radius: 12px; border: 1.5px solid rgba(0,0,0,0.15);
+      font-size: 15px; background: #fff; color: #111; outline: none; font-family: inherit; transition: border-color 0.15s; }
+    .add-btn { color: #fff; border: none; border-radius: 12px; padding: 11px 18px;
+      font-size: 20px; cursor: pointer; font-weight: 700; font-family: inherit; }
+    .fav-toggle { margin-top: 10px; background: none; border-radius: 20px; padding: 5px 14px;
+      font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit;
+      display: inline-flex; align-items: center; gap: 6px; }
+    .fav-count { font-size: 10px; color: #aaa; }
+
+    /* Favorites Panel */
+    .favs-panel { background: #fff; border-bottom: 1px solid #eee; padding: 14px 16px; }
+    .favs-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .favs-title { font-size: 11px; font-weight: 700; color: #aaa; letter-spacing: 0.08em; text-transform: uppercase; }
+    .favs-add-btn { color: #fff; border: none; border-radius: 20px; padding: 3px 12px;
+      font-size: 11px; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .favs-new-row { display: flex; gap: 6px; margin-bottom: 10px; }
+    .favs-new-input { flex: 1; padding: 7px 10px; border-radius: 8px; font-size: 13px;
+      font-family: inherit; outline: none; border: 1.5px solid #ccc; }
+    .favs-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+    .fav-chip { display: flex; align-items: center; gap: 4px; border-radius: 20px; padding: 5px 4px 5px 11px;
+      border: 1.5px solid rgba(0,0,0,0.1); transition: all 0.15s; }
+    .fav-chip-label { font-size: 13px; font-weight: 500; cursor: pointer; }
+    .fav-chip-label.already { text-decoration: line-through; color: #bbb !important; cursor: default; }
+    .fav-chip-edit { background: none; border: none; cursor: pointer; font-size: 11px; color: #ccc; padding: 0 2px; }
+    .fav-chip-remove { background: none; border: none; cursor: pointer; font-size: 15px; color: #ddd; padding: 0 4px 0 0; line-height: 1; }
+    .favs-hint { font-size: 10px; color: #ccc; margin-top: 10px; }
+    .edit-row { display: flex; gap: 4px; }
+    .edit-input { padding: 4px 8px; border-radius: 8px; font-size: 13px; font-family: inherit; outline: none; width: 130px; }
+    .sm-btn { border: none; border-radius: 8px; padding: 4px 8px; cursor: pointer; font-size: 12px; font-family: inherit; }
+
+    /* List */
+    .list-area { padding: 12px 16px 100px; }
+    .empty-state { text-align: center; padding: 48px 20px; color: #bbb; }
+    .empty-emoji { font-size: 48px; margin-bottom: 12px; }
+    .empty-state h3 { font-size: 16px; font-weight: 600; color: #ccc; }
+    .empty-state p { font-size: 13px; margin-top: 6px; }
+    .list-label { font-size: 11px; font-weight: 700; color: #aaa; letter-spacing: 0.08em;
+      text-transform: uppercase; margin-bottom: 8px; }
+    .item-row { background: #fff; border-radius: 14px; margin-bottom: 8px; padding: 14px;
+      display: flex; align-items: center; gap: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #f0f0f2;
+      animation: slideIn 0.18s ease; }
+    @keyframes slideIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+    .item-circle { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #ccc; flex-shrink: 0; }
+    .item-text { flex: 1; font-size: 15px; color: #111; }
+    .del-btn { background: none; border: none; cursor: pointer; font-size: 20px; opacity: 0.25;
+      padding: 4px 6px; line-height: 1; transition: opacity 0.15s; }
+    .del-btn:hover { opacity: 0.6; }
+    .del-btn:active { opacity: 1; }
+
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: #1a1a1a; color: #fff; padding: 10px 20px; border-radius: 24px;
+      font-size: 14px; font-weight: 500; z-index: 9999; white-space: nowrap;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25); animation: fadeUp 0.2s ease; pointer-events: none; }
+    @keyframes fadeUp { from{opacity:0;transform:translate(-50%,10px)} to{opacity:1;transform:translate(-50%,0)} }
+    .hidden { display: none !important; }
+    button { font-family: inherit; }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <h1>🛒 Family List</h1>
+        <p id="total-label">All clear — nothing needed!</p>
+      </div>
+      <div class="header-right"><span class="sync-dot"></span>Live sync<br/>👨‍👩‍👧‍👦 Family</div>
+    </div>
+    <div class="store-tabs" id="store-tabs"></div>
+  </div>
+
+  <!-- Add Bar -->
+  <div class="add-bar" id="add-bar">
+    <div class="add-form">
+      <input class="add-input" id="add-input" type="text" placeholder="Add item…" />
+      <button class="add-btn" id="add-btn">+</button>
+    </div>
+    <button class="fav-toggle" id="fav-toggle">
+      <span>⭐</span>
+      <span id="fav-toggle-label">Show Favorites</span>
+      <span class="fav-count" id="fav-count">(0)</span>
+    </button>
+  </div>
+
+  <!-- Favorites Panel -->
+  <div class="favs-panel hidden" id="favs-panel">
+    <div class="favs-header">
+      <span class="favs-title" id="favs-title">⭐ Favorites</span>
+      <button class="favs-add-btn" id="favs-add-btn">+ Add</button>
+    </div>
+    <div class="favs-new-row hidden" id="favs-new-row">
+      <input class="favs-new-input" id="favs-new-input" placeholder="New favorite item…" />
+      <button class="sm-btn" id="favs-new-save" style="color:#fff;">Add</button>
+      <button class="sm-btn" id="favs-new-cancel" style="background:#eee;">✕</button>
+    </div>
+    <div class="favs-chips" id="favs-chips"></div>
+    <p class="favs-hint">Tap a favorite to add · ✏️ rename · × remove · grayed = already on list</p>
+  </div>
+
+  <!-- List -->
+  <div class="list-area" id="list-area">
+    <div class="empty-state">
+      <div class="empty-emoji">🎯</div>
+      <h3>Nothing needed at Target</h3>
+      <p>Type above or tap a favorite!</p>
+    </div>
+  </div>
+
+  <div class="toast hidden" id="toast"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, push, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBQMTnC06QUKdZqFnBg2KJdO0_POiiBrtk",
+  authDomain: "family-grocery-list-93322.firebaseapp.com",
+  databaseURL: "https://family-grocery-list-93322-default-rtdb.firebaseio.com",
+  projectId: "family-grocery-list-93322",
+  storageBucket: "family-grocery-list-93322.firebasestorage.app",
+  messagingSenderId: "652454540194",
+  appId: "1:652454540194:web:6039c7afbccc05b43578fb"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getDatabase(app);
+
+const STORES = [
+  { id:"shopping",  name:"Grocery List",    emoji:"🛒", color:"#CC0000", light:"#fff5f5", mergedIds:["target","walmart","shopping"] },
+  { id:"costco",    name:"Costco",          emoji:"📦", color:"#005DAA", light:"#f0f5ff", mergedIds:["costco"] },
+  { id:"hardware",  name:"Hardware Store",  emoji:"🔨", color:"#F96302", light:"#fff5ee", mergedIds:["homedepot","lowes","hardware"] },
+  { id:"other",     name:"Other",            emoji:"🛍️", color:"#5a5a5a", light:"#f7f7f7", mergedIds:["other"] },
+];
+
+const DEFAULT_FAVORITES = {
+  shopping:  ["Milk","Eggs","Bread","Butter","Chicken","Ground Beef","Rice","Pasta","Toothpaste","Shampoo","Paper Towels","Laundry Detergent","Dish Soap","Toilet Paper","Trash Bags","Cereal","Orange Juice"],
+  costco:    ["Olive Oil","Kirkland Water","Protein Bars","Toilet Paper (bulk)","Chicken Breast","Salmon","Mixed Nuts","Coffee"],
+  hardware:  ["Light Bulbs","AA Batteries","Duct Tape","WD-40","Extension Cord","Air Filter","Caulk","Sand Paper","PVC Pipe","Paint Brush","Screws","Mulch","Garden Hose","Zip Ties"],
+  other:     ["Stamps","Batteries","Pens","Notebook","Tape"],
+};
+
+let activeStore = "shopping";
+let showFavs    = false;
+let lists       = {};
+let favorites   = JSON.parse(localStorage.getItem("fam-favs-v2")||"null") || DEFAULT_FAVORITES;
+let toastTimer  = null;
+let editingFav  = null;
+
+// Initialize lists for all store IDs (including legacy paths)
+const ALL_IDS = ["shopping","target","walmart","costco","hardware","homedepot","lowes","other"];
+ALL_IDS.forEach(id => { lists[id] = {}; });
+
+// Render tabs immediately so UI shows on load
+renderTabs();
+renderAddBar();
+
+// Connect Firebase listeners for all paths (including legacy merged paths)
+ALL_IDS.forEach(id => {
+  onValue(ref(db, `lists/${id}`), snap => {
+    lists[id] = snap.val() || {};
+    render();
+  });
+});
+
+function saveFavs() { localStorage.setItem("fam-favs-v2", JSON.stringify(favorites)); }
+
+function showToast(msg) {
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.classList.remove("hidden");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.add("hidden"), 2200);
+}
+
+function getItems(storeId) {
+  const store = STORES.find(s=>s.id===storeId);
+  const ids = store?.mergedIds || [storeId];
+  const items = [];
+  ids.forEach(id => {
+    Object.entries(lists[id]||{}).forEach(([key,val])=>{
+      if(val?.text) items.push({key, text:val.text, sourceId:id});
+    });
+  });
+  return items;
+}
+
+function renderTabs() {
+  const container = document.getElementById("store-tabs");
+  container.innerHTML = "";
+  STORES.forEach(s => {
+    const count = getItems(s.id).length;
+    const isActive = s.id === activeStore;
+    const btn = document.createElement("button");
+    btn.className = "store-tab" + (isActive?" active":"");
+    btn.style.color = isActive ? s.color : "#777";
+    btn.style.borderBottom = isActive ? `3px solid ${s.color}` : "3px solid transparent";
+    btn.style.background = isActive ? s.light : "transparent";
+    btn.innerHTML = `<span>${s.emoji}</span><span>${s.name}</span>`
+      + (count>0 ? `<span class="badge" style="background:${s.color}">${count}</span>` : "");
+    btn.onclick = () => { activeStore=s.id; showFavs=false; render(); };
+    container.appendChild(btn);
+  });
+}
+
+function renderAddBar() {
+  const store = STORES.find(s=>s.id===activeStore);
+  document.getElementById("add-bar").style.background = store.light;
+  document.getElementById("add-input").placeholder = `Add to ${store.name}…`;
+  document.getElementById("add-input").style.borderColor = store.color+"40";
+  document.getElementById("add-btn").style.background = store.color;
+  const toggle = document.getElementById("fav-toggle");
+  toggle.style.border = `1.5px solid ${store.color}50`;
+  toggle.style.color = store.color;
+  document.getElementById("fav-toggle-label").textContent = showFavs?"Hide Favorites":"Show Favorites";
+  document.getElementById("fav-count").textContent = `(${(favorites[activeStore]||[]).length})`;
+}
+
+function renderFavs() {
+  const panel = document.getElementById("favs-panel");
+  if (!showFavs) { panel.classList.add("hidden"); return; }
+  panel.classList.remove("hidden");
+  const store = STORES.find(s=>s.id===activeStore);
+  document.getElementById("favs-title").textContent = `⭐ ${store.name} Favorites`;
+  document.getElementById("favs-add-btn").style.background = store.color;
+  document.getElementById("favs-new-save").style.background = store.color;
+  document.getElementById("favs-new-input").style.borderColor = store.color;
+
+  const chips = document.getElementById("favs-chips");
+  chips.innerHTML = "";
+  const favs = favorites[activeStore]||[];
+  const onList = new Set(getItems(activeStore).map(i=>i.text.toLowerCase()));
+
+  if (favs.length===0) {
+    chips.innerHTML=`<span style="font-size:13px;color:#ccc;">No favorites yet — add some above!</span>`;
+    return;
+  }
+
+  favs.forEach((fav,idx)=>{
+    const already = onList.has(fav.toLowerCase());
+    const isEditing = editingFav?.storeId===activeStore && editingFav?.index===idx;
+
+    if (isEditing) {
+      const row = document.createElement("div");
+      row.className="edit-row";
+      row.innerHTML=`
+        <input class="edit-input" id="edit-fav-input" value="${fav}" style="border:1.5px solid ${store.color};"/>
+        <button class="sm-btn" id="edit-fav-save" style="background:${store.color};color:#fff;">✓</button>
+        <button class="sm-btn" id="edit-fav-cancel" style="background:#eee;">✕</button>`;
+      chips.appendChild(row);
+      const inp=document.getElementById("edit-fav-input");
+      inp.focus();
+      inp.onkeydown=e=>{if(e.key==="Enter")saveEditFav();if(e.key==="Escape"){editingFav=null;renderFavs();}};
+      document.getElementById("edit-fav-save").onclick=saveEditFav;
+      document.getElementById("edit-fav-cancel").onclick=()=>{editingFav=null;renderFavs();};
+      return;
+    }
+
+    const chip=document.createElement("div");
+    chip.className="fav-chip";
+    chip.style.background = already?"#f0f0f0":store.light;
+    chip.style.border = `1.5px solid ${already?"#ddd":store.color+"50"}`;
+    chip.innerHTML=`
+      <span class="fav-chip-label${already?" already":""}" style="color:${already?"#bbb":store.color}">${fav}</span>
+      <button class="fav-chip-edit">✏️</button>
+      <button class="fav-chip-remove">×</button>`;
+    if(!already) chip.querySelector(".fav-chip-label").onclick=()=>addItem(activeStore,fav);
+    chip.querySelector(".fav-chip-edit").onclick=()=>{editingFav={storeId:activeStore,index:idx};renderFavs();};
+    chip.querySelector(".fav-chip-remove").onclick=()=>{favorites[activeStore].splice(idx,1);saveFavs();renderFavs();renderAddBar();};
+    chips.appendChild(chip);
+  });
+}
+
+function saveEditFav() {
+  const inp=document.getElementById("edit-fav-input");
+  if(!inp?.value.trim()) return;
+  favorites[editingFav.storeId][editingFav.index]=inp.value.trim();
+  saveFavs(); editingFav=null; renderFavs();
+}
+
+function renderList() {
+  const store = STORES.find(s=>s.id===activeStore);
+  const items = getItems(activeStore);
+  const area  = document.getElementById("list-area");
+  area.innerHTML="";
+
+  if(items.length===0){
+    area.innerHTML=`<div class="empty-state">
+      <div class="empty-emoji">${store.emoji}</div>
+      <h3>Nothing needed at ${store.name}</h3>
+      <p>Type above or tap a favorite!</p>
+    </div>`;
+    return;
+  }
+
+  const label=document.createElement("div");
+  label.className="list-label";
+  label.textContent=`Need to grab · ${items.length}`;
+  area.appendChild(label);
+
+  items.forEach(item=>{
+    const row=document.createElement("div");
+    row.className="item-row";
+    row.innerHTML=`
+      <div class="item-circle" style="border-color:${store.color}"></div>
+      <span class="item-text">${item.text}</span>
+      <button class="del-btn">🗑️</button>`;
+    row.querySelector(".del-btn").onclick=()=>removeItem(activeStore,item.key,item.sourceId);
+    area.appendChild(row);
+  });
+}
+
+function renderTotal() {
+  const total=STORES.reduce((a,s)=>a+getItems(s.id).length,0);
+  document.getElementById("total-label").textContent=
+    total===0?"All clear — nothing needed!":`${total} item${total!==1?"s":""} across all stores`;
+}
+
+function render() {
+  renderTabs();
+  renderAddBar();
+  renderFavs();
+  renderList();
+  renderTotal();
+}
+
+async function addItem(storeId,text){
+  const t=text.trim(); if(!t) return;
+  if(getItems(storeId).some(i=>i.text.toLowerCase()===t.toLowerCase())){
+    showToast(`"${t}" is already on the list`); return;
+  }
+  await push(ref(db,`lists/${storeId}`),{text:t});
+  showToast(`Added "${t}" to ${STORES.find(s=>s.id===storeId)?.name}`);
+}
+
+async function removeItem(storeId,key,sourceId){
+  const actualSource = sourceId || storeId;
+  const item=lists[actualSource]?.[key];
+  await remove(ref(db,`lists/${actualSource}/${key}`));
+  if(item) showToast(`Removed "${item.text}"`);
+}
+
+// Wire up UI
+document.getElementById("add-btn").onclick=()=>{
+  const inp=document.getElementById("add-input");
+  addItem(activeStore,inp.value);
+  inp.value=""; inp.focus();
+};
+document.getElementById("add-input").onkeydown=e=>{if(e.key==="Enter")document.getElementById("add-btn").click();};
+document.getElementById("add-input").onfocus=function(){this.style.borderColor=STORES.find(s=>s.id===activeStore).color;};
+document.getElementById("add-input").onblur=function(){this.style.borderColor=STORES.find(s=>s.id===activeStore).color+"40";};
+document.getElementById("fav-toggle").onclick=()=>{showFavs=!showFavs;render();};
+document.getElementById("favs-add-btn").onclick=()=>{
+  document.getElementById("favs-new-row").classList.toggle("hidden");
+  document.getElementById("favs-new-input").focus();
+};
+document.getElementById("favs-new-save").onclick=()=>{
+  const inp=document.getElementById("favs-new-input");
+  const val=inp.value.trim(); if(!val) return;
+  if(!favorites[activeStore]) favorites[activeStore]=[];
+  favorites[activeStore].push(val);
+  saveFavs(); inp.value="";
+  document.getElementById("favs-new-row").classList.add("hidden");
+  showToast(`Added "${val}" to favorites`);
+  renderFavs(); renderAddBar();
+};
+document.getElementById("favs-new-cancel").onclick=()=>{
+  document.getElementById("favs-new-input").value="";
+  document.getElementById("favs-new-row").classList.add("hidden");
+};
+document.getElementById("favs-new-input").onkeydown=e=>{
+  if(e.key==="Enter") document.getElementById("favs-new-save").click();
+  if(e.key==="Escape") document.getElementById("favs-new-cancel").click();
+};
+</script>
+</body>
+</html>
