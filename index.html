@@ -83,6 +83,91 @@
     .del-btn:hover { opacity: 0.6; }
     .del-btn:active { opacity: 1; }
 
+    /* ── Meals Tab ─────────────────────────────────────────── */
+    .meals-area { padding: 12px 16px 100px; }
+    .meals-section-label { font-size: 11px; font-weight: 700; color: #aaa; letter-spacing: 0.08em;
+      text-transform: uppercase; margin: 4px 0 10px; }
+
+    /* Week nav */
+    .week-nav { display: flex; align-items: center; justify-content: space-between;
+      background: #fff; border-radius: 14px; padding: 10px 14px; margin-bottom: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #f0f0f2; }
+    .week-nav-btn { background: none; border: none; font-size: 20px; cursor: pointer;
+      padding: 0 6px; color: #555; line-height: 1; }
+    .week-label { font-size: 13px; font-weight: 600; color: #333; }
+
+    /* Day cards */
+    .meal-day-card { background: #fff; border-radius: 14px; margin-bottom: 10px; padding: 12px 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #f0f0f2; }
+    .meal-day-header { font-size: 12px; font-weight: 700; color: #888; margin-bottom: 8px; letter-spacing: 0.01em; }
+    .meal-day-header.today { color: #2E7D32; }
+    .meal-slot { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .meal-slot:last-child { margin-bottom: 0; }
+    .meal-slot-label { font-size: 11px; font-weight: 600; color: #bbb; width: 80px; flex-shrink: 0;
+      text-transform: uppercase; letter-spacing: 0.04em; }
+    .meal-input { flex: 1; border: 1.5px solid #e8e8ec; border-radius: 8px; padding: 7px 10px;
+      font-size: 14px; font-family: inherit; outline: none; color: #111;
+      background: #fafafa; transition: border-color 0.15s; }
+    .meal-input:focus { border-color: #4CAF50; background: #fff; }
+    .meal-input.has-value { background: #fff; border-color: #c8e6c9; }
+    .meal-cart-btn { background: none; border: none; cursor: pointer; font-size: 17px; opacity: 0.22;
+      padding: 4px; line-height: 1; transition: opacity 0.15s; flex-shrink: 0; }
+    .meal-cart-btn:hover { opacity: 0.7; }
+    .meal-cart-btn.has-value { opacity: 0.5; }
+
+    /* Trip toggle */
+    .trip-toggle-bar { display: flex; align-items: center; justify-content: space-between;
+      background: #fff; border-radius: 14px; padding: 12px 14px; margin: 16px 0 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #f0f0f2; }
+    .trip-toggle-title { font-size: 14px; font-weight: 600; color: #333; }
+    .trip-toggle-sub { font-size: 11px; color: #aaa; margin-top: 2px; }
+    .toggle-switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .toggle-slider { position: absolute; cursor: pointer; inset: 0; background: #ccc;
+      border-radius: 24px; transition: 0.2s; }
+    .toggle-slider:before { content: ""; position: absolute; width: 18px; height: 18px;
+      left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+    .toggle-switch input:checked + .toggle-slider { background: #4CAF50; }
+    .toggle-switch input:checked + .toggle-slider:before { transform: translateX(20px); }
+
+    /* Trip dates */
+    .trip-date-row { display: flex; gap: 8px; margin-bottom: 14px; }
+    .trip-date-field { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .trip-date-field label { font-size: 11px; font-weight: 600; color: #aaa;
+      text-transform: uppercase; letter-spacing: 0.04em; }
+    .trip-date-input { padding: 9px 10px; border-radius: 8px; border: 1.5px solid #e8e8ec;
+      font-size: 14px; font-family: inherit; outline: none; color: #111; }
+    .trip-date-input:focus { border-color: #4CAF50; }
+    .trip-section-header { font-size: 11px; font-weight: 700; color: #aaa; text-transform: uppercase;
+      letter-spacing: 0.08em; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1.5px solid #eee; }
+
+    /* Add to list modal */
+    .meal-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000;
+      display: flex; align-items: flex-end; justify-content: center; animation: fadeIn 0.15s ease; }
+    .meal-modal { background: #fff; border-radius: 20px 20px 0 0; padding: 22px 20px 38px;
+      width: 100%; max-width: 480px; animation: slideUp 0.2s ease; }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    @keyframes slideUp { from{transform:translateY(60px);opacity:0} to{transform:translateY(0);opacity:1} }
+    .meal-modal-title { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 3px; }
+    .meal-modal-subtitle { font-size: 12px; color: #aaa; margin-bottom: 18px; }
+    .meal-modal-label { font-size: 11px; font-weight: 700; color: #aaa; text-transform: uppercase;
+      letter-spacing: 0.06em; margin-bottom: 6px; }
+    .meal-modal-input { width: 100%; padding: 11px 14px; border-radius: 12px;
+      border: 1.5px solid #e8e8ec; font-size: 15px; font-family: inherit; outline: none;
+      margin-bottom: 16px; color: #111; }
+    .meal-modal-input:focus { border-color: #4CAF50; }
+    .store-select-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+    .store-select-btn { padding: 10px 8px; border-radius: 10px; border: 1.5px solid #e8e8ec;
+      background: #fafafa; font-size: 12px; font-family: inherit; cursor: pointer;
+      text-align: center; transition: all 0.15s; font-weight: 500; color: #555; }
+    .store-select-btn.selected { color: #fff; border-color: transparent; }
+    .meal-modal-actions { display: flex; gap: 8px; }
+    .meal-modal-cancel { flex: 1; padding: 13px; border-radius: 12px; border: 1.5px solid #e8e8ec;
+      background: #fff; font-size: 15px; font-family: inherit; cursor: pointer; font-weight: 600; color: #777; }
+    .meal-modal-add { flex: 2; padding: 13px; border-radius: 12px; border: none; background: #4CAF50;
+      color: #fff; font-size: 15px; font-family: inherit; cursor: pointer; font-weight: 700; }
+
     .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
       background: #1a1a1a; color: #fff; padding: 10px 20px; border-radius: 24px;
       font-size: 14px; font-weight: 500; z-index: 9999; white-space: nowrap;
@@ -107,7 +192,7 @@
     <div class="store-tabs" id="store-tabs"></div>
   </div>
 
-  <!-- Add Bar -->
+  <!-- Add Bar (hidden on Meals tab) -->
   <div class="add-bar" id="add-bar">
     <div class="add-form">
       <input class="add-input" id="add-input" type="text" placeholder="Add item…" />
@@ -135,12 +220,63 @@
     <p class="favs-hint">Tap a favorite to add · ✏️ rename · × remove · grayed = already on list</p>
   </div>
 
-  <!-- List -->
-  <div class="list-area" id="list-area">
-    <div class="empty-state">
-      <div class="empty-emoji">🎯</div>
-      <h3>Nothing needed at Target</h3>
-      <p>Type above or tap a favorite!</p>
+  <!-- Grocery List Area -->
+  <div class="list-area" id="list-area"></div>
+
+  <!-- ── Meals Area ─────────────────────────────────────────── -->
+  <div class="meals-area hidden" id="meals-area">
+
+    <!-- Weekly Dinner Planner -->
+    <div class="meals-section-label">🍽️ Dinner Plan</div>
+    <div class="week-nav">
+      <button class="week-nav-btn" id="week-prev">◀</button>
+      <span class="week-label" id="week-label">This Week</span>
+      <button class="week-nav-btn" id="week-next">▶</button>
+    </div>
+    <div id="weekly-grid"></div>
+
+    <!-- Trip Mode Toggle -->
+    <div class="trip-toggle-bar">
+      <div>
+        <div class="trip-toggle-title">✈️ Trip Mode</div>
+        <div class="trip-toggle-sub" id="trip-toggle-sub">Adds breakfast &amp; lunch planning</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="trip-toggle-cb">
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+
+    <!-- Trip Content -->
+    <div id="trip-content" class="hidden">
+      <div class="trip-date-row">
+        <div class="trip-date-field">
+          <label>Start Date</label>
+          <input type="date" class="trip-date-input" id="trip-start-date">
+        </div>
+        <div class="trip-date-field">
+          <label>End Date</label>
+          <input type="date" class="trip-date-input" id="trip-end-date">
+        </div>
+      </div>
+      <div id="trip-grid"></div>
+    </div>
+
+  </div>
+
+  <!-- Add Ingredient to Grocery List Modal -->
+  <div class="meal-modal-overlay hidden" id="meal-modal-overlay">
+    <div class="meal-modal">
+      <div class="meal-modal-title">🛒 Add to Grocery List</div>
+      <div class="meal-modal-subtitle" id="meal-modal-subtitle"></div>
+      <div class="meal-modal-label">Item</div>
+      <input class="meal-modal-input" id="meal-modal-item" placeholder="What do you need?">
+      <div class="meal-modal-label">Add to Store</div>
+      <div class="store-select-grid" id="store-select-grid"></div>
+      <div class="meal-modal-actions">
+        <button class="meal-modal-cancel" id="meal-modal-cancel">Cancel</button>
+        <button class="meal-modal-add" id="meal-modal-add">Add to List</button>
+      </div>
     </div>
   </div>
 
@@ -149,7 +285,8 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, onValue, push, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, onValue, push, remove, set }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQMTnC06QUKdZqFnBg2KJdO0_POiiBrtk",
@@ -164,36 +301,45 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db  = getDatabase(app);
 
+// ── Constants ───────────────────────────────────────────────────
 const STORES = [
-  { id:"shopping",  name:"Grocery List",    emoji:"🛒", color:"#CC0000", light:"#fff5f5", mergedIds:["target","walmart","shopping"] },
-  { id:"costco",    name:"Costco",          emoji:"📦", color:"#005DAA", light:"#f0f5ff", mergedIds:["costco"] },
-  { id:"hardware",  name:"Hardware Store",  emoji:"🔨", color:"#F96302", light:"#fff5ee", mergedIds:["homedepot","lowes","hardware"] },
-  { id:"other",     name:"Other",            emoji:"🛍️", color:"#5a5a5a", light:"#f7f7f7", mergedIds:["other"] },
+  { id:"shopping", name:"Grocery List",   emoji:"🛒", color:"#CC0000", light:"#fff5f5", mergedIds:["target","walmart","shopping"] },
+  { id:"costco",   name:"Costco",         emoji:"📦", color:"#005DAA", light:"#f0f5ff", mergedIds:["costco"] },
+  { id:"hardware", name:"Hardware Store", emoji:"🔨", color:"#F96302", light:"#fff5ee", mergedIds:["homedepot","lowes","hardware"] },
+  { id:"other",    name:"Other",          emoji:"🛍️", color:"#5a5a5a", light:"#f7f7f7", mergedIds:["other"] },
 ];
+const MEALS_COLOR = "#2E7D32";
+const MEALS_LIGHT = "#f1f8f1";
 
 const DEFAULT_FAVORITES = {
-  shopping:  ["Milk","Eggs","Bread","Butter","Chicken","Ground Beef","Rice","Pasta","Toothpaste","Shampoo","Paper Towels","Laundry Detergent","Dish Soap","Toilet Paper","Trash Bags","Cereal","Orange Juice"],
-  costco:    ["Olive Oil","Kirkland Water","Protein Bars","Toilet Paper (bulk)","Chicken Breast","Salmon","Mixed Nuts","Coffee"],
-  hardware:  ["Light Bulbs","AA Batteries","Duct Tape","WD-40","Extension Cord","Air Filter","Caulk","Sand Paper","PVC Pipe","Paint Brush","Screws","Mulch","Garden Hose","Zip Ties"],
-  other:     ["Stamps","Batteries","Pens","Notebook","Tape"],
+  shopping: ["Milk","Eggs","Bread","Butter","Chicken","Ground Beef","Rice","Pasta","Toothpaste","Shampoo","Paper Towels","Laundry Detergent","Dish Soap","Toilet Paper","Trash Bags","Cereal","Orange Juice"],
+  costco:   ["Olive Oil","Kirkland Water","Protein Bars","Toilet Paper (bulk)","Chicken Breast","Salmon","Mixed Nuts","Coffee"],
+  hardware: ["Light Bulbs","AA Batteries","Duct Tape","WD-40","Extension Cord","Air Filter","Caulk","Sand Paper","PVC Pipe","Paint Brush","Screws","Mulch","Garden Hose","Zip Ties"],
+  other:    ["Stamps","Batteries","Pens","Notebook","Tape"],
 };
 
-let activeStore = "shopping";
-let showFavs    = false;
-let lists       = {};
-let favorites   = JSON.parse(localStorage.getItem("fam-favs-v2")||"null") || DEFAULT_FAVORITES;
-let toastTimer  = null;
-let editingFav  = null;
+// ── State ────────────────────────────────────────────────────────
+let activeStore        = "shopping";
+let showFavs           = false;
+let lists              = {};
+let favorites          = JSON.parse(localStorage.getItem("fam-favs-v2")||"null") || DEFAULT_FAVORITES;
+let toastTimer         = null;
+let editingFav         = null;
 
-// Initialize lists for all store IDs (including legacy paths)
+// Meal planner state
+let mealPlanData       = {};
+let tripActive         = false;
+let currentWeekStart   = getMonday(new Date());
+let mealModalCtx       = null;
+let selectedModalStore = "shopping";
+
+// ── Firebase: grocery lists ──────────────────────────────────────
 const ALL_IDS = ["shopping","target","walmart","costco","hardware","homedepot","lowes","other"];
 ALL_IDS.forEach(id => { lists[id] = {}; });
 
-// Render tabs immediately so UI shows on load
 renderTabs();
 renderAddBar();
 
-// Connect Firebase listeners for all paths (including legacy merged paths)
 ALL_IDS.forEach(id => {
   onValue(ref(db, `lists/${id}`), snap => {
     lists[id] = snap.val() || {};
@@ -201,6 +347,23 @@ ALL_IDS.forEach(id => {
   });
 });
 
+// ── Firebase: meal plan ──────────────────────────────────────────
+onValue(ref(db, "mealplan"), snap => {
+  mealPlanData = snap.val() || {};
+  tripActive   = mealPlanData?.trip?.config?.active === true;
+  if (activeStore === "meals") {
+    // Don't interrupt typing — only full re-render if no meal input is focused
+    const focused = document.activeElement;
+    if (!focused || !focused.classList.contains("meal-input")) {
+      renderMeals();
+    } else {
+      // Still sync the trip toggle state in case another device changed it
+      syncTripToggleUI();
+    }
+  }
+});
+
+// ── Helpers ──────────────────────────────────────────────────────
 function saveFavs() { localStorage.setItem("fam-favs-v2", JSON.stringify(favorites)); }
 
 function showToast(msg) {
@@ -212,118 +375,171 @@ function showToast(msg) {
 }
 
 function getItems(storeId) {
-  const store = STORES.find(s=>s.id===storeId);
-  const ids = store?.mergedIds || [storeId];
+  const store = STORES.find(s => s.id === storeId);
+  const ids   = store?.mergedIds || [storeId];
   const items = [];
   ids.forEach(id => {
-    Object.entries(lists[id]||{}).forEach(([key,val])=>{
-      if(val?.text) items.push({key, text:val.text, sourceId:id});
+    Object.entries(lists[id] || {}).forEach(([key, val]) => {
+      if (val?.text) items.push({ key, text: val.text, sourceId: id });
     });
   });
   return items;
 }
 
+// ── Date helpers ─────────────────────────────────────────────────
+function getMonday(d) {
+  const date = new Date(d);
+  const day  = date.getDay();
+  date.setDate(date.getDate() + (day === 0 ? -6 : 1 - day));
+  date.setHours(0, 0, 0, 0);
+  return date;
+}
+
+function localDateStr(d) {
+  const y  = d.getFullYear();
+  const m  = String(d.getMonth() + 1).padStart(2, "0");
+  const dy = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${dy}`;
+}
+
+function displayDate(d) {
+  return d.toLocaleDateString("en-US", { weekday:"short", month:"short", day:"numeric" });
+}
+
+function isToday(d) {
+  const t = new Date();
+  return d.getFullYear() === t.getFullYear()
+      && d.getMonth()    === t.getMonth()
+      && d.getDate()     === t.getDate();
+}
+
+// ── Render: tabs ─────────────────────────────────────────────────
 function renderTabs() {
   const container = document.getElementById("store-tabs");
   container.innerHTML = "";
+
   STORES.forEach(s => {
-    const count = getItems(s.id).length;
+    const count    = getItems(s.id).length;
     const isActive = s.id === activeStore;
-    const btn = document.createElement("button");
-    btn.className = "store-tab" + (isActive?" active":"");
-    btn.style.color = isActive ? s.color : "#777";
+    const btn      = document.createElement("button");
+    btn.className  = "store-tab" + (isActive ? " active" : "");
+    btn.style.color        = isActive ? s.color : "#777";
     btn.style.borderBottom = isActive ? `3px solid ${s.color}` : "3px solid transparent";
-    btn.style.background = isActive ? s.light : "transparent";
+    btn.style.background   = isActive ? s.light  : "transparent";
     btn.innerHTML = `<span>${s.emoji}</span><span>${s.name}</span>`
-      + (count>0 ? `<span class="badge" style="background:${s.color}">${count}</span>` : "");
-    btn.onclick = () => { activeStore=s.id; showFavs=false; render(); };
+      + (count > 0 ? `<span class="badge" style="background:${s.color}">${count}</span>` : "");
+    btn.onclick = () => { activeStore = s.id; showFavs = false; render(); };
     container.appendChild(btn);
   });
+
+  // Meals tab (5th)
+  const mealsActive = activeStore === "meals";
+  const mealsBtn    = document.createElement("button");
+  mealsBtn.className  = "store-tab" + (mealsActive ? " active" : "");
+  mealsBtn.style.color        = mealsActive ? MEALS_COLOR : "#777";
+  mealsBtn.style.borderBottom = mealsActive ? `3px solid ${MEALS_COLOR}` : "3px solid transparent";
+  mealsBtn.style.background   = mealsActive ? MEALS_LIGHT : "transparent";
+  mealsBtn.innerHTML = `<span>🍽️</span><span>Meals</span>`;
+  mealsBtn.onclick   = () => { activeStore = "meals"; showFavs = false; render(); };
+  container.appendChild(mealsBtn);
 }
 
+// ── Render: add bar ───────────────────────────────────────────────
 function renderAddBar() {
-  const store = STORES.find(s=>s.id===activeStore);
-  document.getElementById("add-bar").style.background = store.light;
-  document.getElementById("add-input").placeholder = `Add to ${store.name}…`;
-  document.getElementById("add-input").style.borderColor = store.color+"40";
-  document.getElementById("add-btn").style.background = store.color;
+  const bar = document.getElementById("add-bar");
+  if (activeStore === "meals") { bar.classList.add("hidden"); return; }
+  bar.classList.remove("hidden");
+
+  const store = STORES.find(s => s.id === activeStore);
+  bar.style.background = store.light;
+  document.getElementById("add-input").placeholder  = `Add to ${store.name}…`;
+  document.getElementById("add-input").style.borderColor = store.color + "40";
+  document.getElementById("add-btn").style.background    = store.color;
   const toggle = document.getElementById("fav-toggle");
   toggle.style.border = `1.5px solid ${store.color}50`;
-  toggle.style.color = store.color;
-  document.getElementById("fav-toggle-label").textContent = showFavs?"Hide Favorites":"Show Favorites";
-  document.getElementById("fav-count").textContent = `(${(favorites[activeStore]||[]).length})`;
+  toggle.style.color  = store.color;
+  document.getElementById("fav-toggle-label").textContent = showFavs ? "Hide Favorites" : "Show Favorites";
+  document.getElementById("fav-count").textContent = `(${(favorites[activeStore] || []).length})`;
 }
 
+// ── Render: favs panel ────────────────────────────────────────────
 function renderFavs() {
+  if (activeStore === "meals") {
+    document.getElementById("favs-panel").classList.add("hidden");
+    return;
+  }
   const panel = document.getElementById("favs-panel");
   if (!showFavs) { panel.classList.add("hidden"); return; }
   panel.classList.remove("hidden");
-  const store = STORES.find(s=>s.id===activeStore);
-  document.getElementById("favs-title").textContent = `⭐ ${store.name} Favorites`;
-  document.getElementById("favs-add-btn").style.background = store.color;
+
+  const store = STORES.find(s => s.id === activeStore);
+  document.getElementById("favs-title").textContent       = `⭐ ${store.name} Favorites`;
+  document.getElementById("favs-add-btn").style.background  = store.color;
   document.getElementById("favs-new-save").style.background = store.color;
   document.getElementById("favs-new-input").style.borderColor = store.color;
 
-  const chips = document.getElementById("favs-chips");
+  const chips  = document.getElementById("favs-chips");
   chips.innerHTML = "";
-  const favs = favorites[activeStore]||[];
-  const onList = new Set(getItems(activeStore).map(i=>i.text.toLowerCase()));
+  const favs   = favorites[activeStore] || [];
+  const onList = new Set(getItems(activeStore).map(i => i.text.toLowerCase()));
 
-  if (favs.length===0) {
-    chips.innerHTML=`<span style="font-size:13px;color:#ccc;">No favorites yet — add some above!</span>`;
+  if (favs.length === 0) {
+    chips.innerHTML = `<span style="font-size:13px;color:#ccc;">No favorites yet — add some above!</span>`;
     return;
   }
 
-  favs.forEach((fav,idx)=>{
-    const already = onList.has(fav.toLowerCase());
-    const isEditing = editingFav?.storeId===activeStore && editingFav?.index===idx;
+  favs.forEach((fav, idx) => {
+    const already    = onList.has(fav.toLowerCase());
+    const isEditing  = editingFav?.storeId === activeStore && editingFav?.index === idx;
 
     if (isEditing) {
       const row = document.createElement("div");
-      row.className="edit-row";
-      row.innerHTML=`
+      row.className = "edit-row";
+      row.innerHTML = `
         <input class="edit-input" id="edit-fav-input" value="${fav}" style="border:1.5px solid ${store.color};"/>
         <button class="sm-btn" id="edit-fav-save" style="background:${store.color};color:#fff;">✓</button>
         <button class="sm-btn" id="edit-fav-cancel" style="background:#eee;">✕</button>`;
       chips.appendChild(row);
-      const inp=document.getElementById("edit-fav-input");
+      const inp = document.getElementById("edit-fav-input");
       inp.focus();
-      inp.onkeydown=e=>{if(e.key==="Enter")saveEditFav();if(e.key==="Escape"){editingFav=null;renderFavs();}};
-      document.getElementById("edit-fav-save").onclick=saveEditFav;
-      document.getElementById("edit-fav-cancel").onclick=()=>{editingFav=null;renderFavs();};
+      inp.onkeydown = e => { if (e.key==="Enter") saveEditFav(); if (e.key==="Escape") { editingFav=null; renderFavs(); } };
+      document.getElementById("edit-fav-save").onclick   = saveEditFav;
+      document.getElementById("edit-fav-cancel").onclick = () => { editingFav=null; renderFavs(); };
       return;
     }
 
-    const chip=document.createElement("div");
-    chip.className="fav-chip";
-    chip.style.background = already?"#f0f0f0":store.light;
-    chip.style.border = `1.5px solid ${already?"#ddd":store.color+"50"}`;
-    chip.innerHTML=`
+    const chip = document.createElement("div");
+    chip.className  = "fav-chip";
+    chip.style.background = already ? "#f0f0f0" : store.light;
+    chip.style.border     = `1.5px solid ${already ? "#ddd" : store.color+"50"}`;
+    chip.innerHTML = `
       <span class="fav-chip-label${already?" already":""}" style="color:${already?"#bbb":store.color}">${fav}</span>
       <button class="fav-chip-edit">✏️</button>
       <button class="fav-chip-remove">×</button>`;
-    if(!already) chip.querySelector(".fav-chip-label").onclick=()=>addItem(activeStore,fav);
-    chip.querySelector(".fav-chip-edit").onclick=()=>{editingFav={storeId:activeStore,index:idx};renderFavs();};
-    chip.querySelector(".fav-chip-remove").onclick=()=>{favorites[activeStore].splice(idx,1);saveFavs();renderFavs();renderAddBar();};
+    if (!already) chip.querySelector(".fav-chip-label").onclick = () => addItem(activeStore, fav);
+    chip.querySelector(".fav-chip-edit").onclick   = () => { editingFav={storeId:activeStore,index:idx}; renderFavs(); };
+    chip.querySelector(".fav-chip-remove").onclick = () => { favorites[activeStore].splice(idx,1); saveFavs(); renderFavs(); renderAddBar(); };
     chips.appendChild(chip);
   });
 }
 
 function saveEditFav() {
-  const inp=document.getElementById("edit-fav-input");
-  if(!inp?.value.trim()) return;
-  favorites[editingFav.storeId][editingFav.index]=inp.value.trim();
-  saveFavs(); editingFav=null; renderFavs();
+  const inp = document.getElementById("edit-fav-input");
+  if (!inp?.value.trim()) return;
+  favorites[editingFav.storeId][editingFav.index] = inp.value.trim();
+  saveFavs(); editingFav = null; renderFavs();
 }
 
+// ── Render: grocery list ──────────────────────────────────────────
 function renderList() {
-  const store = STORES.find(s=>s.id===activeStore);
+  if (activeStore === "meals") return;
+  const store = STORES.find(s => s.id === activeStore);
   const items = getItems(activeStore);
   const area  = document.getElementById("list-area");
-  area.innerHTML="";
+  area.innerHTML = "";
 
-  if(items.length===0){
-    area.innerHTML=`<div class="empty-state">
+  if (items.length === 0) {
+    area.innerHTML = `<div class="empty-state">
       <div class="empty-emoji">${store.emoji}</div>
       <h3>Nothing needed at ${store.name}</h3>
       <p>Type above or tap a favorite!</p>
@@ -331,84 +547,335 @@ function renderList() {
     return;
   }
 
-  const label=document.createElement("div");
-  label.className="list-label";
-  label.textContent=`Need to grab · ${items.length}`;
+  const label = document.createElement("div");
+  label.className   = "list-label";
+  label.textContent = `Need to grab · ${items.length}`;
   area.appendChild(label);
 
-  items.forEach(item=>{
-    const row=document.createElement("div");
-    row.className="item-row";
-    row.innerHTML=`
+  items.forEach(item => {
+    const row = document.createElement("div");
+    row.className = "item-row";
+    row.innerHTML = `
       <div class="item-circle" style="border-color:${store.color}"></div>
       <span class="item-text">${item.text}</span>
       <button class="del-btn">🗑️</button>`;
-    row.querySelector(".del-btn").onclick=()=>removeItem(activeStore,item.key,item.sourceId);
+    row.querySelector(".del-btn").onclick = () => removeItem(activeStore, item.key, item.sourceId);
     area.appendChild(row);
   });
 }
 
 function renderTotal() {
-  const total=STORES.reduce((a,s)=>a+getItems(s.id).length,0);
-  document.getElementById("total-label").textContent=
-    total===0?"All clear — nothing needed!":`${total} item${total!==1?"s":""} across all stores`;
+  const total = STORES.reduce((a, s) => a + getItems(s.id).length, 0);
+  document.getElementById("total-label").textContent =
+    total === 0 ? "All clear — nothing needed!" : `${total} item${total!==1?"s":""} across all stores`;
 }
 
+// ── Render: main ──────────────────────────────────────────────────
 function render() {
+  const onMeals = activeStore === "meals";
   renderTabs();
   renderAddBar();
   renderFavs();
-  renderList();
+  document.getElementById("list-area").classList.toggle("hidden", onMeals);
+  document.getElementById("meals-area").classList.toggle("hidden", !onMeals);
+  if (onMeals) { renderMeals(); } else { renderList(); }
   renderTotal();
 }
 
-async function addItem(storeId,text){
-  const t=text.trim(); if(!t) return;
-  if(getItems(storeId).some(i=>i.text.toLowerCase()===t.toLowerCase())){
+// ── Meals: top-level render ───────────────────────────────────────
+function renderMeals() {
+  renderWeekNav();
+  renderWeeklyGrid();
+  syncTripToggleUI();
+  if (tripActive) renderTripGrid();
+  else document.getElementById("trip-grid").innerHTML = "";
+}
+
+// ── Meals: week navigation ────────────────────────────────────────
+function renderWeekNav() {
+  const end        = new Date(currentWeekStart);
+  end.setDate(end.getDate() + 6);
+  const thisMonday = getMonday(new Date());
+  const isCurrent  = localDateStr(currentWeekStart) === localDateStr(thisMonday);
+  document.getElementById("week-label").textContent = isCurrent
+    ? "This Week"
+    : `${displayDate(currentWeekStart)} – ${displayDate(end)}`;
+}
+
+document.getElementById("week-prev").onclick = () => {
+  currentWeekStart.setDate(currentWeekStart.getDate() - 7);
+  renderWeekNav(); renderWeeklyGrid();
+};
+document.getElementById("week-next").onclick = () => {
+  currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+  renderWeekNav(); renderWeeklyGrid();
+};
+
+// ── Meals: weekly dinner grid ─────────────────────────────────────
+function renderWeeklyGrid() {
+  const grid       = document.getElementById("weekly-grid");
+  grid.innerHTML   = "";
+  const weeklyData = mealPlanData?.weekly || {};
+
+  for (let i = 0; i < 7; i++) {
+    const d       = new Date(currentWeekStart);
+    d.setDate(d.getDate() + i);
+    const dateStr = localDateStr(d);
+    const dinner  = weeklyData[dateStr]?.dinner || "";
+    grid.appendChild(buildMealCard(dateStr, [
+      { meal:"dinner", label:"Dinner", value:dinner }
+    ], "weekly"));
+  }
+}
+
+// ── Meals: trip toggle UI (read-only sync, no Firebase write) ─────
+function syncTripToggleUI() {
+  const cb  = document.getElementById("trip-toggle-cb");
+  cb.checked = tripActive;
+  const cfg = mealPlanData?.trip?.config;
+  const sub = document.getElementById("trip-toggle-sub");
+  if (tripActive && cfg?.startDate && cfg?.endDate) {
+    sub.textContent = `${cfg.startDate} → ${cfg.endDate}`;
+  } else {
+    sub.textContent = "Adds breakfast & lunch planning";
+  }
+  document.getElementById("trip-content").classList.toggle("hidden", !tripActive);
+  if (tripActive && cfg?.startDate) document.getElementById("trip-start-date").value = cfg.startDate;
+  if (tripActive && cfg?.endDate)   document.getElementById("trip-end-date").value   = cfg.endDate;
+}
+
+// ── Meals: trip grid ──────────────────────────────────────────────
+function renderTripGrid() {
+  const grid = document.getElementById("trip-grid");
+  grid.innerHTML = "";
+  const cfg  = mealPlanData?.trip?.config;
+
+  if (!cfg?.startDate || !cfg?.endDate) {
+    const hint = document.createElement("p");
+    hint.style.cssText = "font-size:13px;color:#aaa;text-align:center;padding:16px 0;";
+    hint.textContent   = "Set your trip dates above to start planning meals.";
+    grid.appendChild(hint);
+    return;
+  }
+
+  const start    = new Date(cfg.startDate + "T00:00:00");
+  const end      = new Date(cfg.endDate   + "T00:00:00");
+  const daysData = mealPlanData?.trip?.days || {};
+
+  const hdr = document.createElement("div");
+  hdr.className   = "trip-section-header";
+  hdr.textContent = "✈️ Trip Meals";
+  grid.appendChild(hdr);
+
+  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+    const dateStr = localDateStr(d);
+    const day     = daysData[dateStr] || {};
+    grid.appendChild(buildMealCard(dateStr, [
+      { meal:"breakfast", label:"🍳 Breakfast", value: day.breakfast || "" },
+      { meal:"lunch",     label:"🥪 Lunch",     value: day.lunch     || "" },
+      { meal:"dinner",    label:"🍽️ Dinner",    value: day.dinner    || "" },
+    ], "trip"));
+  }
+}
+
+// ── Meals: card builder (shared by weekly + trip) ─────────────────
+function buildMealCard(dateStr, slots, planType) {
+  const d    = new Date(dateStr + "T00:00:00");
+  const card = document.createElement("div");
+  card.className = "meal-day-card";
+
+  const hdr = document.createElement("div");
+  hdr.className   = "meal-day-header" + (isToday(d) ? " today" : "");
+  hdr.textContent = displayDate(d) + (isToday(d) ? " · Today" : "");
+  card.appendChild(hdr);
+
+  slots.forEach(({ meal, label, value }) => {
+    const slot = document.createElement("div");
+    slot.className = "meal-slot";
+
+    const lbl = document.createElement("span");
+    lbl.className   = "meal-slot-label";
+    lbl.textContent = label;
+
+    const inp = document.createElement("input");
+    inp.type        = "text";
+    inp.className   = "meal-input" + (value ? " has-value" : "");
+    inp.placeholder = `What's for ${meal}?`;
+    inp.value       = value;
+
+    const cartBtn = document.createElement("button");
+    cartBtn.className   = "meal-cart-btn" + (value ? " has-value" : "");
+    cartBtn.title       = "Add ingredient to grocery list";
+    cartBtn.textContent = "🛒";
+
+    // Live class update while typing
+    inp.addEventListener("input", () => {
+      const has = inp.value.trim().length > 0;
+      inp.classList.toggle("has-value", has);
+      cartBtn.classList.toggle("has-value", has);
+    });
+
+    // Save to Firebase on blur or Enter
+    inp.addEventListener("change", async () => {
+      await saveMealField(planType, dateStr, meal, inp.value.trim());
+    });
+
+    cartBtn.addEventListener("click", () => {
+      openMealModal(dateStr, meal, planType);
+    });
+
+    slot.appendChild(lbl);
+    slot.appendChild(inp);
+    slot.appendChild(cartBtn);
+    card.appendChild(slot);
+  });
+
+  return card;
+}
+
+// ── Meals: Firebase write ─────────────────────────────────────────
+async function saveMealField(planType, dateStr, meal, value) {
+  const path = planType === "weekly"
+    ? `mealplan/weekly/${dateStr}/${meal}`
+    : `mealplan/trip/days/${dateStr}/${meal}`;
+  if (value) { await set(ref(db, path), value); }
+  else        { await remove(ref(db, path));     }
+}
+
+// ── Meals: trip toggle wiring ─────────────────────────────────────
+document.getElementById("trip-toggle-cb").addEventListener("change", async function () {
+  if (this.checked) {
+    tripActive = true;
+    document.getElementById("trip-content").classList.remove("hidden");
+    await set(ref(db, "mealplan/trip/config"), { active:true, startDate:"", endDate:"" });
+    renderTripGrid();
+  } else {
+    if (!confirm("Turn off Trip Mode? This will delete all saved trip meal data.")) {
+      this.checked = true; // revert
+      return;
+    }
+    tripActive = false;
+    document.getElementById("trip-content").classList.add("hidden");
+    document.getElementById("trip-grid").innerHTML = "";
+    document.getElementById("trip-toggle-sub").textContent = "Adds breakfast & lunch planning";
+    await remove(ref(db, "mealplan/trip"));
+  }
+});
+
+// ── Meals: trip date wiring ───────────────────────────────────────
+async function saveTripDates() {
+  const start = document.getElementById("trip-start-date").value;
+  const end   = document.getElementById("trip-end-date").value;
+  if (!start || !end) return;
+  if (start > end) { showToast("End date must be after start date"); return; }
+  await set(ref(db, "mealplan/trip/config"), { active:true, startDate:start, endDate:end });
+  document.getElementById("trip-toggle-sub").textContent = `${start} → ${end}`;
+  showToast("Trip dates saved!");
+  renderTripGrid();
+}
+document.getElementById("trip-start-date").addEventListener("change", saveTripDates);
+document.getElementById("trip-end-date").addEventListener("change",   saveTripDates);
+
+// ── Meals: add ingredient modal ───────────────────────────────────
+function openMealModal(dateStr, meal, planType) {
+  mealModalCtx       = { dateStr, meal, planType };
+  selectedModalStore = "shopping";
+
+  const d = new Date(dateStr + "T00:00:00");
+  document.getElementById("meal-modal-subtitle").textContent =
+    `For ${meal} on ${displayDate(d)}`;
+  document.getElementById("meal-modal-item").value = "";
+
+  const grid = document.getElementById("store-select-grid");
+  grid.innerHTML = "";
+  STORES.forEach(s => {
+    const btn = document.createElement("button");
+    btn.className   = "store-select-btn" + (s.id === selectedModalStore ? " selected" : "");
+    btn.textContent = `${s.emoji} ${s.name}`;
+    if (s.id === selectedModalStore) { btn.style.background = s.color; btn.style.color = "#fff"; }
+    btn.onclick = () => {
+      selectedModalStore = s.id;
+      grid.querySelectorAll(".store-select-btn").forEach(b => {
+        b.classList.remove("selected"); b.style.background = ""; b.style.color = "";
+      });
+      btn.classList.add("selected"); btn.style.background = s.color; btn.style.color = "#fff";
+    };
+    grid.appendChild(btn);
+  });
+
+  document.getElementById("meal-modal-overlay").classList.remove("hidden");
+  setTimeout(() => document.getElementById("meal-modal-item").focus(), 50);
+}
+
+function closeMealModal() {
+  document.getElementById("meal-modal-overlay").classList.add("hidden");
+  mealModalCtx = null;
+}
+
+document.getElementById("meal-modal-cancel").onclick = closeMealModal;
+document.getElementById("meal-modal-overlay").addEventListener("click", e => {
+  if (e.target === document.getElementById("meal-modal-overlay")) closeMealModal();
+});
+document.getElementById("meal-modal-item").addEventListener("keydown", e => {
+  if (e.key === "Enter")  document.getElementById("meal-modal-add").click();
+  if (e.key === "Escape") closeMealModal();
+});
+document.getElementById("meal-modal-add").onclick = async () => {
+  const item = document.getElementById("meal-modal-item").value.trim();
+  if (!item) { showToast("Enter an item name"); return; }
+  await addItem(selectedModalStore, item);
+  closeMealModal();
+};
+
+// ── Grocery: add / remove ─────────────────────────────────────────
+async function addItem(storeId, text) {
+  const t = text.trim(); if (!t) return;
+  if (getItems(storeId).some(i => i.text.toLowerCase() === t.toLowerCase())) {
     showToast(`"${t}" is already on the list`); return;
   }
-  await push(ref(db,`lists/${storeId}`),{text:t});
-  showToast(`Added "${t}" to ${STORES.find(s=>s.id===storeId)?.name}`);
+  await push(ref(db, `lists/${storeId}`), { text:t });
+  showToast(`Added "${t}" to ${STORES.find(s => s.id === storeId)?.name}`);
 }
 
-async function removeItem(storeId,key,sourceId){
+async function removeItem(storeId, key, sourceId) {
   const actualSource = sourceId || storeId;
-  const item=lists[actualSource]?.[key];
-  await remove(ref(db,`lists/${actualSource}/${key}`));
-  if(item) showToast(`Removed "${item.text}"`);
+  const item = lists[actualSource]?.[key];
+  await remove(ref(db, `lists/${actualSource}/${key}`));
+  if (item) showToast(`Removed "${item.text}"`);
 }
 
-// Wire up UI
-document.getElementById("add-btn").onclick=()=>{
-  const inp=document.getElementById("add-input");
-  addItem(activeStore,inp.value);
-  inp.value=""; inp.focus();
+// ── Grocery: input wiring ─────────────────────────────────────────
+document.getElementById("add-btn").onclick = () => {
+  const inp = document.getElementById("add-input");
+  addItem(activeStore, inp.value);
+  inp.value = ""; inp.focus();
 };
-document.getElementById("add-input").onkeydown=e=>{if(e.key==="Enter")document.getElementById("add-btn").click();};
-document.getElementById("add-input").onfocus=function(){this.style.borderColor=STORES.find(s=>s.id===activeStore).color;};
-document.getElementById("add-input").onblur=function(){this.style.borderColor=STORES.find(s=>s.id===activeStore).color+"40";};
-document.getElementById("fav-toggle").onclick=()=>{showFavs=!showFavs;render();};
-document.getElementById("favs-add-btn").onclick=()=>{
+document.getElementById("add-input").onkeydown = e => { if (e.key==="Enter") document.getElementById("add-btn").click(); };
+document.getElementById("add-input").onfocus   = function () { this.style.borderColor = STORES.find(s=>s.id===activeStore).color; };
+document.getElementById("add-input").onblur    = function () { this.style.borderColor = STORES.find(s=>s.id===activeStore).color+"40"; };
+document.getElementById("fav-toggle").onclick  = () => { showFavs = !showFavs; render(); };
+
+document.getElementById("favs-add-btn").onclick = () => {
   document.getElementById("favs-new-row").classList.toggle("hidden");
   document.getElementById("favs-new-input").focus();
 };
-document.getElementById("favs-new-save").onclick=()=>{
-  const inp=document.getElementById("favs-new-input");
-  const val=inp.value.trim(); if(!val) return;
-  if(!favorites[activeStore]) favorites[activeStore]=[];
+document.getElementById("favs-new-save").onclick = () => {
+  const inp = document.getElementById("favs-new-input");
+  const val = inp.value.trim(); if (!val) return;
+  if (!favorites[activeStore]) favorites[activeStore] = [];
   favorites[activeStore].push(val);
-  saveFavs(); inp.value="";
+  saveFavs(); inp.value = "";
   document.getElementById("favs-new-row").classList.add("hidden");
   showToast(`Added "${val}" to favorites`);
   renderFavs(); renderAddBar();
 };
-document.getElementById("favs-new-cancel").onclick=()=>{
-  document.getElementById("favs-new-input").value="";
+document.getElementById("favs-new-cancel").onclick = () => {
+  document.getElementById("favs-new-input").value = "";
   document.getElementById("favs-new-row").classList.add("hidden");
 };
-document.getElementById("favs-new-input").onkeydown=e=>{
-  if(e.key==="Enter") document.getElementById("favs-new-save").click();
-  if(e.key==="Escape") document.getElementById("favs-new-cancel").click();
+document.getElementById("favs-new-input").onkeydown = e => {
+  if (e.key==="Enter")  document.getElementById("favs-new-save").click();
+  if (e.key==="Escape") document.getElementById("favs-new-cancel").click();
 };
 </script>
 </body>
