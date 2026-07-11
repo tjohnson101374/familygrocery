@@ -74,29 +74,28 @@
     .item-row { background: #fff; border-radius: 14px; margin-bottom: 8px; padding: 14px;
       display: flex; align-items: center; gap: 12px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #f0f0f2;
-      animation: slideIn 0.18s ease; }
+      animation: slideIn 0.18s ease; cursor: pointer; }
+    .item-row.item-checked { background: #f8f8f8; }
     @keyframes slideIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-    .item-circle { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #ccc; flex-shrink: 0; }
+    .item-circle { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #ccc;
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
     .item-text { flex: 1; font-size: 15px; color: #111; }
+    .item-text.done { text-decoration: line-through; color: #bbb; }
     .del-btn { background: none; border: none; cursor: pointer; font-size: 20px; opacity: 0.25;
-      padding: 4px 6px; line-height: 1; transition: opacity 0.15s; }
+      padding: 4px 6px; line-height: 1; transition: opacity 0.15s; flex-shrink: 0; }
     .del-btn:hover { opacity: 0.6; }
     .del-btn:active { opacity: 1; }
 
-    /* ── Meals Tab ─────────────────────────────────────────── */
+    /* ── Meals Tab ────────────────────────────────────────── */
     .meals-area { padding: 12px 16px 100px; }
     .meals-section-label { font-size: 11px; font-weight: 700; color: #aaa; letter-spacing: 0.08em;
       text-transform: uppercase; margin: 4px 0 10px; }
-
-    /* Week nav */
     .week-nav { display: flex; align-items: center; justify-content: space-between;
       background: #fff; border-radius: 14px; padding: 10px 14px; margin-bottom: 12px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #f0f0f2; }
     .week-nav-btn { background: none; border: none; font-size: 20px; cursor: pointer;
       padding: 0 6px; color: #555; line-height: 1; }
     .week-label { font-size: 13px; font-weight: 600; color: #333; }
-
-    /* Day cards */
     .meal-day-card { background: #fff; border-radius: 14px; margin-bottom: 10px; padding: 12px 14px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #f0f0f2; }
     .meal-day-header { font-size: 12px; font-weight: 700; color: #888; margin-bottom: 8px; letter-spacing: 0.01em; }
@@ -114,8 +113,6 @@
       padding: 4px; line-height: 1; transition: opacity 0.15s; flex-shrink: 0; }
     .meal-cart-btn:hover { opacity: 0.7; }
     .meal-cart-btn.has-value { opacity: 0.5; }
-
-    /* Trip toggle */
     .trip-toggle-bar { display: flex; align-items: center; justify-content: space-between;
       background: #fff; border-radius: 14px; padding: 12px 14px; margin: 16px 0 12px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #f0f0f2; }
@@ -130,8 +127,6 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
     .toggle-switch input:checked + .toggle-slider { background: #4CAF50; }
     .toggle-switch input:checked + .toggle-slider:before { transform: translateX(20px); }
-
-    /* Trip dates */
     .trip-date-row { display: flex; gap: 8px; margin-bottom: 14px; }
     .trip-date-field { flex: 1; display: flex; flex-direction: column; gap: 4px; }
     .trip-date-field label { font-size: 11px; font-weight: 600; color: #aaa;
@@ -142,7 +137,7 @@
     .trip-section-header { font-size: 11px; font-weight: 700; color: #aaa; text-transform: uppercase;
       letter-spacing: 0.08em; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1.5px solid #eee; }
 
-    /* Add to list modal */
+    /* Meal modal */
     .meal-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000;
       display: flex; align-items: flex-end; justify-content: center; animation: fadeIn 0.15s ease; }
     .meal-modal { background: #fff; border-radius: 20px 20px 0 0; padding: 22px 20px 38px;
@@ -166,6 +161,53 @@
     .meal-modal-cancel { flex: 1; padding: 13px; border-radius: 12px; border: 1.5px solid #e8e8ec;
       background: #fff; font-size: 15px; font-family: inherit; cursor: pointer; font-weight: 600; color: #777; }
     .meal-modal-add { flex: 2; padding: 13px; border-radius: 12px; border: none; background: #4CAF50;
+      color: #fff; font-size: 15px; font-family: inherit; cursor: pointer; font-weight: 700; }
+
+    /* ── Christmas Tab ─────────────────────────────────────── */
+    .christmas-area { padding: 0 0 100px; }
+    .member-tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none;
+      background: #fff; padding: 12px 16px 0; border-bottom: 1px solid #eee; }
+    .member-tabs::-webkit-scrollbar { display: none; }
+    .member-tab { padding: 8px 14px; border-radius: 10px 10px 0 0; font-size: 13px; font-weight: 500;
+      color: #777; border: none; border-bottom: 3px solid transparent; background: transparent;
+      white-space: nowrap; cursor: pointer; transition: all 0.15s ease; font-family: inherit; }
+    .member-tab.active { font-weight: 700; background: #fff5f6; }
+    .xmas-add-section { padding: 14px 16px; background: #fff8f8; border-bottom: 1px solid #ffe0e0; }
+    .xmas-add-btn { width: 100%; padding: 12px; border-radius: 12px;
+      border: 2px dashed rgba(196,30,58,0.35); background: transparent;
+      color: #C41E3A; font-size: 15px; font-weight: 600; cursor: pointer;
+      font-family: inherit; transition: all 0.15s; }
+    .xmas-add-btn:hover { background: rgba(196,30,58,0.06); border-color: #C41E3A; }
+    .christmas-items { padding: 12px 16px 20px; }
+    .xmas-item-card { background: #fff; border-radius: 14px; margin-bottom: 8px; padding: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #f0f0f2;
+      animation: slideIn 0.18s ease; }
+    .xmas-item-top { display: flex; align-items: center; gap: 10px; }
+    .xmas-item-name { flex: 1; font-size: 15px; color: #111; font-weight: 500; }
+    .xmas-item-meta { display: flex; align-items: center; gap: 8px; margin-top: 7px; flex-wrap: wrap; }
+    .xmas-store-tag { font-size: 12px; color: #777; background: #f3f3f3;
+      border-radius: 20px; padding: 3px 10px; }
+    .xmas-link-btn { font-size: 12px; color: #C41E3A; background: #fff5f6;
+      border-radius: 20px; padding: 3px 10px; text-decoration: none; font-weight: 600;
+      border: 1px solid rgba(196,30,58,0.2); }
+
+    /* Christmas add modal */
+    .xmas-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000;
+      display: flex; align-items: flex-end; justify-content: center; animation: fadeIn 0.15s ease; }
+    .xmas-modal { background: #fff; border-radius: 20px 20px 0 0; padding: 22px 20px 38px;
+      width: 100%; max-width: 480px; animation: slideUp 0.2s ease; }
+    .xmas-modal-title { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 18px; }
+    .xmas-modal-label { font-size: 11px; font-weight: 700; color: #aaa; text-transform: uppercase;
+      letter-spacing: 0.06em; margin-bottom: 6px; }
+    .xmas-modal-input { width: 100%; padding: 11px 14px; border-radius: 12px;
+      border: 1.5px solid #e8e8ec; font-size: 15px; font-family: inherit; outline: none;
+      margin-bottom: 14px; color: #111; }
+    .xmas-modal-input:focus { border-color: #C41E3A; }
+    .xmas-modal-hint { font-size: 11px; color: #bbb; margin-top: -10px; margin-bottom: 14px; }
+    .xmas-modal-actions { display: flex; gap: 8px; margin-top: 4px; }
+    .xmas-modal-cancel { flex: 1; padding: 13px; border-radius: 12px; border: 1.5px solid #e8e8ec;
+      background: #fff; font-size: 15px; font-family: inherit; cursor: pointer; font-weight: 600; color: #777; }
+    .xmas-modal-add { flex: 2; padding: 13px; border-radius: 12px; border: none; background: #C41E3A;
       color: #fff; font-size: 15px; font-family: inherit; cursor: pointer; font-weight: 700; }
 
     .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
@@ -192,7 +234,7 @@
     <div class="store-tabs" id="store-tabs"></div>
   </div>
 
-  <!-- Add Bar (hidden on Meals tab) -->
+  <!-- Add Bar (hidden on Meals / Christmas tabs) -->
   <div class="add-bar" id="add-bar">
     <div class="add-form">
       <input class="add-input" id="add-input" type="text" placeholder="Add item…" />
@@ -223,10 +265,8 @@
   <!-- Grocery List Area -->
   <div class="list-area" id="list-area"></div>
 
-  <!-- ── Meals Area ─────────────────────────────────────────── -->
+  <!-- ── Meals Area ──────────────────────────────────────────── -->
   <div class="meals-area hidden" id="meals-area">
-
-    <!-- Weekly Dinner Planner -->
     <div class="meals-section-label">🍽️ Dinner Plan</div>
     <div class="week-nav">
       <button class="week-nav-btn" id="week-prev">◀</button>
@@ -234,8 +274,6 @@
       <button class="week-nav-btn" id="week-next">▶</button>
     </div>
     <div id="weekly-grid"></div>
-
-    <!-- Trip Mode Toggle -->
     <div class="trip-toggle-bar">
       <div>
         <div class="trip-toggle-title">✈️ Trip Mode</div>
@@ -246,8 +284,6 @@
         <span class="toggle-slider"></span>
       </label>
     </div>
-
-    <!-- Trip Content -->
     <div id="trip-content" class="hidden">
       <div class="trip-date-row">
         <div class="trip-date-field">
@@ -261,10 +297,18 @@
       </div>
       <div id="trip-grid"></div>
     </div>
-
   </div>
 
-  <!-- Add Ingredient to Grocery List Modal -->
+  <!-- ── Christmas Area ─────────────────────────────────────── -->
+  <div class="christmas-area hidden" id="christmas-area">
+    <div class="member-tabs" id="member-tabs"></div>
+    <div class="xmas-add-section">
+      <button class="xmas-add-btn" id="xmas-add-btn">+ Add to Mom's List</button>
+    </div>
+    <div class="christmas-items" id="christmas-items"></div>
+  </div>
+
+  <!-- Meal → Grocery modal -->
   <div class="meal-modal-overlay hidden" id="meal-modal-overlay">
     <div class="meal-modal">
       <div class="meal-modal-title">🛒 Add to Grocery List</div>
@@ -280,12 +324,30 @@
     </div>
   </div>
 
+  <!-- Christmas add modal -->
+  <div class="xmas-modal-overlay hidden" id="xmas-modal-overlay">
+    <div class="xmas-modal">
+      <div class="xmas-modal-title" id="xmas-modal-title">🎄 Add to Mom's List</div>
+      <div class="xmas-modal-label">What do you want? *</div>
+      <input class="xmas-modal-input" id="xmas-modal-item" type="text" placeholder="Item name…">
+      <div class="xmas-modal-label">Link (optional)</div>
+      <input class="xmas-modal-input" id="xmas-modal-link" type="text" placeholder="Paste a link…">
+      <p class="xmas-modal-hint">Amazon, website, etc. — https:// added automatically</p>
+      <div class="xmas-modal-label">Where to buy (optional)</div>
+      <input class="xmas-modal-input" id="xmas-modal-store" type="text" placeholder="Amazon, Target, etc.">
+      <div class="xmas-modal-actions">
+        <button class="xmas-modal-cancel" id="xmas-modal-cancel">Cancel</button>
+        <button class="xmas-modal-add" id="xmas-modal-add">Add to List 🎁</button>
+      </div>
+    </div>
+  </div>
+
   <div class="toast hidden" id="toast"></div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, onValue, push, remove, set }
+import { getDatabase, ref, onValue, push, remove, set, update }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
@@ -301,7 +363,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db  = getDatabase(app);
 
-// ── Constants ───────────────────────────────────────────────────
+// ── Constants ────────────────────────────────────────────────────
 const STORES = [
   { id:"shopping", name:"Grocery List",   emoji:"🛒", color:"#CC0000", light:"#fff5f5", mergedIds:["target","walmart","shopping"] },
   { id:"costco",   name:"Costco",         emoji:"📦", color:"#005DAA", light:"#f0f5ff", mergedIds:["costco"] },
@@ -310,6 +372,16 @@ const STORES = [
 ];
 const MEALS_COLOR = "#2E7D32";
 const MEALS_LIGHT = "#f1f8f1";
+
+const CHRISTMAS_MEMBERS = [
+  { id:"mom",     name:"Mom",     emoji:"👩" },
+  { id:"dad",     name:"Dad",     emoji:"👨" },
+  { id:"trinity", name:"Trinity", emoji:"⭐" },
+  { id:"sierra",  name:"Sierra",  emoji:"🌲" },
+  { id:"kelsey",  name:"Kelsey",  emoji:"✨" },
+];
+const XMAS_COLOR = "#C41E3A";
+const XMAS_LIGHT = "#fff5f6";
 
 const DEFAULT_FAVORITES = {
   shopping: ["Milk","Eggs","Bread","Butter","Chicken","Ground Beef","Rice","Pasta","Toothpaste","Shampoo","Paper Towels","Laundry Detergent","Dish Soap","Toilet Paper","Trash Bags","Cereal","Orange Juice"],
@@ -325,26 +397,23 @@ let lists              = {};
 let favorites          = JSON.parse(localStorage.getItem("fam-favs-v2")||"null") || DEFAULT_FAVORITES;
 let toastTimer         = null;
 let editingFav         = null;
-
-// Meal planner state
+// Meal planner
 let mealPlanData       = {};
 let tripActive         = false;
 let currentWeekStart   = getMonday(new Date());
 let mealModalCtx       = null;
 let selectedModalStore = "shopping";
+// Christmas
+let activeMember       = "mom";
+let christmasData      = {};
 
 // ── Firebase: grocery lists ──────────────────────────────────────
 const ALL_IDS = ["shopping","target","walmart","costco","hardware","homedepot","lowes","other"];
 ALL_IDS.forEach(id => { lists[id] = {}; });
-
 renderTabs();
 renderAddBar();
-
 ALL_IDS.forEach(id => {
-  onValue(ref(db, `lists/${id}`), snap => {
-    lists[id] = snap.val() || {};
-    render();
-  });
+  onValue(ref(db, `lists/${id}`), snap => { lists[id] = snap.val() || {}; render(); });
 });
 
 // ── Firebase: meal plan ──────────────────────────────────────────
@@ -352,18 +421,21 @@ onValue(ref(db, "mealplan"), snap => {
   mealPlanData = snap.val() || {};
   tripActive   = mealPlanData?.trip?.config?.active === true;
   if (activeStore === "meals") {
-    // Don't interrupt typing — only full re-render if no meal input is focused
     const focused = document.activeElement;
-    if (!focused || !focused.classList.contains("meal-input")) {
-      renderMeals();
-    } else {
-      // Still sync the trip toggle state in case another device changed it
-      syncTripToggleUI();
-    }
+    if (!focused || !focused.classList.contains("meal-input")) renderMeals();
+    else syncTripToggleUI();
   }
 });
 
+// ── Firebase: christmas ──────────────────────────────────────────
+onValue(ref(db, "christmas"), snap => {
+  christmasData = snap.val() || {};
+  if (activeStore === "christmas") renderChristmasItems();
+});
+
 // ── Helpers ──────────────────────────────────────────────────────
+function isSpecialTab() { return activeStore === "meals" || activeStore === "christmas"; }
+
 function saveFavs() { localStorage.setItem("fam-favs-v2", JSON.stringify(favorites)); }
 
 function showToast(msg) {
@@ -380,10 +452,15 @@ function getItems(storeId) {
   const items = [];
   ids.forEach(id => {
     Object.entries(lists[id] || {}).forEach(([key, val]) => {
-      if (val?.text) items.push({ key, text: val.text, sourceId: id });
+      if (val?.text) items.push({ key, text: val.text, sourceId: id, checked: val.checked || false });
     });
   });
   return items;
+}
+
+function safeLink(url) {
+  if (!url) return "#";
+  return (url.startsWith("http://") || url.startsWith("https://")) ? url : "https://" + url;
 }
 
 // ── Date helpers ─────────────────────────────────────────────────
@@ -394,23 +471,15 @@ function getMonday(d) {
   date.setHours(0, 0, 0, 0);
   return date;
 }
-
 function localDateStr(d) {
-  const y  = d.getFullYear();
-  const m  = String(d.getMonth() + 1).padStart(2, "0");
-  const dy = String(d.getDate()).padStart(2, "0");
-  return `${y}-${m}-${dy}`;
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 }
-
 function displayDate(d) {
   return d.toLocaleDateString("en-US", { weekday:"short", month:"short", day:"numeric" });
 }
-
 function isToday(d) {
   const t = new Date();
-  return d.getFullYear() === t.getFullYear()
-      && d.getMonth()    === t.getMonth()
-      && d.getDate()     === t.getDate();
+  return d.getFullYear()===t.getFullYear() && d.getMonth()===t.getMonth() && d.getDate()===t.getDate();
 }
 
 // ── Render: tabs ─────────────────────────────────────────────────
@@ -419,7 +488,7 @@ function renderTabs() {
   container.innerHTML = "";
 
   STORES.forEach(s => {
-    const count    = getItems(s.id).length;
+    const count    = getItems(s.id).filter(i => !i.checked).length;
     const isActive = s.id === activeStore;
     const btn      = document.createElement("button");
     btn.className  = "store-tab" + (isActive ? " active" : "");
@@ -432,27 +501,37 @@ function renderTabs() {
     container.appendChild(btn);
   });
 
-  // Meals tab (5th)
-  const mealsActive = activeStore === "meals";
-  const mealsBtn    = document.createElement("button");
-  mealsBtn.className  = "store-tab" + (mealsActive ? " active" : "");
-  mealsBtn.style.color        = mealsActive ? MEALS_COLOR : "#777";
-  mealsBtn.style.borderBottom = mealsActive ? `3px solid ${MEALS_COLOR}` : "3px solid transparent";
-  mealsBtn.style.background   = mealsActive ? MEALS_LIGHT : "transparent";
+  // Meals tab
+  const onMeals  = activeStore === "meals";
+  const mealsBtn = document.createElement("button");
+  mealsBtn.className  = "store-tab" + (onMeals ? " active" : "");
+  mealsBtn.style.color        = onMeals ? MEALS_COLOR : "#777";
+  mealsBtn.style.borderBottom = onMeals ? `3px solid ${MEALS_COLOR}` : "3px solid transparent";
+  mealsBtn.style.background   = onMeals ? MEALS_LIGHT : "transparent";
   mealsBtn.innerHTML = `<span>🍽️</span><span>Meals</span>`;
   mealsBtn.onclick   = () => { activeStore = "meals"; showFavs = false; render(); };
   container.appendChild(mealsBtn);
+
+  // Christmas tab
+  const onXmas  = activeStore === "christmas";
+  const xmasBtn = document.createElement("button");
+  xmasBtn.className  = "store-tab" + (onXmas ? " active" : "");
+  xmasBtn.style.color        = onXmas ? XMAS_COLOR : "#777";
+  xmasBtn.style.borderBottom = onXmas ? `3px solid ${XMAS_COLOR}` : "3px solid transparent";
+  xmasBtn.style.background   = onXmas ? XMAS_LIGHT : "transparent";
+  xmasBtn.innerHTML = `<span>🎄</span><span>Christmas</span>`;
+  xmasBtn.onclick   = () => { activeStore = "christmas"; showFavs = false; render(); };
+  container.appendChild(xmasBtn);
 }
 
 // ── Render: add bar ───────────────────────────────────────────────
 function renderAddBar() {
   const bar = document.getElementById("add-bar");
-  if (activeStore === "meals") { bar.classList.add("hidden"); return; }
+  if (isSpecialTab()) { bar.classList.add("hidden"); return; }
   bar.classList.remove("hidden");
-
   const store = STORES.find(s => s.id === activeStore);
   bar.style.background = store.light;
-  document.getElementById("add-input").placeholder  = `Add to ${store.name}…`;
+  document.getElementById("add-input").placeholder       = `Add to ${store.name}…`;
   document.getElementById("add-input").style.borderColor = store.color + "40";
   document.getElementById("add-btn").style.background    = store.color;
   const toggle = document.getElementById("fav-toggle");
@@ -462,36 +541,28 @@ function renderAddBar() {
   document.getElementById("fav-count").textContent = `(${(favorites[activeStore] || []).length})`;
 }
 
-// ── Render: favs panel ────────────────────────────────────────────
+// ── Render: favs ──────────────────────────────────────────────────
 function renderFavs() {
-  if (activeStore === "meals") {
-    document.getElementById("favs-panel").classList.add("hidden");
-    return;
-  }
+  if (isSpecialTab()) { document.getElementById("favs-panel").classList.add("hidden"); return; }
   const panel = document.getElementById("favs-panel");
   if (!showFavs) { panel.classList.add("hidden"); return; }
   panel.classList.remove("hidden");
-
   const store = STORES.find(s => s.id === activeStore);
-  document.getElementById("favs-title").textContent       = `⭐ ${store.name} Favorites`;
+  document.getElementById("favs-title").textContent         = `⭐ ${store.name} Favorites`;
   document.getElementById("favs-add-btn").style.background  = store.color;
   document.getElementById("favs-new-save").style.background = store.color;
   document.getElementById("favs-new-input").style.borderColor = store.color;
-
   const chips  = document.getElementById("favs-chips");
   chips.innerHTML = "";
   const favs   = favorites[activeStore] || [];
   const onList = new Set(getItems(activeStore).map(i => i.text.toLowerCase()));
-
   if (favs.length === 0) {
     chips.innerHTML = `<span style="font-size:13px;color:#ccc;">No favorites yet — add some above!</span>`;
     return;
   }
-
   favs.forEach((fav, idx) => {
-    const already    = onList.has(fav.toLowerCase());
-    const isEditing  = editingFav?.storeId === activeStore && editingFav?.index === idx;
-
+    const already   = onList.has(fav.toLowerCase());
+    const isEditing = editingFav?.storeId === activeStore && editingFav?.index === idx;
     if (isEditing) {
       const row = document.createElement("div");
       row.className = "edit-row";
@@ -502,12 +573,11 @@ function renderFavs() {
       chips.appendChild(row);
       const inp = document.getElementById("edit-fav-input");
       inp.focus();
-      inp.onkeydown = e => { if (e.key==="Enter") saveEditFav(); if (e.key==="Escape") { editingFav=null; renderFavs(); } };
+      inp.onkeydown = e => { if(e.key==="Enter") saveEditFav(); if(e.key==="Escape"){editingFav=null;renderFavs();} };
       document.getElementById("edit-fav-save").onclick   = saveEditFav;
       document.getElementById("edit-fav-cancel").onclick = () => { editingFav=null; renderFavs(); };
       return;
     }
-
     const chip = document.createElement("div");
     chip.className  = "fav-chip";
     chip.style.background = already ? "#f0f0f0" : store.light;
@@ -530,12 +600,12 @@ function saveEditFav() {
   saveFavs(); editingFav = null; renderFavs();
 }
 
-// ── Render: grocery list ──────────────────────────────────────────
+// ── Render: grocery list (with check-off) ────────────────────────
 function renderList() {
-  if (activeStore === "meals") return;
-  const store = STORES.find(s => s.id === activeStore);
-  const items = getItems(activeStore);
-  const area  = document.getElementById("list-area");
+  if (isSpecialTab()) return;
+  const store  = STORES.find(s => s.id === activeStore);
+  const items  = getItems(activeStore);
+  const area   = document.getElementById("list-area");
   area.innerHTML = "";
 
   if (items.length === 0) {
@@ -547,25 +617,68 @@ function renderList() {
     return;
   }
 
-  const label = document.createElement("div");
-  label.className   = "list-label";
-  label.textContent = `Need to grab · ${items.length}`;
-  area.appendChild(label);
+  // Unchecked first, checked at bottom
+  const sorted       = [...items].sort((a, b) => (a.checked ? 1 : 0) - (b.checked ? 1 : 0));
+  const needCount    = sorted.filter(i => !i.checked).length;
+  const doneCount    = sorted.filter(i =>  i.checked).length;
+  let doneLabelAdded = false;
 
-  items.forEach(item => {
+  if (needCount > 0) {
+    const lbl = document.createElement("div");
+    lbl.className   = "list-label";
+    lbl.textContent = `Need to grab · ${needCount}`;
+    area.appendChild(lbl);
+  }
+
+  sorted.forEach(item => {
+    // Insert "Done" section label before first checked item
+    if (item.checked && !doneLabelAdded) {
+      doneLabelAdded = true;
+      const doneHdr = document.createElement("div");
+      doneHdr.className   = "list-label";
+      doneHdr.style.marginTop = "12px";
+      doneHdr.textContent = `Done · ${doneCount}`;
+      area.appendChild(doneHdr);
+    }
+
     const row = document.createElement("div");
-    row.className = "item-row";
-    row.innerHTML = `
-      <div class="item-circle" style="border-color:${store.color}"></div>
-      <span class="item-text">${item.text}</span>
-      <button class="del-btn">🗑️</button>`;
-    row.querySelector(".del-btn").onclick = () => removeItem(activeStore, item.key, item.sourceId);
+    row.className = "item-row" + (item.checked ? " item-checked" : "");
+
+    // Circle — filled + ✓ when checked
+    const circle = document.createElement("div");
+    circle.className = "item-circle";
+    circle.style.borderColor = store.color;
+    if (item.checked) {
+      circle.style.background = store.color;
+      const chk = document.createElement("span");
+      chk.textContent = "✓";
+      chk.style.cssText = "color:#fff;font-size:12px;font-weight:700;line-height:1;pointer-events:none;";
+      circle.appendChild(chk);
+    }
+
+    // Text
+    const textEl = document.createElement("span");
+    textEl.className   = "item-text" + (item.checked ? " done" : "");
+    textEl.textContent = item.text;
+
+    // Delete (stops propagation so row-click doesn't also toggle)
+    const delBtn = document.createElement("button");
+    delBtn.className   = "del-btn";
+    delBtn.textContent = "🗑️";
+    delBtn.onclick = e => { e.stopPropagation(); removeItem(activeStore, item.key, item.sourceId); };
+
+    // Tap row to check / uncheck
+    row.onclick = () => toggleCheck(item.sourceId, item.key, item.checked);
+
+    row.appendChild(circle);
+    row.appendChild(textEl);
+    row.appendChild(delBtn);
     area.appendChild(row);
   });
 }
 
 function renderTotal() {
-  const total = STORES.reduce((a, s) => a + getItems(s.id).length, 0);
+  const total = STORES.reduce((a, s) => a + getItems(s.id).filter(i => !i.checked).length, 0);
   document.getElementById("total-label").textContent =
     total === 0 ? "All clear — nothing needed!" : `${total} item${total!==1?"s":""} across all stores`;
 }
@@ -573,16 +686,42 @@ function renderTotal() {
 // ── Render: main ──────────────────────────────────────────────────
 function render() {
   const onMeals = activeStore === "meals";
+  const onXmas  = activeStore === "christmas";
   renderTabs();
   renderAddBar();
   renderFavs();
-  document.getElementById("list-area").classList.toggle("hidden", onMeals);
+  document.getElementById("list-area").classList.toggle("hidden", onMeals || onXmas);
   document.getElementById("meals-area").classList.toggle("hidden", !onMeals);
-  if (onMeals) { renderMeals(); } else { renderList(); }
+  document.getElementById("christmas-area").classList.toggle("hidden", !onXmas);
+  if (onMeals)     renderMeals();
+  else if (onXmas) renderChristmas();
+  else             renderList();
   renderTotal();
 }
 
-// ── Meals: top-level render ───────────────────────────────────────
+// ── Check-off ────────────────────────────────────────────────────
+async function toggleCheck(sourceId, key, currentlyChecked) {
+  await update(ref(db, `lists/${sourceId}/${key}`), { checked: !currentlyChecked });
+}
+
+// ── Grocery: add / remove ─────────────────────────────────────────
+async function addItem(storeId, text) {
+  const t = text.trim(); if (!t) return;
+  if (getItems(storeId).some(i => i.text.toLowerCase() === t.toLowerCase())) {
+    showToast(`"${t}" is already on the list`); return;
+  }
+  await push(ref(db, `lists/${storeId}`), { text: t });
+  showToast(`Added "${t}" to ${STORES.find(s => s.id === storeId)?.name}`);
+}
+
+async function removeItem(storeId, key, sourceId) {
+  const actualSource = sourceId || storeId;
+  const item = lists[actualSource]?.[key];
+  await remove(ref(db, `lists/${actualSource}/${key}`));
+  if (item) showToast(`Removed "${item.text}"`);
+}
+
+// ── Meals: main render ────────────────────────────────────────────
 function renderMeals() {
   renderWeekNav();
   renderWeeklyGrid();
@@ -591,82 +730,64 @@ function renderMeals() {
   else document.getElementById("trip-grid").innerHTML = "";
 }
 
-// ── Meals: week navigation ────────────────────────────────────────
 function renderWeekNav() {
   const end        = new Date(currentWeekStart);
   end.setDate(end.getDate() + 6);
   const thisMonday = getMonday(new Date());
   const isCurrent  = localDateStr(currentWeekStart) === localDateStr(thisMonday);
   document.getElementById("week-label").textContent = isCurrent
-    ? "This Week"
-    : `${displayDate(currentWeekStart)} – ${displayDate(end)}`;
+    ? "This Week" : `${displayDate(currentWeekStart)} – ${displayDate(end)}`;
 }
 
 document.getElementById("week-prev").onclick = () => {
-  currentWeekStart.setDate(currentWeekStart.getDate() - 7);
-  renderWeekNav(); renderWeeklyGrid();
+  currentWeekStart.setDate(currentWeekStart.getDate() - 7); renderWeekNav(); renderWeeklyGrid();
 };
 document.getElementById("week-next").onclick = () => {
-  currentWeekStart.setDate(currentWeekStart.getDate() + 7);
-  renderWeekNav(); renderWeeklyGrid();
+  currentWeekStart.setDate(currentWeekStart.getDate() + 7); renderWeekNav(); renderWeeklyGrid();
 };
 
-// ── Meals: weekly dinner grid ─────────────────────────────────────
 function renderWeeklyGrid() {
   const grid       = document.getElementById("weekly-grid");
   grid.innerHTML   = "";
   const weeklyData = mealPlanData?.weekly || {};
-
   for (let i = 0; i < 7; i++) {
     const d       = new Date(currentWeekStart);
     d.setDate(d.getDate() + i);
     const dateStr = localDateStr(d);
-    const dinner  = weeklyData[dateStr]?.dinner || "";
-    grid.appendChild(buildMealCard(dateStr, [
-      { meal:"dinner", label:"Dinner", value:dinner }
-    ], "weekly"));
+    grid.appendChild(buildMealCard(dateStr,
+      [{ meal:"dinner", label:"Dinner", value: weeklyData[dateStr]?.dinner || "" }], "weekly"));
   }
 }
 
-// ── Meals: trip toggle UI (read-only sync, no Firebase write) ─────
 function syncTripToggleUI() {
   const cb  = document.getElementById("trip-toggle-cb");
   cb.checked = tripActive;
   const cfg = mealPlanData?.trip?.config;
   const sub = document.getElementById("trip-toggle-sub");
-  if (tripActive && cfg?.startDate && cfg?.endDate) {
-    sub.textContent = `${cfg.startDate} → ${cfg.endDate}`;
-  } else {
-    sub.textContent = "Adds breakfast & lunch planning";
-  }
+  if (tripActive && cfg?.startDate && cfg?.endDate) sub.textContent = `${cfg.startDate} → ${cfg.endDate}`;
+  else sub.textContent = "Adds breakfast & lunch planning";
   document.getElementById("trip-content").classList.toggle("hidden", !tripActive);
   if (tripActive && cfg?.startDate) document.getElementById("trip-start-date").value = cfg.startDate;
   if (tripActive && cfg?.endDate)   document.getElementById("trip-end-date").value   = cfg.endDate;
 }
 
-// ── Meals: trip grid ──────────────────────────────────────────────
 function renderTripGrid() {
   const grid = document.getElementById("trip-grid");
   grid.innerHTML = "";
   const cfg  = mealPlanData?.trip?.config;
-
   if (!cfg?.startDate || !cfg?.endDate) {
     const hint = document.createElement("p");
     hint.style.cssText = "font-size:13px;color:#aaa;text-align:center;padding:16px 0;";
     hint.textContent   = "Set your trip dates above to start planning meals.";
-    grid.appendChild(hint);
-    return;
+    grid.appendChild(hint); return;
   }
-
   const start    = new Date(cfg.startDate + "T00:00:00");
   const end      = new Date(cfg.endDate   + "T00:00:00");
   const daysData = mealPlanData?.trip?.days || {};
-
   const hdr = document.createElement("div");
   hdr.className   = "trip-section-header";
   hdr.textContent = "✈️ Trip Meals";
   grid.appendChild(hdr);
-
   for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
     const dateStr = localDateStr(d);
     const day     = daysData[dateStr] || {};
@@ -678,62 +799,42 @@ function renderTripGrid() {
   }
 }
 
-// ── Meals: card builder (shared by weekly + trip) ─────────────────
 function buildMealCard(dateStr, slots, planType) {
   const d    = new Date(dateStr + "T00:00:00");
   const card = document.createElement("div");
   card.className = "meal-day-card";
-
   const hdr = document.createElement("div");
   hdr.className   = "meal-day-header" + (isToday(d) ? " today" : "");
   hdr.textContent = displayDate(d) + (isToday(d) ? " · Today" : "");
   card.appendChild(hdr);
-
   slots.forEach(({ meal, label, value }) => {
-    const slot = document.createElement("div");
+    const slot    = document.createElement("div");
     slot.className = "meal-slot";
-
     const lbl = document.createElement("span");
     lbl.className   = "meal-slot-label";
     lbl.textContent = label;
-
     const inp = document.createElement("input");
-    inp.type        = "text";
-    inp.className   = "meal-input" + (value ? " has-value" : "");
+    inp.type      = "text";
+    inp.className = "meal-input" + (value ? " has-value" : "");
     inp.placeholder = `What's for ${meal}?`;
     inp.value       = value;
-
     const cartBtn = document.createElement("button");
     cartBtn.className   = "meal-cart-btn" + (value ? " has-value" : "");
     cartBtn.title       = "Add ingredient to grocery list";
     cartBtn.textContent = "🛒";
-
-    // Live class update while typing
     inp.addEventListener("input", () => {
       const has = inp.value.trim().length > 0;
       inp.classList.toggle("has-value", has);
       cartBtn.classList.toggle("has-value", has);
     });
-
-    // Save to Firebase on blur or Enter
-    inp.addEventListener("change", async () => {
-      await saveMealField(planType, dateStr, meal, inp.value.trim());
-    });
-
-    cartBtn.addEventListener("click", () => {
-      openMealModal(dateStr, meal, planType);
-    });
-
-    slot.appendChild(lbl);
-    slot.appendChild(inp);
-    slot.appendChild(cartBtn);
+    inp.addEventListener("change", async () => { await saveMealField(planType, dateStr, meal, inp.value.trim()); });
+    cartBtn.addEventListener("click", () => { openMealModal(dateStr, meal, planType); });
+    slot.appendChild(lbl); slot.appendChild(inp); slot.appendChild(cartBtn);
     card.appendChild(slot);
   });
-
   return card;
 }
 
-// ── Meals: Firebase write ─────────────────────────────────────────
 async function saveMealField(planType, dateStr, meal, value) {
   const path = planType === "weekly"
     ? `mealplan/weekly/${dateStr}/${meal}`
@@ -742,18 +843,14 @@ async function saveMealField(planType, dateStr, meal, value) {
   else        { await remove(ref(db, path));     }
 }
 
-// ── Meals: trip toggle wiring ─────────────────────────────────────
-document.getElementById("trip-toggle-cb").addEventListener("change", async function () {
+document.getElementById("trip-toggle-cb").addEventListener("change", async function() {
   if (this.checked) {
     tripActive = true;
     document.getElementById("trip-content").classList.remove("hidden");
     await set(ref(db, "mealplan/trip/config"), { active:true, startDate:"", endDate:"" });
     renderTripGrid();
   } else {
-    if (!confirm("Turn off Trip Mode? This will delete all saved trip meal data.")) {
-      this.checked = true; // revert
-      return;
-    }
+    if (!confirm("Turn off Trip Mode? This will delete all saved trip meal data.")) { this.checked = true; return; }
     tripActive = false;
     document.getElementById("trip-content").classList.add("hidden");
     document.getElementById("trip-grid").innerHTML = "";
@@ -762,7 +859,6 @@ document.getElementById("trip-toggle-cb").addEventListener("change", async funct
   }
 });
 
-// ── Meals: trip date wiring ───────────────────────────────────────
 async function saveTripDates() {
   const start = document.getElementById("trip-start-date").value;
   const end   = document.getElementById("trip-end-date").value;
@@ -770,22 +866,17 @@ async function saveTripDates() {
   if (start > end) { showToast("End date must be after start date"); return; }
   await set(ref(db, "mealplan/trip/config"), { active:true, startDate:start, endDate:end });
   document.getElementById("trip-toggle-sub").textContent = `${start} → ${end}`;
-  showToast("Trip dates saved!");
-  renderTripGrid();
+  showToast("Trip dates saved!"); renderTripGrid();
 }
 document.getElementById("trip-start-date").addEventListener("change", saveTripDates);
 document.getElementById("trip-end-date").addEventListener("change",   saveTripDates);
 
-// ── Meals: add ingredient modal ───────────────────────────────────
+// Meal → grocery modal
 function openMealModal(dateStr, meal, planType) {
-  mealModalCtx       = { dateStr, meal, planType };
-  selectedModalStore = "shopping";
-
-  const d = new Date(dateStr + "T00:00:00");
+  mealModalCtx = { dateStr, meal, planType }; selectedModalStore = "shopping";
   document.getElementById("meal-modal-subtitle").textContent =
-    `For ${meal} on ${displayDate(d)}`;
+    `For ${meal} on ${displayDate(new Date(dateStr + "T00:00:00"))}`;
   document.getElementById("meal-modal-item").value = "";
-
   const grid = document.getElementById("store-select-grid");
   grid.innerHTML = "";
   STORES.forEach(s => {
@@ -795,87 +886,176 @@ function openMealModal(dateStr, meal, planType) {
     if (s.id === selectedModalStore) { btn.style.background = s.color; btn.style.color = "#fff"; }
     btn.onclick = () => {
       selectedModalStore = s.id;
-      grid.querySelectorAll(".store-select-btn").forEach(b => {
-        b.classList.remove("selected"); b.style.background = ""; b.style.color = "";
-      });
+      grid.querySelectorAll(".store-select-btn").forEach(b => { b.classList.remove("selected"); b.style.background=""; b.style.color=""; });
       btn.classList.add("selected"); btn.style.background = s.color; btn.style.color = "#fff";
     };
     grid.appendChild(btn);
   });
-
   document.getElementById("meal-modal-overlay").classList.remove("hidden");
   setTimeout(() => document.getElementById("meal-modal-item").focus(), 50);
 }
-
-function closeMealModal() {
-  document.getElementById("meal-modal-overlay").classList.add("hidden");
-  mealModalCtx = null;
-}
-
+function closeMealModal() { document.getElementById("meal-modal-overlay").classList.add("hidden"); mealModalCtx = null; }
 document.getElementById("meal-modal-cancel").onclick = closeMealModal;
-document.getElementById("meal-modal-overlay").addEventListener("click", e => {
-  if (e.target === document.getElementById("meal-modal-overlay")) closeMealModal();
-});
-document.getElementById("meal-modal-item").addEventListener("keydown", e => {
-  if (e.key === "Enter")  document.getElementById("meal-modal-add").click();
-  if (e.key === "Escape") closeMealModal();
-});
+document.getElementById("meal-modal-overlay").addEventListener("click", e => { if (e.target===document.getElementById("meal-modal-overlay")) closeMealModal(); });
+document.getElementById("meal-modal-item").addEventListener("keydown", e => { if(e.key==="Enter") document.getElementById("meal-modal-add").click(); if(e.key==="Escape") closeMealModal(); });
 document.getElementById("meal-modal-add").onclick = async () => {
   const item = document.getElementById("meal-modal-item").value.trim();
   if (!item) { showToast("Enter an item name"); return; }
-  await addItem(selectedModalStore, item);
-  closeMealModal();
+  await addItem(selectedModalStore, item); closeMealModal();
 };
 
-// ── Grocery: add / remove ─────────────────────────────────────────
-async function addItem(storeId, text) {
-  const t = text.trim(); if (!t) return;
-  if (getItems(storeId).some(i => i.text.toLowerCase() === t.toLowerCase())) {
-    showToast(`"${t}" is already on the list`); return;
-  }
-  await push(ref(db, `lists/${storeId}`), { text:t });
-  showToast(`Added "${t}" to ${STORES.find(s => s.id === storeId)?.name}`);
+// ── Christmas: render ─────────────────────────────────────────────
+function renderChristmas() {
+  renderMemberTabs();
+  renderChristmasItems();
 }
 
-async function removeItem(storeId, key, sourceId) {
-  const actualSource = sourceId || storeId;
-  const item = lists[actualSource]?.[key];
-  await remove(ref(db, `lists/${actualSource}/${key}`));
-  if (item) showToast(`Removed "${item.text}"`);
+function renderMemberTabs() {
+  const container = document.getElementById("member-tabs");
+  container.innerHTML = "";
+  CHRISTMAS_MEMBERS.forEach(m => {
+    const isActive = m.id === activeMember;
+    const btn      = document.createElement("button");
+    btn.className  = "member-tab" + (isActive ? " active" : "");
+    btn.style.color        = isActive ? XMAS_COLOR : "#777";
+    btn.style.borderBottom = isActive ? `3px solid ${XMAS_COLOR}` : "3px solid transparent";
+    btn.style.fontWeight   = isActive ? "700" : "500";
+    btn.textContent = `${m.emoji} ${m.name}`;
+    btn.onclick = () => { activeMember = m.id; renderChristmas(); };
+    container.appendChild(btn);
+  });
 }
+
+function renderChristmasItems() {
+  const member  = CHRISTMAS_MEMBERS.find(m => m.id === activeMember);
+  const addBtn  = document.getElementById("xmas-add-btn");
+  const area    = document.getElementById("christmas-items");
+  if (addBtn) addBtn.textContent = `+ Add to ${member.name}'s List`;
+  if (!area) return;
+  area.innerHTML = "";
+
+  const raw   = christmasData[activeMember] || {};
+  const items = Object.entries(raw).map(([key, val]) => ({ key, ...val })).reverse();
+
+  if (items.length === 0) {
+    area.innerHTML = `<div class="empty-state">
+      <div class="empty-emoji">🎁</div>
+      <h3>${member.name}'s list is empty</h3>
+      <p>Tap above to add a wish!</p>
+    </div>`;
+    return;
+  }
+
+  items.forEach(item => {
+    const card    = document.createElement("div");
+    card.className = "xmas-item-card";
+
+    const topRow  = document.createElement("div");
+    topRow.className = "xmas-item-top";
+    const nameEl  = document.createElement("span");
+    nameEl.className   = "xmas-item-name";
+    nameEl.textContent = item.name;
+    const delBtn  = document.createElement("button");
+    delBtn.className   = "del-btn";
+    delBtn.textContent = "🗑️";
+    delBtn.onclick = () => removeChristmasItem(activeMember, item.key);
+    topRow.appendChild(nameEl);
+    topRow.appendChild(delBtn);
+    card.appendChild(topRow);
+
+    const hasMeta = item.store || item.link;
+    if (hasMeta) {
+      const metaRow = document.createElement("div");
+      metaRow.className = "xmas-item-meta";
+      if (item.store) {
+        const tag = document.createElement("span");
+        tag.className   = "xmas-store-tag";
+        tag.textContent = `📍 ${item.store}`;
+        metaRow.appendChild(tag);
+      }
+      if (item.link) {
+        const a = document.createElement("a");
+        a.className = "xmas-link-btn";
+        a.href      = safeLink(item.link);
+        a.target    = "_blank";
+        a.rel       = "noopener noreferrer";
+        a.textContent = "🔗 View Link";
+        metaRow.appendChild(a);
+      }
+      card.appendChild(metaRow);
+    }
+    area.appendChild(card);
+  });
+}
+
+async function removeChristmasItem(memberId, key) {
+  await remove(ref(db, `christmas/${memberId}/${key}`));
+  showToast("Removed from list");
+}
+
+// Christmas modal
+document.getElementById("xmas-add-btn").onclick = openChristmasModal;
+function openChristmasModal() {
+  const member = CHRISTMAS_MEMBERS.find(m => m.id === activeMember);
+  document.getElementById("xmas-modal-title").textContent = `🎄 Add to ${member.name}'s List`;
+  document.getElementById("xmas-modal-item").value  = "";
+  document.getElementById("xmas-modal-link").value  = "";
+  document.getElementById("xmas-modal-store").value = "";
+  document.getElementById("xmas-modal-overlay").classList.remove("hidden");
+  setTimeout(() => document.getElementById("xmas-modal-item").focus(), 50);
+}
+function closeChristmasModal() {
+  document.getElementById("xmas-modal-overlay").classList.add("hidden");
+}
+document.getElementById("xmas-modal-cancel").onclick = closeChristmasModal;
+document.getElementById("xmas-modal-overlay").addEventListener("click", e => {
+  if (e.target === document.getElementById("xmas-modal-overlay")) closeChristmasModal();
+});
+document.getElementById("xmas-modal-item").addEventListener("keydown", e => {
+  if (e.key === "Enter") document.getElementById("xmas-modal-add").click();
+  if (e.key === "Escape") closeChristmasModal();
+});
+document.getElementById("xmas-modal-add").onclick = async () => {
+  const name  = document.getElementById("xmas-modal-item").value.trim();
+  const link  = document.getElementById("xmas-modal-link").value.trim();
+  const store = document.getElementById("xmas-modal-store").value.trim();
+  if (!name) { showToast("Enter an item name"); return; }
+  const entry = { name };
+  if (link)  entry.link  = link;
+  if (store) entry.store = store;
+  await push(ref(db, `christmas/${activeMember}`), entry);
+  showToast(`Added to ${CHRISTMAS_MEMBERS.find(m=>m.id===activeMember)?.name}'s list! 🎁`);
+  closeChristmasModal();
+};
 
 // ── Grocery: input wiring ─────────────────────────────────────────
 document.getElementById("add-btn").onclick = () => {
   const inp = document.getElementById("add-input");
-  addItem(activeStore, inp.value);
-  inp.value = ""; inp.focus();
+  addItem(activeStore, inp.value); inp.value = ""; inp.focus();
 };
-document.getElementById("add-input").onkeydown = e => { if (e.key==="Enter") document.getElementById("add-btn").click(); };
-document.getElementById("add-input").onfocus   = function () { this.style.borderColor = STORES.find(s=>s.id===activeStore).color; };
-document.getElementById("add-input").onblur    = function () { this.style.borderColor = STORES.find(s=>s.id===activeStore).color+"40"; };
+document.getElementById("add-input").onkeydown = e => { if(e.key==="Enter") document.getElementById("add-btn").click(); };
+document.getElementById("add-input").onfocus   = function() { const s=STORES.find(s=>s.id===activeStore); if(s) this.style.borderColor=s.color; };
+document.getElementById("add-input").onblur    = function() { const s=STORES.find(s=>s.id===activeStore); if(s) this.style.borderColor=s.color+"40"; };
 document.getElementById("fav-toggle").onclick  = () => { showFavs = !showFavs; render(); };
-
 document.getElementById("favs-add-btn").onclick = () => {
   document.getElementById("favs-new-row").classList.toggle("hidden");
   document.getElementById("favs-new-input").focus();
 };
 document.getElementById("favs-new-save").onclick = () => {
   const inp = document.getElementById("favs-new-input");
-  const val = inp.value.trim(); if (!val) return;
+  const val = inp.value.trim(); if(!val) return;
   if (!favorites[activeStore]) favorites[activeStore] = [];
-  favorites[activeStore].push(val);
-  saveFavs(); inp.value = "";
+  favorites[activeStore].push(val); saveFavs(); inp.value = "";
   document.getElementById("favs-new-row").classList.add("hidden");
-  showToast(`Added "${val}" to favorites`);
-  renderFavs(); renderAddBar();
+  showToast(`Added "${val}" to favorites`); renderFavs(); renderAddBar();
 };
 document.getElementById("favs-new-cancel").onclick = () => {
   document.getElementById("favs-new-input").value = "";
   document.getElementById("favs-new-row").classList.add("hidden");
 };
 document.getElementById("favs-new-input").onkeydown = e => {
-  if (e.key==="Enter")  document.getElementById("favs-new-save").click();
-  if (e.key==="Escape") document.getElementById("favs-new-cancel").click();
+  if(e.key==="Enter")  document.getElementById("favs-new-save").click();
+  if(e.key==="Escape") document.getElementById("favs-new-cancel").click();
 };
 </script>
 </body>
