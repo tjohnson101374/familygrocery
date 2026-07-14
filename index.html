@@ -248,6 +248,8 @@
       background: #fff; font-size: 15px; font-family: inherit; cursor: pointer; font-weight: 600; color: #777; }
     .vacation-modal-add { flex: 2; padding: 13px; border-radius: 12px; border: none; background: #1F5C73;
       color: #fff; font-size: 15px; font-family: inherit; cursor: pointer; font-weight: 700; }
+    .vacation-confirm-text { font-size: 14px; color: #555; line-height: 1.5; margin-bottom: 18px; }
+    .vacation-confirm-remove { background: #c0392b !important; }
 
     .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
       background: #1a1a1a; color: #fff; padding: 10px 20px; border-radius: 24px;
@@ -383,6 +385,18 @@
       <div class="vacation-modal-actions">
         <button class="vacation-modal-cancel" id="vacation-modal-cancel">Cancel</button>
         <button class="vacation-modal-add" id="vacation-modal-add">Add Trip</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Remove Trip confirmation modal -->
+  <div class="vacation-modal-overlay hidden" id="vacation-confirm-overlay">
+    <div class="vacation-modal">
+      <div class="vacation-modal-title">🗑️ Remove this trip?</div>
+      <p class="vacation-confirm-text" id="vacation-confirm-text"></p>
+      <div class="vacation-modal-actions">
+        <button class="vacation-modal-cancel" id="vacation-confirm-cancel">Cancel</button>
+        <button class="vacation-modal-add vacation-confirm-remove" id="vacation-confirm-remove">Yes, Remove It</button>
       </div>
     </div>
   </div>
@@ -889,7 +903,16 @@ function renderVacations() {
   activeVacationId = vacation.id;
 
   if (currentIframeVacationId !== vacation.id) {
-    document.getElementById("vacation-iframe").srcdoc = vacation.html;
+    const iframe = document.getElementById("vacation-iframe");
+    // Blob URL instead of srcdoc: srcdoc gives the iframe an opaque/null
+    // origin in some browsers, which can silently block cross-origin
+    // fetch() calls made inside it (e.g. the live weather widget).
+    // A blob: URL gets a normal origin, so fetches work reliably.
+    if (iframe.dataset.blobUrl) URL.revokeObjectURL(iframe.dataset.blobUrl);
+    const blob = new Blob([vacation.html], { type: "text/html;charset=utf-8" });
+    const url  = URL.createObjectURL(blob);
+    iframe.src = url;
+    iframe.dataset.blobUrl = url;
     currentIframeVacationId = vacation.id;
   }
 }
@@ -923,7 +946,7 @@ document.getElementById("vacation-modal-file").addEventListener("change", e => {
     document.getElementById("vacation-modal-filename").textContent = `✓ ${file.name} loaded`;
   };
   reader.onerror = () => showToast("Couldn't read that file — try again");
-  reader.readAsText(file);
+  reader.readAsText(file, "UTF-8");
 });
 document.getElementById("vacation-modal-add").onclick = async () => {
   const name  = document.getElementById("vacation-modal-name").value.trim();
@@ -936,10 +959,25 @@ document.getElementById("vacation-modal-add").onclick = async () => {
   closeVacationModal();
 };
 
-document.getElementById("vacation-remove-btn").onclick = async () => {
+document.getElementById("vacation-remove-btn").onclick = () => {
   const vacation = VACATIONS.find(v => v.id === activeVacationId);
   if (!vacation) return;
-  if (!confirm(`Remove "${vacation.name}"? This can't be undone.`)) return;
+  document.getElementById("vacation-confirm-text").textContent =
+    `Are you sure you want to remove "${vacation.name}"? This can't be undone.`;
+  document.getElementById("vacation-confirm-overlay").classList.remove("hidden");
+};
+document.getElementById("vacation-confirm-cancel").onclick = () => {
+  document.getElementById("vacation-confirm-overlay").classList.add("hidden");
+};
+document.getElementById("vacation-confirm-overlay").addEventListener("click", e => {
+  if (e.target === document.getElementById("vacation-confirm-overlay")) {
+    document.getElementById("vacation-confirm-overlay").classList.add("hidden");
+  }
+});
+document.getElementById("vacation-confirm-remove").onclick = async () => {
+  const vacation = VACATIONS.find(v => v.id === activeVacationId);
+  document.getElementById("vacation-confirm-overlay").classList.add("hidden");
+  if (!vacation) return;
   await remove(ref(db, `vacations/${vacation.id}`));
   currentIframeVacationId = null;
   showToast(`Removed "${vacation.name}"`);
