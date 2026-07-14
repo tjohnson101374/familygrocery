@@ -484,13 +484,23 @@ function lightenColor(hex, amt = 0.88) {
   return `rgb(${r},${g},${b})`;
 }
 
+// Plain atob() mangles UTF-8 text with multi-byte characters (em
+// dashes, arrows, emoji) — it decodes byte-by-byte, not character-
+// by-character. Decode properly via TextDecoder instead.
+function base64ToUtf8(b64) {
+  const binary = atob(b64);
+  const bytes  = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new TextDecoder("utf-8").decode(bytes);
+}
+
 // One-time seed: if no vacations exist yet anywhere, add the Tahoe
 // dashboard so it isn't lost. Guarded by a separate flag so deleting
 // all trips later never brings it back on its own.
 onValue(ref(db, "meta/vacationsSeeded"), async snap => {
   if (!snap.exists()) {
     try {
-      const seedHtml = atob(SEED_TAHOE_HTML_B64);
+      const seedHtml = base64ToUtf8(SEED_TAHOE_HTML_B64);
       await set(ref(db, "vacations/tahoe-2026"), {
         name: "Tahoe Trip", emoji: "🏔️", color: "#1F5C73",
         html: seedHtml, createdAt: Date.now()
