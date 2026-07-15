@@ -266,6 +266,44 @@
     @keyframes fadeUp { from{opacity:0;transform:translate(-50%,10px)} to{opacity:1;transform:translate(-50%,0)} }
     .hidden { display: none !important; }
     button { font-family: inherit; }
+
+    /* ── Desktop layout ───────────────────────────────────────
+       Mobile stays exactly as designed (narrow, single column).
+       On wider screens, the app widens out and stacked lists
+       become responsive multi-column grids instead of one long
+       vertical column with empty space on either side. */
+    @media (min-width: 860px) {
+      .app { max-width: 1100px; }
+      .header, .add-bar, .favs-panel, .meals-area, .christmas-items,
+      .list-area, .vacation-toolbar { padding-left: 32px; padding-right: 32px; }
+
+      .list-area {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 12px;
+        align-content: start;
+      }
+      .item-row { margin-bottom: 0; }
+      .empty-state { grid-column: 1 / -1; }
+
+      .christmas-items {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 10px;
+        align-content: start;
+      }
+      .xmas-item-card { margin-bottom: 0; }
+
+      #weekly-grid, #trip-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 12px;
+        align-content: start;
+      }
+      .meal-day-card { margin-bottom: 0; }
+
+      .vacation-frame-wrap { height: calc(100vh - 210px); }
+    }
   </style>
 </head>
 <body>
