@@ -108,11 +108,11 @@
       box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #f0f0f2; }
     .meal-day-header { font-size: 12px; font-weight: 700; color: #888; margin-bottom: 8px; letter-spacing: 0.01em; }
     .meal-day-header.today { color: #2E7D32; }
-    .meal-slot { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .meal-slot { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; min-width: 0; }
     .meal-slot:last-child { margin-bottom: 0; }
     .meal-slot-label { font-size: 11px; font-weight: 600; color: #bbb; width: 80px; flex-shrink: 0;
       text-transform: uppercase; letter-spacing: 0.04em; }
-    .meal-input { flex: 1; border: 1.5px solid #e8e8ec; border-radius: 8px; padding: 7px 10px;
+    .meal-input { flex: 1; min-width: 0; border: 1.5px solid #e8e8ec; border-radius: 8px; padding: 7px 10px;
       font-size: 14px; font-family: inherit; outline: none; color: #111;
       background: #fafafa; transition: border-color 0.15s; }
     .meal-input:focus { border-color: #4CAF50; background: #fff; }
@@ -300,7 +300,7 @@
         gap: 12px;
         align-content: start;
       }
-      .meal-day-card { margin-bottom: 0; }
+      .meal-day-card { margin-bottom: 0; min-width: 0; }
 
       .vacation-frame-wrap { height: calc(100vh - 210px); }
     }
