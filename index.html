@@ -539,6 +539,13 @@ const STORES = [
 const MEALS_COLOR = "#2E7D32";
 const MEALS_LIGHT = "#f1f8f1";
 
+const PLANNING_TABS = [
+  { id: "meals",     name: "Meals",     emoji: "🍽️", color: "#2E7D32", light: "#f1f8f1" },
+  { id: "christmas", name: "Christmas", emoji: "🎄", color: "#C41E3A", light: "#fff5f6" },
+  { id: "trip",      name: "Trips",     emoji: "🧳", color: "#1F5C73", light: "#eef4f6" },
+];
+let activeSection = "shopping"; // "shopping" | "planning"
+
 const CHRISTMAS_MEMBERS = [
   { id:"mom",     name:"Mom",     emoji:"👩" },
   { id:"dad",     name:"Dad",     emoji:"👨" },
@@ -649,14 +656,6 @@ function isToday(d) {
 }
 
 // ── Render: tabs ─────────────────────────────────────────────────
-const PLANNING_TABS = [
-  { id: "meals",     name: "Meals",     emoji: "🍽️", color: "#2E7D32", light: "#f1f8f1" },
-  { id: "christmas", name: "Christmas", emoji: "🎄", color: "#C41E3A", light: "#fff5f6" },
-  { id: "trip",      name: "Trips",     emoji: "🧳", color: "#1F5C73", light: "#eef4f6" },
-];
-
-let activeSection = "shopping"; // "shopping" | "planning"
-
 function renderSectionSwitcher() {
   const el = document.getElementById("section-switcher");
   el.innerHTML = "";
