@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Family Grocery List</title>
+  <title>Family Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,6 +19,14 @@
     .sync-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%;
       background: #34A853; margin-right: 4px; animation: pulse 2s infinite; vertical-align:middle; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    /* Section Switcher (Shopping vs Planning) */
+    .section-switcher { display: flex; gap: 6px; margin-top: 14px; background: #f0f0f3;
+      border-radius: 12px; padding: 3px; }
+    .section-btn { flex: 1; padding: 9px 8px; border-radius: 9px; border: none; background: transparent;
+      font-size: 13px; font-weight: 600; color: #888; cursor: pointer; font-family: inherit;
+      display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.15s ease; }
+    .section-btn.active { background: #fff; color: #222; box-shadow: 0 1px 4px rgba(0,0,0,0.10); }
 
     /* Store Tabs */
     .store-tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; margin-top: 12px; }
@@ -267,11 +275,12 @@
   <div class="header">
     <div class="header-top">
       <div>
-        <h1>🛒 Family List</h1>
+        <h1>🏡 Family Dashboard</h1>
         <p id="total-label">All clear — nothing needed!</p>
       </div>
       <div class="header-right"><span class="sync-dot"></span>Live sync<br/>👨‍👩‍👧‍👦 Family</div>
     </div>
+    <div class="section-switcher" id="section-switcher"></div>
     <div class="store-tabs" id="store-tabs"></div>
   </div>
 
@@ -640,12 +649,44 @@ function isToday(d) {
 }
 
 // ── Render: tabs ─────────────────────────────────────────────────
+const PLANNING_TABS = [
+  { id: "meals",     name: "Meals",     emoji: "🍽️", color: "#2E7D32", light: "#f1f8f1" },
+  { id: "christmas", name: "Christmas", emoji: "🎄", color: "#C41E3A", light: "#fff5f6" },
+  { id: "trip",      name: "Trips",     emoji: "🧳", color: "#1F5C73", light: "#eef4f6" },
+];
+
+let activeSection = "shopping"; // "shopping" | "planning"
+
+function renderSectionSwitcher() {
+  const el = document.getElementById("section-switcher");
+  el.innerHTML = "";
+  const sections = [
+    { id: "shopping", label: "🛒 Shopping" },
+    { id: "planning", label: "📋 Planning" },
+  ];
+  sections.forEach(s => {
+    const btn = document.createElement("button");
+    btn.className = "section-btn" + (activeSection === s.id ? " active" : "");
+    btn.textContent = s.label;
+    btn.onclick = () => {
+      if (activeSection === s.id) return;
+      activeSection = s.id;
+      activeStore = s.id === "shopping" ? STORES[0].id : PLANNING_TABS[0].id;
+      showFavs = false;
+      render();
+    };
+    el.appendChild(btn);
+  });
+}
+
 function renderTabs() {
+  renderSectionSwitcher();
   const container = document.getElementById("store-tabs");
   container.innerHTML = "";
 
-  STORES.forEach(s => {
-    const count    = getItems(s.id).filter(i => !i.checked).length;
+  const tabSet = activeSection === "shopping" ? STORES : PLANNING_TABS;
+  tabSet.forEach(s => {
+    const count    = activeSection === "shopping" ? getItems(s.id).filter(i => !i.checked).length : 0;
     const isActive = s.id === activeStore;
     const btn      = document.createElement("button");
     btn.className  = "store-tab" + (isActive ? " active" : "");
@@ -657,41 +698,6 @@ function renderTabs() {
     btn.onclick = () => { activeStore = s.id; showFavs = false; render(); };
     container.appendChild(btn);
   });
-
-  // Meals tab
-  const onMeals  = activeStore === "meals";
-  const mealsBtn = document.createElement("button");
-  mealsBtn.className  = "store-tab" + (onMeals ? " active" : "");
-  mealsBtn.style.color        = onMeals ? MEALS_COLOR : "#777";
-  mealsBtn.style.borderBottom = onMeals ? `3px solid ${MEALS_COLOR}` : "3px solid transparent";
-  mealsBtn.style.background   = onMeals ? MEALS_LIGHT : "transparent";
-  mealsBtn.innerHTML = `<span>🍽️</span><span>Meals</span>`;
-  mealsBtn.onclick   = () => { activeStore = "meals"; showFavs = false; render(); };
-  container.appendChild(mealsBtn);
-
-  // Christmas tab
-  const onXmas  = activeStore === "christmas";
-  const xmasBtn = document.createElement("button");
-  xmasBtn.className  = "store-tab" + (onXmas ? " active" : "");
-  xmasBtn.style.color        = onXmas ? XMAS_COLOR : "#777";
-  xmasBtn.style.borderBottom = onXmas ? `3px solid ${XMAS_COLOR}` : "3px solid transparent";
-  xmasBtn.style.background   = onXmas ? XMAS_LIGHT : "transparent";
-  xmasBtn.innerHTML = `<span>🎄</span><span>Christmas</span>`;
-  xmasBtn.onclick   = () => { activeStore = "christmas"; showFavs = false; render(); };
-  container.appendChild(xmasBtn);
-
-  // Trips tab — always shown so a first trip can be added via the UI
-  const VACATIONS_TAB_COLOR = "#1F5C73";
-  const VACATIONS_TAB_LIGHT = "#eef4f6";
-  const onTrip  = activeStore === "trip";
-  const tripBtn = document.createElement("button");
-  tripBtn.className  = "store-tab" + (onTrip ? " active" : "");
-  tripBtn.style.color        = onTrip ? VACATIONS_TAB_COLOR : "#777";
-  tripBtn.style.borderBottom = onTrip ? `3px solid ${VACATIONS_TAB_COLOR}` : "3px solid transparent";
-  tripBtn.style.background   = onTrip ? VACATIONS_TAB_LIGHT : "transparent";
-  tripBtn.innerHTML = `<span>🧳</span><span>Trips</span>`;
-  tripBtn.onclick   = () => { activeStore = "trip"; showFavs = false; render(); };
-  container.appendChild(tripBtn);
 }
 
 // ── Render: add bar ───────────────────────────────────────────────
