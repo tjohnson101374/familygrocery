@@ -14,51 +14,103 @@
 
   <header class="bar">
     <div class="bar-date">
-      <span class="bar-weekday" id="bar-weekday">—</span>
-      <span class="bar-full" id="bar-full">—</span>
+      <span class="bar-weekday" id="bar-weekday">&mdash;</span>
+      <span class="bar-full" id="bar-full">&mdash;</span>
     </div>
-    <div class="bar-legend" id="bar-legend"></div>
-    <div class="bar-clock" id="bar-clock">—</div>
+    <nav class="nav" id="nav"></nav>
+    <div class="bar-clock" id="bar-clock">&mdash;</div>
   </header>
 
-  <main class="grid">
+  <div class="views">
 
-    <section class="panel panel-week">
-      <div class="panel-head">This week</div>
-      <div class="panel-body frame-body">
-        <iframe id="cal-week" title="Week calendar"
-                frameborder="0" scrolling="no"></iframe>
-      </div>
-    </section>
+    <!-- ── Dashboard ────────────────────────────────────────── -->
+    <div class="view grid" id="view-dashboard">
 
-    <section class="panel panel-agenda">
-      <div class="panel-head">Coming up</div>
-      <div class="panel-body frame-body">
-        <iframe id="cal-agenda" title="Agenda"
-                frameborder="0" scrolling="no"></iframe>
-      </div>
-    </section>
-
-    <div class="stack">
-
-      <section class="panel panel-grocery">
+      <section class="panel">
         <div class="panel-head">
-          Grocery list
-          <span class="count" id="grocery-count"></span>
+          <span>This week</span>
+          <span class="cal-legend" id="cal-legend"></span>
         </div>
-        <div class="panel-body scroll" id="grocery-list"></div>
-        <div class="panel-foot" id="grocery-other"></div>
+        <div class="panel-body frame-body">
+          <iframe id="cal-week" title="Week calendar" frameborder="0" scrolling="no"></iframe>
+        </div>
       </section>
 
-      <section class="panel panel-meals">
-        <div class="panel-head">Dinners this week</div>
-        <div class="panel-body scroll" id="meal-list"></div>
+      <section class="panel">
+        <div class="panel-head">Coming up</div>
+        <div class="panel-body frame-body">
+          <iframe id="cal-agenda" title="Agenda" frameborder="0" scrolling="no"></iframe>
+        </div>
       </section>
+
+      <div class="stack">
+
+        <section class="panel">
+          <div class="panel-head">
+            <span class="head-left">
+              Grocery list
+              <span class="count" id="grocery-count"></span>
+            </span>
+            <button class="add-btn" id="grocery-add">+ Add</button>
+          </div>
+          <div class="store-strip" id="store-strip"></div>
+          <div class="panel-body scroll" id="grocery-list"></div>
+          <div class="panel-foot" id="grocery-other"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">Dinners this week</div>
+          <div class="panel-body scroll" id="meal-list"></div>
+        </section>
+
+      </div>
 
     </div>
 
-  </main>
+    <!-- ── Christmas ────────────────────────────────────────── -->
+    <div class="view hidden" id="view-christmas">
+      <section class="panel">
+        <div class="panel-head">
+          <span class="tab-row" id="xmas-tabs"></span>
+          <button class="add-btn xmas" id="xmas-add">+ Add</button>
+        </div>
+        <div class="panel-body scroll cards" id="xmas-items"></div>
+      </section>
+    </div>
 
+    <!-- ── Trips ────────────────────────────────────────────── -->
+    <div class="view hidden" id="view-trips">
+      <section class="panel">
+        <div class="panel-head">
+          <span class="tab-row" id="trip-tabs"></span>
+        </div>
+        <div class="panel-body frame-body" id="trip-body">
+          <iframe id="trip-frame" title="Trip dashboard" frameborder="0"></iframe>
+        </div>
+        <div class="panel-body empty-state hidden" id="trip-empty">
+          No trips saved yet. Add one from your phone.
+        </div>
+      </section>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="sheet-overlay hidden" id="sheet">
+  <div class="sheet">
+    <div class="sheet-head">
+      <span id="sheet-title">Add an item</span>
+      <button class="sheet-close" id="sheet-close" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="sheet-tabs hidden" id="sheet-tabs"></div>
+    <div class="sheet-chips" id="sheet-chips"></div>
+    <div class="sheet-row">
+      <input type="text" id="sheet-input" autocomplete="off" autocapitalize="words" />
+      <input type="text" id="sheet-input2" class="hidden" autocomplete="off" autocapitalize="words" />
+      <button class="sheet-save" id="sheet-save">Add</button>
+    </div>
+  </div>
 </div>
 
 <script type="module" src="kiosk.js"></script>

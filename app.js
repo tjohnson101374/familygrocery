@@ -77,7 +77,7 @@ const DEFAULT_FAVORITES = {
 let activeStore        = "shopping";
 let showFavs           = false;
 let lists              = {};
-let favorites          = JSON.parse(localStorage.getItem("fam-favs-v2")||"null") || DEFAULT_FAVORITES;
+let favorites          = {};   // populated live from Firebase
 let toastTimer         = null;
 let editingFav         = null;
 // Meal planner
@@ -116,10 +116,41 @@ onValue(ref(db, "christmas"), snap => {
   if (activeStore === "christmas") renderChristmasItems();
 });
 
+// ── Firebase: favorites ──────────────────────────────────────────
+// Favorites used to live in localStorage, which meant every device
+// had its own set. They now live in Firebase so the phones and the
+// kitchen tablet all share one list. The first device to run this
+// migrates whatever was in localStorage up to Firebase, so nothing
+// anyone had curated gets lost.
+let favoritesSeeded = false;
+
+function normalizeFavs(val) {
+  const out = {};
+  Object.entries(val || {}).forEach(([storeId, arr]) => {
+    out[storeId] = Array.isArray(arr)
+      ? arr.filter(x => x != null)
+      : Object.values(arr || {});
+  });
+  return out;
+}
+
+onValue(ref(db, "favorites"), snap => {
+  const val = snap.val();
+  if (!val && !favoritesSeeded) {
+    favoritesSeeded = true;
+    let local = null;
+    try { local = JSON.parse(localStorage.getItem("fam-favs-v2") || "null"); } catch (e) {}
+    set(ref(db, "favorites"), local || DEFAULT_FAVORITES);
+    return;
+  }
+  favorites = normalizeFavs(val);
+  if (!isSpecialTab()) { renderFavs(); renderAddBar(); }
+});
+
 // ── Helpers ──────────────────────────────────────────────────────
 function isSpecialTab() { return activeStore === "meals" || activeStore === "christmas" || activeStore === "trip"; }
 
-function saveFavs() { localStorage.setItem("fam-favs-v2", JSON.stringify(favorites)); }
+function saveFavs() { set(ref(db, "favorites"), favorites); }
 
 function showToast(msg) {
   const el = document.getElementById("toast");
