@@ -667,6 +667,31 @@ function openRecipe(r) {
   const days = document.getElementById("rx-days");
   days.innerHTML = "";
 
+  // Optional, and remembered only for this sheet: pick who's cooking
+  // first, then tap the night. Leaving it unset just plans the meal.
+  let rxCook = null;
+
+  const cookHead = document.createElement("div");
+  cookHead.className   = "rx-planhead";
+  cookHead.textContent = "Who's cooking (optional)";
+  days.appendChild(cookHead);
+
+  const cookRow = document.createElement("div");
+  cookRow.className = "ma-cooks";
+  const paintCooks = () => {
+    cookRow.innerHTML = "";
+    COOKS.forEach(c => {
+      const b = document.createElement("button");
+      b.className   = "ma-cook" + (rxCook === c.id ? " on" : "");
+      b.textContent = c.name;
+      if (rxCook === c.id) { b.style.background = c.color; b.style.borderColor = c.color; }
+      b.onclick = () => { rxCook = rxCook === c.id ? null : c.id; paintCooks(); };
+      cookRow.appendChild(b);
+    });
+  };
+  paintCooks();
+  days.appendChild(cookRow);
+
   [0, 1].forEach(offset => {
     const head = document.createElement("div");
     head.className   = "rx-planhead";
@@ -682,8 +707,10 @@ function openRecipe(r) {
       btn.textContent = d.toLocaleDateString("en-US", { weekday: "short" });
       btn.onclick = async () => {
         await planMeal("weekly", dateStr, "dinner", r.name, r.id);
+        await setCook("weekly", dateStr, "dinner", rxCook);
         closeRecipe();
-        showToast(`Planned for ${displayDate(d)}`);
+        const who = cookById(rxCook);
+        showToast(who ? `${who.name} cooking ${displayDate(d)}` : `Planned for ${displayDate(d)}`);
       };
       row.appendChild(btn);
     });
@@ -725,8 +752,10 @@ function openRecipe(r) {
       btn.textContent = d.toLocaleDateString("en-US", { month: "numeric", day: "numeric" });
       btn.onclick = async () => {
         await planMeal("trip", ds, rxSlot, r.name, r.id);
+        await setCook("trip", ds, rxSlot, rxCook);
         closeRecipe();
-        showToast(`Planned for ${displayDate(d)}`);
+        const who = cookById(rxCook);
+        showToast(who ? `${who.name} cooking ${displayDate(d)}` : `Planned for ${displayDate(d)}`);
       };
       tripRow.appendChild(btn);
     });

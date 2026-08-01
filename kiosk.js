@@ -868,6 +868,28 @@ function openRecipe(r) {
 
   const days = document.getElementById("rsheet-days");
   days.innerHTML = "";
+
+  // Pick who's cooking first, then tap the night.
+  let rCook = null;
+  const cookGrp = document.createElement("span");
+  cookGrp.className = "day-grp";
+  const paintCooks = () => {
+    cookGrp.innerHTML = "";
+    const lbl = document.createElement("span");
+    lbl.className   = "day-grp-label";
+    lbl.textContent = "Cooking";
+    cookGrp.appendChild(lbl);
+    COOKS.forEach(c => {
+      const b = document.createElement("button");
+      b.textContent = c.name;
+      if (rCook === c.id) { b.style.background = c.color; b.style.borderColor = c.color; b.style.color = "#fff"; }
+      b.addEventListener("click", () => { rCook = rCook === c.id ? null : c.id; paintCooks(); });
+      cookGrp.appendChild(b);
+    });
+  };
+  paintCooks();
+  days.appendChild(cookGrp);
+
   [0, 1].forEach(offset => {
     const grp = document.createElement("span");
     grp.className = "day-grp";
@@ -882,6 +904,7 @@ function openRecipe(r) {
       btn.textContent = d.toLocaleDateString("en-US", { weekday: "short" });
       btn.addEventListener("click", async () => {
         await saveMeal(dateStr, r.name, r.id);
+        await setCook(dateStr, rCook);
         closeRecipe();
       });
       grp.appendChild(btn);
