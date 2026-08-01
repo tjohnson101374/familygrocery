@@ -604,7 +604,7 @@ const FILTERS = [
     ["medium","1\u20133 hrs"], ["long","3+ hrs"] ] },
 
   { key: "protein", label: "Protein", options: [
-    ["chicken","Chicken"], ["beef","Beef"], ["pork","Pork"],
+    ["chicken","Chicken"], ["beef","Beef"], ["pork","Pork"], ["lamb","Lamb"],
     ["seafood","Seafood"], ["meatless","Meatless"] ] },
   { key: "dish", label: "Kind", options: [
     ["soup","Soup & chili"], ["pasta","Pasta"], ["mexican","Mexican"],

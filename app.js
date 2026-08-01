@@ -472,7 +472,7 @@ const RX_FILTERS = [
     ["medium","1\u20133 hrs"], ["long","3+ hrs"] ] },
 
   { key: "protein", label: "Protein", options: [
-    ["chicken","Chicken"], ["beef","Beef"], ["pork","Pork"],
+    ["chicken","Chicken"], ["beef","Beef"], ["pork","Pork"], ["lamb","Lamb"],
     ["seafood","Seafood"], ["meatless","Meatless"] ] },
   { key: "dish", label: "Kind", options: [
     ["soup","Soup & chili"], ["pasta","Pasta"], ["mexican","Mexican"],
@@ -761,7 +761,7 @@ document.getElementById("rx-overlay").addEventListener("click", e => {
 
 // ── Add / edit your own recipes ──────────────────────────────────
 const RXF_PICKS = {
-  protein: ["chicken","beef","pork","seafood","meatless","none"],
+  protein: ["chicken","beef","pork","lamb","seafood","meatless","none"],
   dish:    ["soup","pasta","mexican","casserole","sandwich","salad","asian","skillet","breakfast","dessert"],
   method:  ["slow cooker","oven","stovetop","blackstone","smoker","air fryer","grill","no-cook"],
 };
@@ -799,6 +799,7 @@ function rxfGuess(text) {
   if (has("shrimp|salmon|tilapia|crab|tuna|\\bfish\\b|scallop")) protein = "seafood";
   else if (has("\\bchicken\\b|rotisserie|turkey"))               protein = "chicken";
   else if (has("ground beef|chuck roast|brisket|steak|\\bbeef\\b")) protein = "beef";
+  else if (has("\\blamb\\b|mutton"))                            protein = "lamb";
   else if (has("\\bpork\\b|bacon|sausage|\\bham\\b"))          protein = "pork";
 
   let dish = "skillet";
@@ -834,32 +835,67 @@ function rxfSplit(raw) {
   // Metadata lines sit above the ingredients on most cards and pages.
   // Pull the useful numbers out of them instead of mistaking them for
   // a step, which is what happens if you just let them fall through.
-  const META = /^(serves|servings|yield|makes|prep|cook|bake|total|calories|difficulty|course|cuisine)\b\s*:?/i;
+  const META = /^(serves|servings|yield|makes|prep|cook|bake|total|calories|difficulty|course|cuisine|author|category|keyword|nutrition|rated?)\b\s*:?/i;
+  // Recipe sites wrap the actual recipe in ratings, share prompts and
+  // navigation. None of it starts with a quantity or reads like a
+  // step, but it does slip through, so drop the usual offenders.
+  const JUNK = /^(\d+(\.\d+)?\s*(from|out of|\/)\s*\d|\u2605|\u2606|rate this|print recipe|jump to|save recipe|pin recipe|share|advertisement|shop this|\d+\s*(reviews?|votes?|ratings?|comments?)\b)/i;
   const QTY = /^([\u2022\u00b7\-*]\s*)?(\d|\u00bc|\u00bd|\u00be|\u2153|\u2154|\u215b|a |an |one |two |three |half |pinch|dash|salt|pepper)/i;
+
+  // Recipe sites bury the recipe under an intro paragraph. When the
+  // paste has real Ingredients/Directions headings, trust them and
+  // drop anything above — otherwise fall back to guessing by shape.
+  const hasHeads = lines.some(l => ING_HEAD.test(l) || STEP_HEAD.test(l));
 
   let name = "", mode = "", ings = [], steps = [], metaLines = [];
   lines.forEach((line, i) => {
     if (ING_HEAD.test(line))  { mode = "ing";  return; }
     if (STEP_HEAD.test(line)) { mode = "step"; return; }
     if (!mode && META.test(line)) { metaLines.push(line); return; }
+    if (JUNK.test(line)) return;
     if (!name && i < 3 && !QTY.test(line) && line.length < 80) { name = line; return; }
 
-    const clean = line.replace(/^[\u2022\u00b7\-*]\s*/, "").replace(/^\d{1,2}[.)]\s*/, "");
+    const clean = line
+      .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")          // markdown links
+      .replace(/^[\s*\u2022\u00b7\-\u25a2\u2610\u2611\u25fb\u25ab]+/, "")
+      .replace(/^\d{1,2}[.)]\s*/, "")
+      .trim();
+    if (!clean) return;
     if (mode === "ing")       ings.push(clean);
     else if (mode === "step") steps.push(clean);
+    else if (hasHeads)        return;
     else if (/^\d{1,2}[.)]\s/.test(line) || (line.length > 90 && !QTY.test(line))) steps.push(clean);
     else if (QTY.test(line) && line.length < 90) ings.push(clean);
     else steps.push(clean);
   });
 
   const meta = metaLines.join(" | ") + " | " + raw;
-  const grab = re => { const m = meta.match(re); return m ? m[1].trim() : ""; };
+
+  // Sites run the number straight into the unit ("Prep Time10minutes
+  // mins") and wrap servings in a link, so anchor on the digits and
+  // rebuild the wording rather than lifting the text as-is.
+  const plural = (n, word) => `${n} ${word}${Number(n) === 1 ? "" : "s"}`;
+
+  const grabTime = key => {
+    const re = new RegExp(
+      key + "(?:\\s*time)?\\D{0,3}(\\d+)\\s*(hours?|hrs?|minutes?|mins?)" +
+      "(?:\\D{0,4}(\\d+)\\s*(?:minutes?|mins?))?", "i");
+    const m = meta.match(re);
+    if (!m) return "";
+    const isHour = /^h/i.test(m[2]);
+    let out = plural(m[1], isHour ? "hour" : "minute");
+    if (isHour && m[3]) out += " " + plural(m[3], "minute");
+    return out;
+  };
+
+  const servesM = meta.match(/(?:serves|servings|makes|yield)\D{0,4}(\d+(?:\s*[-\u2013]\s*\d+)?)/i);
+
   return {
     name:   name || "Untitled recipe",
     ings, steps,
-    serves: grab(/(?:serves|servings|makes|yield)\s*:?\s*([\d]+(?:\s*[-\u2013to]+\s*\d+)?)/i),
-    prep:   grab(/prep(?:\s*time)?\s*:?\s*([\w\s]{1,18}?)(?:\||\n|$)/i),
-    cook:   grab(/(?:cook|bake)(?:\s*time)?\s*:?\s*([\w\s]{1,18}?)(?:\||\n|$)/i),
+    serves: servesM ? servesM[1].trim() : "",
+    prep:   grabTime("prep"),
+    cook:   grabTime("cook") || grabTime("bake"),
   };
 }
 
@@ -908,8 +944,20 @@ document.getElementById("rxf-overlay").addEventListener("click", e => {
 
 document.getElementById("rxf-parse").onclick = () => {
   const raw = document.getElementById("rxf-paste").value;
-  const out = rxfSplit(raw);
-  if (!out) { showToast("Paste a recipe first"); return; }
+  let out;
+  try {
+    out = rxfSplit(raw);
+  } catch (err) {
+    console.error("recipe parse failed", err);
+    showToast("Couldn't read that — switch to Type it out");
+    rxfSetMode("form");
+    return;
+  }
+  if (!out || (!out.ings.length && !out.steps.length)) {
+    showToast("Nothing recognisable — try Type it out");
+    rxfSetMode("form");
+    return;
+  }
   document.getElementById("rxf-name").value   = out.name;
   document.getElementById("rxf-serves").value = out.serves;
   if (out.prep) document.getElementById("rxf-prep").value = out.prep;
