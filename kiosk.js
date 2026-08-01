@@ -879,7 +879,8 @@ function openRecipe(r) {
     lbl.className   = "day-grp-label";
     lbl.textContent = "Cooking";
     cookGrp.appendChild(lbl);
-    COOKS.forEach(c => {
+    // "Eating out" belongs on a night, not on a recipe you just chose.
+    COOKS.filter(c => c.id !== "out").forEach(c => {
       const b = document.createElement("button");
       b.textContent = c.name;
       if (rCook === c.id) { b.style.background = c.color; b.style.borderColor = c.color; b.style.color = "#fff"; }

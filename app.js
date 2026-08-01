@@ -680,7 +680,8 @@ function openRecipe(r) {
   cookRow.className = "ma-cooks";
   const paintCooks = () => {
     cookRow.innerHTML = "";
-    COOKS.forEach(c => {
+    // "Eating out" belongs on a night, not on a recipe you just chose.
+    COOKS.filter(c => c.id !== "out").forEach(c => {
       const b = document.createElement("button");
       b.className   = "ma-cook" + (rxCook === c.id ? " on" : "");
       b.textContent = c.name;
