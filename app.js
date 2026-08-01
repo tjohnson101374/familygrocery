@@ -1,38 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, onValue, push, remove, set, update }
+import { ref, onValue, push, remove, set, update }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-import { getAuth, signInAnonymously }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBQMTnC06QUKdZqFnBg2KJdO0_POiiBrtk",
-  authDomain: "family-grocery-list-93322.firebaseapp.com",
-  databaseURL: "https://family-grocery-list-93322-default-rtdb.firebaseio.com",
-  projectId: "family-grocery-list-93322",
-  storageBucket: "family-grocery-list-93322.firebasestorage.app",
-  messagingSenderId: "652454540194",
-  appId: "1:652454540194:web:6039c7afbccc05b43578fb"
-};
-
-const app  = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db   = getDatabase(app);
-
-// Sign in anonymously before anything below touches the database.
-// Top-level await means every listener further down waits for this to
-// finish, so none of them can fire unauthenticated and get denied.
-// Nobody sees a login screen — the app signs itself in silently.
-try {
-  await signInAnonymously(auth);
-} catch (err) {
-  document.body.innerHTML =
-    '<div style="padding:48px 24px;font-family:Inter,system-ui,sans-serif;' +
-    'text-align:center;color:#666;font-size:15px;line-height:1.6;">' +
-    "Couldn't connect to the family database.<br>" +
-    "Check your internet connection and reload." +
-    "</div>";
-  throw err;
-}
+import { db } from "./firebase-init.js";
 
 // ────────────────────────────────────────────────────────────────
 // VACATIONS — self-service trip dashboards, fully managed from

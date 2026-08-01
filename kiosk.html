@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Johnson Family — Kitchen</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="kiosk.css" />
+</head>
+<body>
+
+<div class="kiosk">
+
+  <header class="bar">
+    <div class="bar-date">
+      <span class="bar-weekday" id="bar-weekday">—</span>
+      <span class="bar-full" id="bar-full">—</span>
+    </div>
+    <div class="bar-legend" id="bar-legend"></div>
+    <div class="bar-clock" id="bar-clock">—</div>
+  </header>
+
+  <main class="grid">
+
+    <section class="panel panel-week">
+      <div class="panel-head">This week</div>
+      <div class="panel-body frame-body">
+        <iframe id="cal-week" title="Week calendar"
+                frameborder="0" scrolling="no"></iframe>
+      </div>
+    </section>
+
+    <section class="panel panel-agenda">
+      <div class="panel-head">Coming up</div>
+      <div class="panel-body frame-body">
+        <iframe id="cal-agenda" title="Agenda"
+                frameborder="0" scrolling="no"></iframe>
+      </div>
+    </section>
+
+    <div class="stack">
+
+      <section class="panel panel-grocery">
+        <div class="panel-head">
+          Grocery list
+          <span class="count" id="grocery-count"></span>
+        </div>
+        <div class="panel-body scroll" id="grocery-list"></div>
+        <div class="panel-foot" id="grocery-other"></div>
+      </section>
+
+      <section class="panel panel-meals">
+        <div class="panel-head">Dinners this week</div>
+        <div class="panel-body scroll" id="meal-list"></div>
+      </section>
+
+    </div>
+
+  </main>
+
+</div>
+
+<script type="module" src="kiosk.js"></script>
+</body>
+</html>

@@ -1,0 +1,293 @@
+/* ────────────────────────────────────────────────────────────────
+   Kitchen wall tablet — landscape, read-at-a-distance.
+   Everything is sized for viewing from a few feet away, and the
+   whole layout is locked to the viewport so nothing ever scrolls
+   the page itself. Only the two list panels scroll internally.
+   ──────────────────────────────────────────────────────────────── */
+
+:root {
+  --ink:        #101216;
+  --ink-soft:   #4b525c;
+  --ink-faint:  #79818d;
+  --bg:         #e9ebef;
+  --card:       #ffffff;
+  --line:       #ccd1d8;
+  --line-heavy: #aab1bb;
+
+  --family:  #2952A3;
+  --trinity: #A32929;
+  --sierra:  #0D7813;
+  --kelsey:  #7A367A;
+
+  --gap: 14px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.kiosk {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: var(--gap);
+  gap: var(--gap);
+}
+
+/* ── Top bar ─────────────────────────────────────────────────── */
+.bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 4px;
+}
+
+.bar-date { display: flex; align-items: baseline; gap: 14px; min-width: 0; }
+
+.bar-weekday {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.9px;
+  white-space: nowrap;
+}
+
+.bar-full {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.bar-clock {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.9px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.bar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.bar-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.bar-legend i {
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* ── Layout ──────────────────────────────────────────────────── */
+.grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1.65fr 0.82fr 1fr;
+  gap: var(--gap);
+}
+
+.stack {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: 1.15fr 1fr;
+  gap: var(--gap);
+}
+
+/* ── Panels ──────────────────────────────────────────────────── */
+.panel {
+  background: var(--card);
+  border: 1px solid var(--line-heavy);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.panel-head {
+  flex: 0 0 auto;
+  padding: 13px 18px;
+  border-bottom: 2px solid var(--line);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.panel-head .count {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--ink-faint);
+}
+
+.panel-body { flex: 1; min-height: 0; }
+
+.frame-body { position: relative; }
+
+.frame-body iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #fff;
+}
+
+.scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 6px 0;
+}
+
+.scroll::-webkit-scrollbar { width: 8px; }
+.scroll::-webkit-scrollbar-thumb {
+  background: var(--line-heavy);
+  border-radius: 4px;
+}
+
+.panel-foot {
+  flex: 0 0 auto;
+  padding: 11px 18px;
+  border-top: 2px solid var(--line);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.panel-foot:empty { display: none; }
+
+/* ── Grocery items ───────────────────────────────────────────── */
+.item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 18px;
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.25;
+  cursor: pointer;
+  border-bottom: 1px solid #eef0f3;
+}
+
+.item:last-child { border-bottom: 0; }
+.item:active { background: #eef4ff; }
+
+.item .box {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border: 2.5px solid var(--line-heavy);
+  border-radius: 6px;
+}
+
+.item.done { animation: fade .25s ease forwards; }
+
+@keyframes fade {
+  to { opacity: 0; transform: translateX(14px); }
+}
+
+/* ── Meals ───────────────────────────────────────────────────── */
+.meal {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 11px 18px;
+  border-bottom: 1px solid #eef0f3;
+}
+
+.meal:last-child { border-bottom: 0; }
+
+.meal .day {
+  flex: 0 0 46px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.meal .what {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.meal .what.empty {
+  color: var(--ink-faint);
+  font-weight: 400;
+}
+
+.meal.today { background: #fff8e6; }
+.meal.today .day { color: #8a5a00; }
+.meal.today .what { font-weight: 700; }
+
+/* ── Empty states ────────────────────────────────────────────── */
+.empty-state {
+  padding: 30px 18px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--ink-faint);
+}
+
+/* ── Narrower or smaller tablets ─────────────────────────────── */
+@media (max-width: 1150px) {
+  :root { --gap: 10px; }
+  .grid { grid-template-columns: 1.5fr 0.8fr 1fr; }
+  .bar-weekday, .bar-clock { font-size: 27px; }
+  .bar-full { font-size: 17px; }
+  .bar-legend span { font-size: 14px; }
+  .item { font-size: 19px; padding: 11px 15px; }
+  .meal .what { font-size: 18px; }
+}
+
+/* If the screen is portrait or very narrow, drop the third column
+   below rather than letting everything get crushed. */
+@media (max-aspect-ratio: 1/1) {
+  .grid {
+    grid-template-columns: 1.5fr 1fr;
+    grid-template-rows: 1.3fr 1fr;
+  }
+  .stack {
+    grid-column: 1 / -1;
+    grid-template-rows: none;
+    grid-template-columns: 1fr 1fr;
+  }
+}
