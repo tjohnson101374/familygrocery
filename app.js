@@ -1,6 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, onValue, push, remove, set, update }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getAuth, signInAnonymously }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQMTnC06QUKdZqFnBg2KJdO0_POiiBrtk",
@@ -12,8 +14,25 @@ const firebaseConfig = {
   appId: "1:652454540194:web:6039c7afbccc05b43578fb"
 };
 
-const app = initializeApp(firebaseConfig);
-const db  = getDatabase(app);
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getDatabase(app);
+
+// Sign in anonymously before anything below touches the database.
+// Top-level await means every listener further down waits for this to
+// finish, so none of them can fire unauthenticated and get denied.
+// Nobody sees a login screen — the app signs itself in silently.
+try {
+  await signInAnonymously(auth);
+} catch (err) {
+  document.body.innerHTML =
+    '<div style="padding:48px 24px;font-family:Inter,system-ui,sans-serif;' +
+    'text-align:center;color:#666;font-size:15px;line-height:1.6;">' +
+    "Couldn't connect to the family database.<br>" +
+    "Check your internet connection and reload." +
+    "</div>";
+  throw err;
+}
 
 // ────────────────────────────────────────────────────────────────
 // VACATIONS — self-service trip dashboards, fully managed from
