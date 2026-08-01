@@ -241,7 +241,28 @@ function renderMeals() {
 
     row.appendChild(day);
     row.appendChild(what);
-    row.addEventListener("click", () => openMealSheet(dateStr, value));
+
+    const linkId = (weeklyMeals[dateStr] || {}).dinnerRecipe;
+    if (linkId) {
+      const edit = document.createElement("button");
+      edit.className   = "meal-edit";
+      edit.title       = "Change this night";
+      edit.textContent = "\u270E";
+      edit.addEventListener("click", e => {
+        e.stopPropagation();
+        openMealSheet(dateStr, value);
+      });
+      row.appendChild(edit);
+      row.classList.add("linked");
+      row.addEventListener("click", () => {
+        const r = recipeById(linkId);
+        if (r) openRecipe(r);
+        else openMealSheet(dateStr, value);
+      });
+    } else {
+      row.addEventListener("click", () => openMealSheet(dateStr, value));
+    }
+
     wrap.appendChild(row);
   }
 }
@@ -257,11 +278,15 @@ function recentDinners() {
   return seen.slice(0, 14);
 }
 
-async function saveMeal(dateStr, value) {
-  const path = `mealplan/weekly/${dateStr}/dinner`;
+async function saveMeal(dateStr, value, recipeId) {
+  const base = `mealplan/weekly/${dateStr}`;
   const v    = (value || "").trim();
-  if (v) { await set(ref(db, path), v); }
-  else   { await remove(ref(db, path)); }
+  if (v) { await set(ref(db, `${base}/dinner`), v); }
+  else   { await remove(ref(db, `${base}/dinner`)); }
+  // Typing a night by hand clears any link to the recipe library —
+  // it is no longer that meal, so a stale link would just mislead.
+  if (recipeId) await set(ref(db, `${base}/dinnerRecipe`), recipeId);
+  else          await remove(ref(db, `${base}/dinnerRecipe`));
 }
 
 // ── Sheet (add item / edit dinner) ───────────────────────────────
@@ -509,6 +534,10 @@ const activeFilters = { protein: new Set(), dish: new Set(), method: new Set() }
 let myRecipes = [];
 function allRecipes() { return RECIPES.concat(myRecipes); }
 
+function recipeById(id) {
+  return allRecipes().find(r => r.id === id) || null;
+}
+
 function matchingRecipes() {
   return allRecipes().filter(r =>
     FILTERS.every(f => {
@@ -682,7 +711,7 @@ function openRecipe(r) {
     btn.className   = isToday(d) ? "today" : "";
     btn.textContent = d.toLocaleDateString("en-US", { weekday: "short" });
     btn.addEventListener("click", async () => {
-      await saveMeal(dateStr, r.name);
+      await saveMeal(dateStr, r.name, r.id);
       closeRecipe();
     });
     days.appendChild(btn);

@@ -488,3 +488,11 @@
   background: #fff; color: #A32D2D; cursor: pointer;
 }
 .rxf-delete.hidden { display: none; }
+
+.meal-recipe-btn {
+  flex-shrink: 0; width: 34px; height: 34px;
+  border: 1.5px solid #e8d9c4; border-radius: 9px;
+  background: #fdf4ea; font-size: 15px; line-height: 1;
+  cursor: pointer; padding: 0;
+}
+.meal-recipe-btn:active { background: #f6e6d2; }

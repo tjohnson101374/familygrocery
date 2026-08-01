@@ -782,3 +782,12 @@ html, body {
 .plan-days button:active { background: #eef4ff; }
 
 .rtag.p-ours { background: #EDE8F7; color: #534AB7; }
+
+.meal .meal-edit {
+  margin-left: auto; flex-shrink: 0;
+  width: 38px; height: 38px; border-radius: 9px;
+  border: 2px solid var(--line-heavy); background: #fff;
+  color: var(--ink-soft); font-family: inherit; font-size: 17px;
+  line-height: 1; cursor: pointer;
+}
+.meal.linked .what { text-decoration: underline; text-decoration-color: var(--line-heavy); text-underline-offset: 3px; }

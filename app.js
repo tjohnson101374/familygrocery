@@ -454,6 +454,10 @@ function allRecipes() {
   return RECIPES.concat(myRecipes);
 }
 
+function recipeById(id) {
+  return allRecipes().find(r => r.id === id) || null;
+}
+
 function rxMatches() {
   return allRecipes().filter(r =>
     RX_FILTERS.every(f => {
@@ -625,6 +629,7 @@ function openRecipe(r) {
     btn.textContent = d.toLocaleDateString("en-US", { weekday: "short" });
     btn.onclick = async () => {
       await saveMealField("weekly", dateStr, "dinner", r.name);
+      await set(ref(db, `mealplan/weekly/${dateStr}/dinnerRecipe`), r.id);
       closeRecipe();
       showToast(`Planned for ${displayDate(d)}`);
     };
@@ -1127,9 +1132,37 @@ function buildMealCard(dateStr, slots, planType) {
       inp.classList.toggle("has-value", has);
       cartBtn.classList.toggle("has-value", has);
     });
-    inp.addEventListener("change", async () => { await saveMealField(planType, dateStr, meal, inp.value.trim()); });
+    // A night planned from the recipe library keeps a link back to it.
+    // Typing over the text breaks that link, since it is no longer the
+    // same meal — better a missing button than one that opens the
+    // wrong recipe.
+    const linkId = (planType === "weekly" && meal === "dinner")
+      ? ((mealPlanData.weekly || {})[dateStr] || {}).dinnerRecipe
+      : null;
+
+    inp.addEventListener("change", async () => {
+      const v = inp.value.trim();
+      await saveMealField(planType, dateStr, meal, v);
+      const linked = recipeById(linkId);
+      if (linkId && (!v || !linked || v !== linked.name)) {
+        await remove(ref(db, `mealplan/weekly/${dateStr}/dinnerRecipe`));
+      }
+    });
     cartBtn.addEventListener("click", () => { openMealModal(dateStr, meal, planType); });
     slot.appendChild(lbl); slot.appendChild(inp); slot.appendChild(cartBtn);
+
+    if (linkId) {
+      const openBtn = document.createElement("button");
+      openBtn.className   = "meal-recipe-btn";
+      openBtn.title       = "Open the recipe";
+      openBtn.textContent = "📖";
+      openBtn.addEventListener("click", () => {
+        const r = recipeById(linkId);
+        if (r) openRecipe(r);
+        else showToast("That recipe is no longer in the library");
+      });
+      slot.appendChild(openBtn);
+    }
     card.appendChild(slot);
   });
   return card;
