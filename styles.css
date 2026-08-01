@@ -1,4 +1,4 @@
-* { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', system-ui, sans-serif; background: #f4f4f6; min-height: 100vh; }
     .app { max-width: 480px; margin: 0 auto; }
 
@@ -296,3 +296,137 @@
 
       /* vacation-frame-wrap now auto-sizes to its content on all breakpoints */
     }
+
+/* ── Recipes ─────────────────────────────────────────────────── */
+.recipes-area { padding: 12px 16px 90px; }
+
+.rx-filters { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+
+.rx-frow {
+  display: flex; align-items: center; gap: 6px;
+  overflow-x: auto; padding-bottom: 2px;
+  -webkit-overflow-scrolling: touch;
+}
+.rx-frow::-webkit-scrollbar { display: none; }
+
+.rx-flabel {
+  font-size: 10px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: #999;
+  flex-shrink: 0; width: 52px;
+}
+
+.rx-chip {
+  font-family: inherit; font-size: 13px; font-weight: 600;
+  padding: 7px 13px; border-radius: 999px;
+  border: 1.5px solid #ddd; background: #fff; color: #666;
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
+}
+.rx-chip.on { background: #B96C25; border-color: #B96C25; color: #fff; }
+
+.rx-count {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; color: #888; margin-bottom: 10px; padding: 0 2px;
+}
+.rx-clear {
+  font-family: inherit; font-size: 12px; font-weight: 600;
+  border: 0; background: none; color: #B96C25;
+  cursor: pointer; padding: 0;
+}
+
+.rx-list { display: flex; flex-direction: column; gap: 10px; }
+
+.rx-card {
+  background: #fff; border: 1px solid #e8e8ec; border-radius: 12px;
+  padding: 14px 16px; display: flex; flex-direction: column; gap: 7px;
+  cursor: pointer;
+}
+.rx-card:active { background: #fdf4ea; }
+.rx-name { font-size: 16px; font-weight: 600; color: #111; line-height: 1.3; }
+.rx-cmeta { font-size: 12.5px; color: #888; }
+.rx-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+
+.rx-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: .04em;
+  text-transform: uppercase; padding: 3px 8px;
+  border-radius: 4px; background: #f2f2f5; color: #777;
+}
+.rx-tag.p-chicken  { background: #FAEEDA; color: #854F0B; }
+.rx-tag.p-beef     { background: #FCEBEB; color: #A32D2D; }
+.rx-tag.p-pork     { background: #FBEAF0; color: #993556; }
+.rx-tag.p-seafood  { background: #E6F1FB; color: #185FA5; }
+.rx-tag.p-meatless { background: #EAF3DE; color: #3B6D11; }
+
+.rx-empty { text-align: center; color: #999; font-size: 14px; padding: 32px 16px; }
+
+/* Recipe detail */
+.rx-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.5);
+  z-index: 200; display: flex; align-items: flex-end; justify-content: center;
+}
+.rx-overlay.hidden { display: none !important; }
+
+.rx-modal {
+  background: #fff; width: 100%; max-width: 480px;
+  height: 92vh; border-radius: 16px 16px 0 0;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+
+.rx-modal-head {
+  flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; padding: 16px 18px; border-bottom: 1px solid #eee;
+  font-size: 17px; font-weight: 700; color: #111;
+}
+.rx-close {
+  flex-shrink: 0; width: 34px; height: 34px; border: 0; border-radius: 999px;
+  background: #f2f2f5; color: #777; font-family: inherit; font-size: 15px;
+  line-height: 1; cursor: pointer;
+}
+
+.rx-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 14px 18px 28px; }
+
+.rx-meta {
+  display: flex; flex-wrap: wrap; gap: 5px 14px;
+  font-size: 12.5px; color: #888; margin-bottom: 16px;
+}
+
+.rx-h {
+  font-size: 11px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: #999; margin: 18px 0 8px;
+}
+.rx-h:first-child { margin-top: 0; }
+.rx-hint { font-weight: 600; letter-spacing: 0; text-transform: none; font-size: 11px; }
+
+.rx-stores { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.rx-store {
+  font-family: inherit; font-size: 12.5px; font-weight: 600;
+  padding: 7px 12px; border-radius: 999px;
+  border: 1.5px solid #ddd; background: #fff; color: #666; cursor: pointer;
+}
+.rx-store.on { color: #fff; }
+
+.rx-sub {
+  font-size: 11px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: #B96C25; margin: 14px 0 4px;
+}
+
+.rx-ing {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 6px; border-bottom: 1px solid #f2f2f5;
+  font-size: 14.5px; line-height: 1.4; color: #222; cursor: pointer;
+}
+.rx-ing:active { background: #fdf4ea; }
+.rx-plus { font-size: 16px; font-weight: 700; color: #B96C25; flex: 0 0 16px; line-height: 1.3; }
+.rx-ing.added { color: #2A6B4F; }
+.rx-ing.added .rx-plus { color: #2A6B4F; }
+
+#rx-steps { margin: 0; padding-left: 20px; }
+#rx-steps li { font-size: 14px; line-height: 1.55; color: #333; margin-bottom: 11px; }
+
+.rx-days { display: flex; flex-wrap: wrap; gap: 7px; }
+.rx-day {
+  font-family: inherit; font-size: 13px; font-weight: 700;
+  padding: 10px 14px; border-radius: 10px;
+  border: 1.5px solid #ddd; background: #fff; color: #222; cursor: pointer;
+}
+.rx-day.today { border-color: #B96C25; color: #B96C25; }
+.rx-day:active { background: #fdf4ea; }

@@ -98,6 +98,12 @@
   </div>
 
   <!-- ── Vacations Area (self-service embedded dashboards) ─────── -->
+  <div class="recipes-area hidden" id="recipes-area">
+    <div class="rx-filters" id="rx-filters"></div>
+    <div class="rx-count" id="rx-count"></div>
+    <div class="rx-list" id="rx-list"></div>
+  </div>
+
   <div class="vacation-area hidden" id="vacation-area">
     <div class="vacation-toolbar">
       <div class="vacation-subtabs hidden" id="vacation-subtabs"></div>
@@ -150,6 +156,25 @@
   </div>
 
   <!-- Meal → Grocery modal -->
+  <div class="rx-overlay hidden" id="rx-overlay">
+    <div class="rx-modal">
+      <div class="rx-modal-head">
+        <span id="rx-title">Recipe</span>
+        <button class="rx-close" id="rx-close" aria-label="Close">&#10005;</button>
+      </div>
+      <div class="rx-scroll">
+        <div class="rx-meta" id="rx-meta"></div>
+        <div class="rx-h">Ingredients <span class="rx-hint">tap to add to list</span></div>
+        <div class="rx-stores" id="rx-stores"></div>
+        <div id="rx-ings"></div>
+        <div class="rx-h">Directions</div>
+        <ol id="rx-steps"></ol>
+        <div class="rx-h">Plan it for</div>
+        <div class="rx-days" id="rx-days"></div>
+      </div>
+    </div>
+  </div>
+
   <div class="meal-modal-overlay hidden" id="meal-modal-overlay">
     <div class="meal-modal">
       <div class="meal-modal-title">🛒 Add to Grocery List</div>

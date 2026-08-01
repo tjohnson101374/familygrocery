@@ -1,6 +1,7 @@
 import { ref, onValue, push, remove, set, update }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { db } from "./firebase-init.js";
+import { RECIPES } from "./recipes.js";
 
 // ────────────────────────────────────────────────────────────────
 // VACATIONS — self-service trip dashboards, fully managed from
@@ -52,6 +53,7 @@ const MEALS_LIGHT = "#f1f8f1";
 const PLANNING_TABS = [
   { id: "meals",     name: "Meals",     emoji: "🍽️", color: "#2E7D32", light: "#f1f8f1" },
   { id: "christmas", name: "Christmas", emoji: "🎄", color: "#C41E3A", light: "#fff5f6" },
+  { id: "recipes",   name: "Recipes",   emoji: "📖", color: "#B96C25", light: "#fdf4ea" },
   { id: "trip",      name: "Trips",     emoji: "🧳", color: "#1F5C73", light: "#eef4f6" },
 ];
 let activeSection = "shopping"; // "shopping" | "planning"
@@ -148,7 +150,7 @@ onValue(ref(db, "favorites"), snap => {
 });
 
 // ── Helpers ──────────────────────────────────────────────────────
-function isSpecialTab() { return activeStore === "meals" || activeStore === "christmas" || activeStore === "trip"; }
+function isSpecialTab() { return activeStore === "meals" || activeStore === "christmas" || activeStore === "trip" || activeStore === "recipes"; }
 
 function saveFavs() { set(ref(db, "favorites"), favorites); }
 
@@ -404,19 +406,221 @@ function render() {
   const onMeals = activeStore === "meals";
   const onXmas  = activeStore === "christmas";
   const onTrip  = activeStore === "trip";
+  const onRecipes = activeStore === "recipes";
   renderTabs();
   renderAddBar();
   renderFavs();
-  document.getElementById("list-area").classList.toggle("hidden", onMeals || onXmas || onTrip);
+  document.getElementById("list-area").classList.toggle("hidden", onMeals || onXmas || onTrip || onRecipes);
   document.getElementById("meals-area").classList.toggle("hidden", !onMeals);
   document.getElementById("christmas-area").classList.toggle("hidden", !onXmas);
   document.getElementById("vacation-area").classList.toggle("hidden", !onTrip);
+  document.getElementById("recipes-area").classList.toggle("hidden", !onRecipes);
   if (onMeals)     renderMeals();
   else if (onXmas) renderChristmas();
   else if (onTrip) renderVacations();
+  else if (onRecipes) renderRecipes();
   else             renderList();
   renderTotal();
 }
+
+
+// ── Render: recipes ──────────────────────────────────────────────
+// Mood-first browsing: narrow by protein and kind of food, then tap
+// straight through to ingredients you can add to the grocery list or
+// a night you want to cook it.
+const RX_FILTERS = [
+  { key: "protein", label: "Protein", options: [
+    ["chicken","Chicken"], ["beef","Beef"], ["pork","Pork"],
+    ["seafood","Seafood"], ["meatless","Meatless"] ] },
+  { key: "dish", label: "Kind", options: [
+    ["soup","Soup & chili"], ["pasta","Pasta"], ["mexican","Mexican"],
+    ["casserole","Casserole"], ["sandwich","Sandwiches"], ["salad","Salad"],
+    ["asian","Asian"], ["skillet","Other mains"],
+    ["breakfast","Breakfast"], ["dessert","Dessert"] ] },
+  { key: "method", label: "How", options: [
+    ["slow cooker","Slow cooker"], ["oven","Oven"], ["stovetop","Stovetop"] ] },
+];
+
+const rxActive = { protein: new Set(), dish: new Set(), method: new Set() };
+let rxStore = "shopping";
+
+function rxMatches() {
+  return RECIPES.filter(r =>
+    RX_FILTERS.every(f => {
+      const sel = rxActive[f.key];
+      return sel.size === 0 || sel.has(r[f.key]);
+    })
+  );
+}
+
+function renderRecipes() {
+  const wrap = document.getElementById("rx-filters");
+  wrap.innerHTML = "";
+
+  RX_FILTERS.forEach(f => {
+    const row = document.createElement("div");
+    row.className = "rx-frow";
+    const lbl = document.createElement("span");
+    lbl.className   = "rx-flabel";
+    lbl.textContent = f.label;
+    row.appendChild(lbl);
+    f.options.forEach(([val, text]) => {
+      const btn = document.createElement("button");
+      btn.className   = "rx-chip" + (rxActive[f.key].has(val) ? " on" : "");
+      btn.textContent = text;
+      btn.onclick = () => {
+        const sel = rxActive[f.key];
+        if (sel.has(val)) sel.delete(val); else sel.add(val);
+        renderRecipes();
+      };
+      row.appendChild(btn);
+    });
+    wrap.appendChild(row);
+  });
+
+  const list = rxMatches();
+  const count = document.getElementById("rx-count");
+  count.innerHTML = "";
+  const txt = document.createElement("span");
+  txt.textContent = list.length === RECIPES.length
+    ? `${RECIPES.length} recipes`
+    : `${list.length} of ${RECIPES.length} recipes`;
+  count.appendChild(txt);
+  if (list.length !== RECIPES.length) {
+    const clear = document.createElement("button");
+    clear.className   = "rx-clear";
+    clear.textContent = "Clear filters";
+    clear.onclick = () => {
+      Object.values(rxActive).forEach(s => s.clear());
+      renderRecipes();
+    };
+    count.appendChild(clear);
+  }
+
+  const listEl = document.getElementById("rx-list");
+  listEl.innerHTML = "";
+  if (!list.length) {
+    listEl.innerHTML = '<div class="rx-empty">Nothing matches that combination — try clearing a filter.</div>';
+    return;
+  }
+  list.forEach(r => {
+    const card = document.createElement("div");
+    card.className = "rx-card";
+    card.innerHTML =
+      '<div class="rx-name"></div>' +
+      '<div class="rx-cmeta"></div>' +
+      '<div class="rx-tags"></div>';
+    card.querySelector(".rx-name").textContent  = r.name;
+    card.querySelector(".rx-cmeta").textContent =
+      `Serves ${r.serves} · ${r.prep} prep · ${r.cookLabel} ${r.cook}`;
+    const tags = card.querySelector(".rx-tags");
+    if (r.protein !== "none") tags.appendChild(rxTag(r.protein, "p-" + r.protein));
+    tags.appendChild(rxTag(r.method));
+    tags.appendChild(rxTag("wk " + r.week));
+    card.onclick = () => openRecipe(r);
+    listEl.appendChild(card);
+  });
+}
+
+function rxTag(text, cls) {
+  const el = document.createElement("span");
+  el.className   = "rx-tag" + (cls ? " " + cls : "");
+  el.textContent = text;
+  return el;
+}
+
+// PPP cards separate freezer-prep-day ingredients from serving-day
+// ones. Those subheadings render as section labels rather than as
+// something you can accidentally add to the list.
+const RX_SUBHEADS = ["serving day","sauce","topping","ganache","vanilla glaze","homemade dressing"];
+
+function openRecipe(r) {
+  document.getElementById("rx-title").textContent = r.name;
+
+  const meta = document.getElementById("rx-meta");
+  meta.innerHTML = "";
+  [`Serves ${r.serves}`, `${r.calories} cal each`, `${r.prep} prep`,
+   `${r.cookLabel} ${r.cook}`, r.method, `Week ${r.week}`].forEach(t => {
+    const s = document.createElement("span");
+    s.textContent = t;
+    meta.appendChild(s);
+  });
+
+  renderRxStores();
+
+  const ings = document.getElementById("rx-ings");
+  ings.innerHTML = "";
+  r.ingredients.forEach(line => {
+    if (RX_SUBHEADS.includes(line.trim().toLowerCase())) {
+      const h = document.createElement("div");
+      h.className   = "rx-sub";
+      h.textContent = line.trim();
+      ings.appendChild(h);
+      return;
+    }
+    const row = document.createElement("div");
+    row.className = "rx-ing";
+    row.innerHTML = '<span class="rx-plus">+</span><span class="rx-itext"></span>';
+    row.querySelector(".rx-itext").textContent = line;
+    row.onclick = async () => {
+      row.classList.add("added");
+      row.querySelector(".rx-plus").textContent = "\u2713";
+      await addItem(rxStore, line);
+      setTimeout(() => {
+        row.classList.remove("added");
+        row.querySelector(".rx-plus").textContent = "+";
+      }, 1200);
+    };
+    ings.appendChild(row);
+  });
+
+  const steps = document.getElementById("rx-steps");
+  steps.innerHTML = "";
+  r.steps.forEach(t => {
+    const li = document.createElement("li");
+    li.textContent = t;
+    steps.appendChild(li);
+  });
+
+  const days = document.getElementById("rx-days");
+  days.innerHTML = "";
+  const start = getMonday(new Date());
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(start);
+    d.setDate(d.getDate() + i);
+    const dateStr = localDateStr(d);
+    const btn = document.createElement("button");
+    btn.className   = "rx-day" + (isToday(d) ? " today" : "");
+    btn.textContent = d.toLocaleDateString("en-US", { weekday: "short" });
+    btn.onclick = async () => {
+      await saveMealField("weekly", dateStr, "dinner", r.name);
+      closeRecipe();
+      showToast(`Planned for ${displayDate(d)}`);
+    };
+    days.appendChild(btn);
+  }
+
+  document.getElementById("rx-overlay").classList.remove("hidden");
+}
+
+function renderRxStores() {
+  const wrap = document.getElementById("rx-stores");
+  wrap.innerHTML = "";
+  STORES.forEach(st => {
+    const btn = document.createElement("button");
+    btn.className   = "rx-store" + (st.id === rxStore ? " on" : "");
+    btn.textContent = `${st.emoji} ${st.name}`;
+    if (st.id === rxStore) { btn.style.background = st.color; btn.style.borderColor = st.color; }
+    btn.onclick = () => { rxStore = st.id; renderRxStores(); };
+    wrap.appendChild(btn);
+  });
+}
+
+function closeRecipe() { document.getElementById("rx-overlay").classList.add("hidden"); }
+document.getElementById("rx-close").onclick = closeRecipe;
+document.getElementById("rx-overlay").addEventListener("click", e => {
+  if (e.target === document.getElementById("rx-overlay")) closeRecipe();
+});
 
 // ── Render: vacations (self-service, multiple trips via sub-tabs) ─
 function renderVacations() {
