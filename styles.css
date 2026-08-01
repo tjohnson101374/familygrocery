@@ -511,7 +511,8 @@
 .ma-act.clear  { border: 1.5px solid #e8c9c9; background: #fff; color: #A32D2D; margin-top: 22px; }
 .ma-act.hidden { display: none; }
 
-.ma-days, .ma-slots { display: flex; flex-wrap: wrap; gap: 7px; }
+.ma-days { display: flex; flex-direction: column; gap: 2px; }
+.ma-dayrow, .ma-slots { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 4px; }
 .ma-slots.hidden { display: none; }
 
 .ma-day, .ma-slot {

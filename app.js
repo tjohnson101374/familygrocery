@@ -667,29 +667,28 @@ function openRecipe(r) {
   const days = document.getElementById("rx-days");
   days.innerHTML = "";
 
-  const weekHead = document.createElement("div");
-  weekHead.className   = "rx-planhead";
-  weekHead.textContent = "This week — dinner";
-  days.appendChild(weekHead);
+  [0, 1].forEach(offset => {
+    const head = document.createElement("div");
+    head.className   = "rx-planhead";
+    head.textContent = WEEK_LABELS[offset] + " — dinner";
+    days.appendChild(head);
 
-  const weekRow = document.createElement("div");
-  weekRow.className = "rx-dayrow";
-  const start = getMonday(new Date());
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(start);
-    d.setDate(d.getDate() + i);
-    const dateStr = localDateStr(d);
-    const btn = document.createElement("button");
-    btn.className   = "rx-day" + (isToday(d) ? " today" : "");
-    btn.textContent = d.toLocaleDateString("en-US", { weekday: "short" });
-    btn.onclick = async () => {
-      await planMeal("weekly", dateStr, "dinner", r.name, r.id);
-      closeRecipe();
-      showToast(`Planned for ${displayDate(d)}`);
-    };
-    weekRow.appendChild(btn);
-  }
-  days.appendChild(weekRow);
+    const row = document.createElement("div");
+    row.className = "rx-dayrow";
+    weekDates(offset).forEach(dateStr => {
+      const d   = new Date(dateStr + "T00:00:00");
+      const btn = document.createElement("button");
+      btn.className   = "rx-day" + (isToday(d) ? " today" : "");
+      btn.textContent = d.toLocaleDateString("en-US", { weekday: "short" });
+      btn.onclick = async () => {
+        await planMeal("weekly", dateStr, "dinner", r.name, r.id);
+        closeRecipe();
+        showToast(`Planned for ${displayDate(d)}`);
+      };
+      row.appendChild(btn);
+    });
+    days.appendChild(row);
+  });
 
   // Trip mode adds breakfast and lunch, so planning there needs to
   // know which slot as well as which day.
@@ -1029,6 +1028,20 @@ function mealDay(planType, dateStr) {
     : ((mealPlanData.trip || {}).days || {})[dateStr] || {};
 }
 
+// Planning is rarely just for today — a week of buttons was too
+// narrow, so every day picker offers this week and next.
+function weekDates(offset) {
+  const start = getMonday(new Date());
+  start.setDate(start.getDate() + offset * 7);
+  return Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(start);
+    d.setDate(d.getDate() + i);
+    return localDateStr(d);
+  });
+}
+
+const WEEK_LABELS = ["This week", "Next week"];
+
 function tripDates() {
   const cfg = (mealPlanData.trip || {}).config || {};
   if (!cfg.active || !cfg.startDate || !cfg.endDate) return [];
@@ -1118,29 +1131,38 @@ function renderMaSlots() {
 function openMealActionsDays() {
   const wrap = document.getElementById("ma-days");
   wrap.innerHTML = "";
-  const dates = maCtx.planType === "weekly"
-    ? Array.from({ length: 7 }, (_, i) => {
-        const d = new Date(getMonday(new Date()));
-        d.setDate(d.getDate() + i);
-        return localDateStr(d);
-      })
-    : tripDates();
 
-  dates.forEach(ds => {
-    const d   = new Date(ds + "T00:00:00");
-    const btn = document.createElement("button");
-    const same = ds === maCtx.dateStr && maCtx.slot === maCtx.meal;
-    btn.className = "ma-day" + (isToday(d) ? " today" : "") + (same ? " current" : "");
-    btn.textContent = maCtx.planType === "weekly"
-      ? d.toLocaleDateString("en-US", { weekday: "short" })
-      : d.toLocaleDateString("en-US", { month: "numeric", day: "numeric" });
-    btn.onclick = async () => {
-      if (same) return;
-      await moveMeal(maCtx.planType, maCtx.dateStr, maCtx.meal, ds, maCtx.slot);
-      closeMealActions();
-      showToast(`Moved to ${displayDate(d)}`);
-    };
-    wrap.appendChild(btn);
+  const groups = maCtx.planType === "weekly"
+    ? [[WEEK_LABELS[0], weekDates(0)], [WEEK_LABELS[1], weekDates(1)]]
+    : [["Trip", tripDates()]];
+
+  groups.forEach(([label, dates]) => {
+    if (!dates.length) return;
+    if (groups.length > 1) {
+      const head = document.createElement("div");
+      head.className   = "rx-planhead";
+      head.textContent = label;
+      wrap.appendChild(head);
+    }
+    const row = document.createElement("div");
+    row.className = "ma-dayrow";
+    dates.forEach(ds => {
+      const d    = new Date(ds + "T00:00:00");
+      const same = ds === maCtx.dateStr && maCtx.slot === maCtx.meal;
+      const btn  = document.createElement("button");
+      btn.className = "ma-day" + (isToday(d) ? " today" : "") + (same ? " current" : "");
+      btn.textContent = maCtx.planType === "weekly"
+        ? d.toLocaleDateString("en-US", { weekday: "short" })
+        : d.toLocaleDateString("en-US", { month: "numeric", day: "numeric" });
+      btn.onclick = async () => {
+        if (same) return;
+        await moveMeal(maCtx.planType, maCtx.dateStr, maCtx.meal, ds, maCtx.slot);
+        closeMealActions();
+        showToast(`Moved to ${displayDate(d)}`);
+      };
+      row.appendChild(btn);
+    });
+    wrap.appendChild(row);
   });
 }
 

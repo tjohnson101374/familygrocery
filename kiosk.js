@@ -103,6 +103,20 @@ function getMonday(d) {
   return date;
 }
 
+// Same two-week window the phone offers, so planning ahead works
+// from either place.
+function weekDates(offset) {
+  const start = getMonday(new Date());
+  start.setDate(start.getDate() + offset * 7);
+  return Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(start);
+    d.setDate(d.getDate() + i);
+    return localDateStr(d);
+  });
+}
+
+const WEEK_LABELS = ["This week", "Next week"];
+
 function isToday(d) {
   const t = new Date();
   return d.getFullYear() === t.getFullYear()
@@ -375,21 +389,26 @@ function renderMoveRow(dateStr, current) {
   lbl.textContent = "Move to";
   row.appendChild(lbl);
 
-  const start = getMonday(new Date());
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(start);
-    d.setDate(d.getDate() + i);
-    const ds = localDateStr(d);
-    const b  = document.createElement("button");
-    b.className   = "mv" + (ds === dateStr ? " current" : "") + (isToday(d) ? " today" : "");
-    b.textContent = d.toLocaleDateString("en-US", { weekday: "short" });
-    b.addEventListener("click", async () => {
-      if (ds === dateStr) return;
-      await moveMealTo(dateStr, ds);
-      closeSheet();
+  [0, 1].forEach(offset => {
+    if (offset) {
+      const lbl = document.createElement("span");
+      lbl.className   = "day-grp-label";
+      lbl.textContent = "Next";
+      row.appendChild(lbl);
+    }
+    weekDates(offset).forEach(ds => {
+      const d = new Date(ds + "T00:00:00");
+      const b = document.createElement("button");
+      b.className   = "mv" + (ds === dateStr ? " current" : "") + (isToday(d) ? " today" : "");
+      b.textContent = d.toLocaleDateString("en-US", { weekday: "short" });
+      b.addEventListener("click", async () => {
+        if (ds === dateStr) return;
+        await moveMealTo(dateStr, ds);
+        closeSheet();
+      });
+      row.appendChild(b);
     });
-    row.appendChild(b);
-  }
+  });
 
   const clear = document.createElement("button");
   clear.className   = "mv clear";
@@ -791,22 +810,28 @@ function openRecipe(r) {
     steps.appendChild(li);
   });
 
-  const days  = document.getElementById("rsheet-days");
+  const days = document.getElementById("rsheet-days");
   days.innerHTML = "";
-  const start = getMonday(new Date());
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(start);
-    d.setDate(d.getDate() + i);
-    const dateStr = localDateStr(d);
-    const btn = document.createElement("button");
-    btn.className   = isToday(d) ? "today" : "";
-    btn.textContent = d.toLocaleDateString("en-US", { weekday: "short" });
-    btn.addEventListener("click", async () => {
-      await saveMeal(dateStr, r.name, r.id);
-      closeRecipe();
+  [0, 1].forEach(offset => {
+    const grp = document.createElement("span");
+    grp.className = "day-grp";
+    const lbl = document.createElement("span");
+    lbl.className   = "day-grp-label";
+    lbl.textContent = WEEK_LABELS[offset];
+    grp.appendChild(lbl);
+    weekDates(offset).forEach(dateStr => {
+      const d   = new Date(dateStr + "T00:00:00");
+      const btn = document.createElement("button");
+      btn.className   = isToday(d) ? "today" : "";
+      btn.textContent = d.toLocaleDateString("en-US", { weekday: "short" });
+      btn.addEventListener("click", async () => {
+        await saveMeal(dateStr, r.name, r.id);
+        closeRecipe();
+      });
+      grp.appendChild(btn);
     });
-    days.appendChild(btn);
-  }
+    days.appendChild(grp);
+  });
 
   rsheet.classList.remove("hidden");
 }
