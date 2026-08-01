@@ -78,6 +78,21 @@
       </section>
     </div>
 
+    <!-- ── Recipes ──────────────────────────────────────────── -->
+    <div class="view hidden" id="view-recipes">
+      <section class="panel">
+        <div class="panel-head">
+          <span class="head-left">
+            Recipes
+            <span class="count" id="recipe-count"></span>
+          </span>
+          <button class="add-btn ghost" id="recipe-reset">Clear filters</button>
+        </div>
+        <div class="filters" id="recipe-filters"></div>
+        <div class="panel-body scroll cards" id="recipe-list"></div>
+      </section>
+    </div>
+
     <!-- ── Trips ────────────────────────────────────────────── -->
     <div class="view hidden" id="view-trips">
       <section class="panel">
@@ -109,6 +124,30 @@
       <input type="text" id="sheet-input" autocomplete="off" autocapitalize="words" />
       <input type="text" id="sheet-input2" class="hidden" autocomplete="off" autocapitalize="words" />
       <button class="sheet-save" id="sheet-save">Add</button>
+    </div>
+  </div>
+</div>
+
+<div class="sheet-overlay hidden" id="rsheet">
+  <div class="sheet sheet-wide">
+    <div class="sheet-head">
+      <span id="rsheet-title">Recipe</span>
+      <button class="sheet-close" id="rsheet-close" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="rsheet-meta" id="rsheet-meta"></div>
+    <div class="rsheet-body">
+      <div class="rsheet-col">
+        <div class="rsheet-h">Ingredients <span class="hint">tap to add to list</span></div>
+        <div id="rsheet-ings"></div>
+      </div>
+      <div class="rsheet-col">
+        <div class="rsheet-h">Directions</div>
+        <ol id="rsheet-steps"></ol>
+      </div>
+    </div>
+    <div class="sheet-row">
+      <span class="plan-label">Plan it for</span>
+      <span class="plan-days" id="rsheet-days"></span>
     </div>
   </div>
 </div>

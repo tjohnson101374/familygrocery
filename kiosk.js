@@ -9,6 +9,7 @@
 import { ref, onValue, push, remove, set, update }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { db } from "./firebase-init.js";
+import { RECIPES } from "./recipes.js";
 
 // ── Calendars ────────────────────────────────────────────────────
 const CALENDARS = [
@@ -453,6 +454,7 @@ onValue(ref(db, "favorites"), snap => {
 // ── View switching ───────────────────────────────────────────────
 const VIEWS = [
   { id: "dashboard", label: "Dashboard" },
+  { id: "recipes",   label: "Recipes" },
   { id: "christmas", label: "Christmas" },
   { id: "trips",     label: "Trips" },
 ];
@@ -475,9 +477,212 @@ function setView(id) {
     document.getElementById("view-" + v.id).classList.toggle("hidden", v.id !== id);
   });
   renderNav();
+  if (id === "recipes")   renderRecipes();
   if (id === "christmas") renderChristmas();
   if (id === "trips")     renderTrips();
 }
+
+
+// ── Recipes ──────────────────────────────────────────────────────
+// Browsing is mood-first: pick a protein and a kind of food, and the
+// list narrows. Filters are additive within a group, so tapping both
+// "chicken" and "beef" shows either.
+const FILTERS = [
+  { key: "protein", label: "Protein", options: [
+    ["chicken","Chicken"], ["beef","Beef"], ["pork","Pork"],
+    ["seafood","Seafood"], ["meatless","Meatless"] ] },
+  { key: "dish", label: "Kind", options: [
+    ["soup","Soup & chili"], ["pasta","Pasta"], ["mexican","Mexican"],
+    ["casserole","Casserole"], ["sandwich","Sandwiches"], ["salad","Salad"],
+    ["asian","Asian"], ["skillet","Other mains"],
+    ["breakfast","Breakfast"], ["dessert","Dessert"] ] },
+  { key: "method", label: "How", options: [
+    ["slow cooker","Slow cooker"], ["oven","Oven"], ["stovetop","Stovetop"] ] },
+];
+
+const activeFilters = { protein: new Set(), dish: new Set(), method: new Set() };
+
+function matchingRecipes() {
+  return RECIPES.filter(r =>
+    FILTERS.every(f => {
+      const sel = activeFilters[f.key];
+      return sel.size === 0 || sel.has(r[f.key]);
+    })
+  );
+}
+
+function renderFilters() {
+  const wrap = document.getElementById("recipe-filters");
+  wrap.innerHTML = "";
+  FILTERS.forEach(f => {
+    const group = document.createElement("span");
+    group.className = "fgroup";
+    const lbl = document.createElement("span");
+    lbl.className   = "flabel";
+    lbl.textContent = f.label;
+    group.appendChild(lbl);
+    f.options.forEach(([val, text]) => {
+      const btn = document.createElement("button");
+      btn.className   = activeFilters[f.key].has(val) ? "on" : "";
+      btn.textContent = text;
+      btn.addEventListener("click", () => {
+        const sel = activeFilters[f.key];
+        if (sel.has(val)) sel.delete(val); else sel.add(val);
+        renderRecipes();
+      });
+      group.appendChild(btn);
+    });
+    wrap.appendChild(group);
+  });
+}
+
+function renderRecipes() {
+  renderFilters();
+  const list = matchingRecipes();
+  document.getElementById("recipe-count").textContent =
+    list.length === RECIPES.length ? RECIPES.length : `${list.length} of ${RECIPES.length}`;
+
+  const wrap = document.getElementById("recipe-list");
+  wrap.innerHTML = "";
+
+  if (!list.length) {
+    const msg = document.createElement("div");
+    msg.className = "empty-state";
+    msg.style.gridColumn = "1 / -1";
+    msg.textContent = "Nothing matches that combination — try clearing a filter.";
+    wrap.appendChild(msg);
+    return;
+  }
+
+  list.forEach(r => {
+    const card = document.createElement("div");
+    card.className = "rcard";
+
+    const name = document.createElement("div");
+    name.className   = "rname";
+    name.textContent = r.name;
+
+    const meta = document.createElement("div");
+    meta.className   = "rmeta";
+    meta.textContent = `Serves ${r.serves} · ${r.prep} prep · ${r.cookLabel} ${r.cook}`;
+
+    const tags = document.createElement("div");
+    tags.className = "rtags";
+    if (r.protein !== "none") tags.appendChild(tag(r.protein, "p-" + r.protein));
+    tags.appendChild(tag(r.method));
+    tags.appendChild(tag(`wk ${r.week}`));
+
+    card.appendChild(name);
+    card.appendChild(meta);
+    card.appendChild(tags);
+    card.addEventListener("click", () => openRecipe(r));
+    wrap.appendChild(card);
+  });
+}
+
+function tag(text, cls) {
+  const el = document.createElement("span");
+  el.className   = "rtag" + (cls ? " " + cls : "");
+  el.textContent = text;
+  return el;
+}
+
+document.getElementById("recipe-reset").addEventListener("click", () => {
+  Object.values(activeFilters).forEach(s => s.clear());
+  renderRecipes();
+});
+
+// ── Recipe detail ────────────────────────────────────────────────
+const rsheet = document.getElementById("rsheet");
+
+// PPP cards split ingredients into freezer-prep-day and serving-day.
+// The serving-day block always follows a bare heading line, so treat
+// anything after one as belonging to that later shop.
+const SUBHEADS = ["serving day", "sauce", "topping", "ganache", "vanilla glaze", "homemade dressing"];
+
+function isSubhead(line) {
+  const l = line.trim().toLowerCase();
+  return SUBHEADS.includes(l);
+}
+
+function openRecipe(r) {
+  document.getElementById("rsheet-title").textContent = r.name;
+
+  const meta = document.getElementById("rsheet-meta");
+  meta.innerHTML = "";
+  [`Serves ${r.serves}`, `${r.calories} cal each`, `${r.prep} prep`,
+   `${r.cookLabel} ${r.cook}`, r.method, `Week ${r.week}`].forEach(t => {
+    const s = document.createElement("span");
+    s.textContent = t;
+    meta.appendChild(s);
+  });
+
+  const ings = document.getElementById("rsheet-ings");
+  ings.innerHTML = "";
+  r.ingredients.forEach(line => {
+    if (isSubhead(line)) {
+      const h = document.createElement("div");
+      h.className   = "ing-sub";
+      h.textContent = line.trim();
+      ings.appendChild(h);
+      return;
+    }
+    const row = document.createElement("div");
+    row.className = "ing";
+
+    const plus = document.createElement("span");
+    plus.className   = "plus";
+    plus.textContent = "+";
+
+    const txt = document.createElement("span");
+    txt.textContent = line;
+
+    row.appendChild(plus);
+    row.appendChild(txt);
+    row.addEventListener("click", async () => {
+      row.classList.add("added");
+      plus.textContent = "\u2713";
+      await addItem(activeStore, line);
+      setTimeout(() => {
+        row.classList.remove("added");
+        plus.textContent = "+";
+      }, 1200);
+    });
+    ings.appendChild(row);
+  });
+
+  const steps = document.getElementById("rsheet-steps");
+  steps.innerHTML = "";
+  r.steps.forEach(t => {
+    const li = document.createElement("li");
+    li.textContent = t;
+    steps.appendChild(li);
+  });
+
+  const days  = document.getElementById("rsheet-days");
+  days.innerHTML = "";
+  const start = getMonday(new Date());
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(start);
+    d.setDate(d.getDate() + i);
+    const dateStr = localDateStr(d);
+    const btn = document.createElement("button");
+    btn.className   = isToday(d) ? "today" : "";
+    btn.textContent = d.toLocaleDateString("en-US", { weekday: "short" });
+    btn.addEventListener("click", async () => {
+      await saveMeal(dateStr, r.name);
+      closeRecipe();
+    });
+    days.appendChild(btn);
+  }
+
+  rsheet.classList.remove("hidden");
+}
+
+function closeRecipe() { rsheet.classList.add("hidden"); }
+
+document.getElementById("rsheet-close").addEventListener("click", closeRecipe);
+rsheet.addEventListener("click", e => { if (e.target === rsheet) closeRecipe(); });
 
 // ── Christmas ────────────────────────────────────────────────────
 function memberById(id) { return MEMBERS.find(m => m.id === id) || MEMBERS[0]; }
