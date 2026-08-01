@@ -1,0 +1,298 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #f4f4f6; min-height: 100vh; }
+    .app { max-width: 480px; margin: 0 auto; }
+
+    /* Header */
+    .header { background: #fff; padding: 18px 20px 0; border-bottom: 1px solid #e8e8ec; }
+    .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .header h1 { font-size: 22px; font-weight: 700; color: #111; letter-spacing: -0.5px; }
+    .header p { font-size: 12px; color: #888; margin-top: 2px; }
+    .header-right { font-size: 11px; color: #aaa; text-align: right; line-height: 1.5; flex-shrink:0; }
+    .sync-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+      background: #34A853; margin-right: 4px; animation: pulse 2s infinite; vertical-align:middle; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    /* Section Switcher (Shopping vs Planning) */
+    .section-switcher { display: flex; gap: 6px; margin-top: 14px; background: #f0f0f3;
+      border-radius: 12px; padding: 3px; }
+    .section-btn { flex: 1; padding: 9px 8px; border-radius: 9px; border: none; background: transparent;
+      font-size: 13px; font-weight: 600; color: #888; cursor: pointer; font-family: inherit;
+      display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.15s ease; }
+    .section-btn.active { background: #fff; color: #222; box-shadow: 0 1px 4px rgba(0,0,0,0.10); }
+
+    /* Store Tabs */
+    .store-tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; margin-top: 12px; }
+    .store-tabs::-webkit-scrollbar { display: none; }
+    .store-tab { padding: 8px 12px; border-radius: 10px 10px 0 0; font-size: 12px; font-weight: 500;
+      color: #777; border: none; border-bottom: 3px solid transparent; background: transparent;
+      white-space: nowrap; display: flex; align-items: center; gap: 4px; flex-shrink: 0;
+      cursor: pointer; transition: all 0.15s ease; font-family: inherit; }
+    .store-tab.active { font-weight: 700; }
+    .badge { border-radius: 20px; font-size: 10px; font-weight: 700; padding: 1px 6px; color: #fff; }
+
+    /* Add Bar */
+    .add-bar { padding: 14px 16px; border-bottom: 2px solid rgba(0,0,0,0.05); }
+    .add-form { display: flex; gap: 8px; }
+    .add-input { flex: 1; padding: 11px 14px; border-radius: 12px; border: 1.5px solid rgba(0,0,0,0.15);
+      font-size: 15px; background: #fff; color: #111; outline: none; font-family: inherit; transition: border-color 0.15s; }
+    .add-btn { color: #fff; border: none; border-radius: 12px; padding: 11px 18px;
+      font-size: 20px; cursor: pointer; font-weight: 700; font-family: inherit; }
+    .fav-toggle { margin-top: 10px; background: none; border-radius: 20px; padding: 5px 14px;
+      font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit;
+      display: inline-flex; align-items: center; gap: 6px; }
+    .fav-count { font-size: 10px; color: #aaa; }
+
+    /* Favorites Panel */
+    .favs-panel { background: #fff; border-bottom: 1px solid #eee; padding: 14px 16px; }
+    .favs-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .favs-title { font-size: 11px; font-weight: 700; color: #aaa; letter-spacing: 0.08em; text-transform: uppercase; }
+    .favs-add-btn { color: #fff; border: none; border-radius: 20px; padding: 3px 12px;
+      font-size: 11px; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .favs-new-row { display: flex; gap: 6px; margin-bottom: 10px; }
+    .favs-new-input { flex: 1; padding: 7px 10px; border-radius: 8px; font-size: 13px;
+      font-family: inherit; outline: none; border: 1.5px solid #ccc; }
+    .favs-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+    .fav-chip { display: flex; align-items: center; gap: 4px; border-radius: 20px; padding: 5px 4px 5px 11px;
+      border: 1.5px solid rgba(0,0,0,0.1); transition: all 0.15s; }
+    .fav-chip-label { font-size: 13px; font-weight: 500; cursor: pointer; }
+    .fav-chip-label.already { text-decoration: line-through; color: #bbb !important; cursor: default; }
+    .fav-chip-edit { background: none; border: none; cursor: pointer; font-size: 11px; color: #ccc; padding: 0 2px; }
+    .fav-chip-remove { background: none; border: none; cursor: pointer; font-size: 15px; color: #ddd; padding: 0 4px 0 0; line-height: 1; }
+    .favs-hint { font-size: 10px; color: #ccc; margin-top: 10px; }
+    .edit-row { display: flex; gap: 4px; }
+    .edit-input { padding: 4px 8px; border-radius: 8px; font-size: 13px; font-family: inherit; outline: none; width: 130px; }
+    .sm-btn { border: none; border-radius: 8px; padding: 4px 8px; cursor: pointer; font-size: 12px; font-family: inherit; }
+
+    /* List */
+    .list-area { padding: 12px 16px 100px; }
+    .empty-state { text-align: center; padding: 48px 20px; color: #bbb; }
+    .empty-emoji { font-size: 48px; margin-bottom: 12px; }
+    .empty-state h3 { font-size: 16px; font-weight: 600; color: #ccc; }
+    .empty-state p { font-size: 13px; margin-top: 6px; }
+    .list-label { font-size: 11px; font-weight: 700; color: #aaa; letter-spacing: 0.08em;
+      text-transform: uppercase; margin-bottom: 8px; }
+    .item-row { background: #fff; border-radius: 14px; margin-bottom: 8px; padding: 14px;
+      display: flex; align-items: center; gap: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #f0f0f2;
+      animation: slideIn 0.18s ease; cursor: pointer; }
+    .item-row.item-checked { background: #f8f8f8; }
+    @keyframes slideIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+    .item-circle { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #ccc;
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .item-text { flex: 1; font-size: 15px; color: #111; }
+    .item-text.done { text-decoration: line-through; color: #bbb; }
+    .del-btn { background: none; border: none; cursor: pointer; font-size: 20px; opacity: 0.25;
+      padding: 4px 6px; line-height: 1; transition: opacity 0.15s; flex-shrink: 0; }
+    .del-btn:hover { opacity: 0.6; }
+    .del-btn:active { opacity: 1; }
+
+    /* ── Meals Tab ────────────────────────────────────────── */
+    .meals-area { padding: 12px 16px 100px; }
+    .meals-section-label { font-size: 11px; font-weight: 700; color: #aaa; letter-spacing: 0.08em;
+      text-transform: uppercase; margin: 4px 0 10px; }
+    .week-nav { display: flex; align-items: center; justify-content: space-between;
+      background: #fff; border-radius: 14px; padding: 10px 14px; margin-bottom: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #f0f0f2; }
+    .week-nav-btn { background: none; border: none; font-size: 20px; cursor: pointer;
+      padding: 0 6px; color: #555; line-height: 1; }
+    .week-label { font-size: 13px; font-weight: 600; color: #333; }
+    .meal-day-card { background: #fff; border-radius: 14px; margin-bottom: 10px; padding: 12px 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #f0f0f2; }
+    .meal-day-header { font-size: 12px; font-weight: 700; color: #888; margin-bottom: 8px; letter-spacing: 0.01em; }
+    .meal-day-header.today { color: #2E7D32; }
+    .meal-slot { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; min-width: 0; }
+    .meal-slot:last-child { margin-bottom: 0; }
+    .meal-slot-label { font-size: 11px; font-weight: 600; color: #bbb; width: 80px; flex-shrink: 0;
+      text-transform: uppercase; letter-spacing: 0.04em; }
+    .meal-input { flex: 1; min-width: 0; border: 1.5px solid #e8e8ec; border-radius: 8px; padding: 7px 10px;
+      font-size: 14px; font-family: inherit; outline: none; color: #111;
+      background: #fafafa; transition: border-color 0.15s; }
+    .meal-input:focus { border-color: #4CAF50; background: #fff; }
+    .meal-input.has-value { background: #fff; border-color: #c8e6c9; }
+    .meal-cart-btn { background: none; border: none; cursor: pointer; font-size: 17px; opacity: 0.22;
+      padding: 4px; line-height: 1; transition: opacity 0.15s; flex-shrink: 0; }
+    .meal-cart-btn:hover { opacity: 0.7; }
+    .meal-cart-btn.has-value { opacity: 0.5; }
+    .trip-toggle-bar { display: flex; align-items: center; justify-content: space-between;
+      background: #fff; border-radius: 14px; padding: 12px 14px; margin: 16px 0 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #f0f0f2; }
+    .trip-toggle-title { font-size: 14px; font-weight: 600; color: #333; }
+    .trip-toggle-sub { font-size: 11px; color: #aaa; margin-top: 2px; }
+    .toggle-switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .toggle-slider { position: absolute; cursor: pointer; inset: 0; background: #ccc;
+      border-radius: 24px; transition: 0.2s; }
+    .toggle-slider:before { content: ""; position: absolute; width: 18px; height: 18px;
+      left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+    .toggle-switch input:checked + .toggle-slider { background: #4CAF50; }
+    .toggle-switch input:checked + .toggle-slider:before { transform: translateX(20px); }
+    .trip-date-row { display: flex; gap: 8px; margin-bottom: 14px; }
+    .trip-date-field { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .trip-date-field label { font-size: 11px; font-weight: 600; color: #aaa;
+      text-transform: uppercase; letter-spacing: 0.04em; }
+    .trip-date-input { padding: 9px 10px; border-radius: 8px; border: 1.5px solid #e8e8ec;
+      font-size: 14px; font-family: inherit; outline: none; color: #111; }
+    .trip-date-input:focus { border-color: #4CAF50; }
+    .trip-section-header { font-size: 11px; font-weight: 700; color: #aaa; text-transform: uppercase;
+      letter-spacing: 0.08em; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1.5px solid #eee; }
+
+    /* Meal modal */
+    .meal-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000;
+      display: flex; align-items: flex-end; justify-content: center; animation: fadeIn 0.15s ease; }
+    .meal-modal { background: #fff; border-radius: 20px 20px 0 0; padding: 22px 20px 38px;
+      width: 100%; max-width: 480px; animation: slideUp 0.2s ease; }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    @keyframes slideUp { from{transform:translateY(60px);opacity:0} to{transform:translateY(0);opacity:1} }
+    .meal-modal-title { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 3px; }
+    .meal-modal-subtitle { font-size: 12px; color: #aaa; margin-bottom: 18px; }
+    .meal-modal-label { font-size: 11px; font-weight: 700; color: #aaa; text-transform: uppercase;
+      letter-spacing: 0.06em; margin-bottom: 6px; }
+    .meal-modal-input { width: 100%; padding: 11px 14px; border-radius: 12px;
+      border: 1.5px solid #e8e8ec; font-size: 15px; font-family: inherit; outline: none;
+      margin-bottom: 16px; color: #111; }
+    .meal-modal-input:focus { border-color: #4CAF50; }
+    .store-select-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+    .store-select-btn { padding: 10px 8px; border-radius: 10px; border: 1.5px solid #e8e8ec;
+      background: #fafafa; font-size: 12px; font-family: inherit; cursor: pointer;
+      text-align: center; transition: all 0.15s; font-weight: 500; color: #555; }
+    .store-select-btn.selected { color: #fff; border-color: transparent; }
+    .meal-modal-actions { display: flex; gap: 8px; }
+    .meal-modal-cancel { flex: 1; padding: 13px; border-radius: 12px; border: 1.5px solid #e8e8ec;
+      background: #fff; font-size: 15px; font-family: inherit; cursor: pointer; font-weight: 600; color: #777; }
+    .meal-modal-add { flex: 2; padding: 13px; border-radius: 12px; border: none; background: #4CAF50;
+      color: #fff; font-size: 15px; font-family: inherit; cursor: pointer; font-weight: 700; }
+
+    /* ── Christmas Tab ─────────────────────────────────────── */
+    .christmas-area { padding: 0 0 100px; }
+    .member-tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none;
+      background: #fff; padding: 12px 16px 0; border-bottom: 1px solid #eee; }
+    .member-tabs::-webkit-scrollbar { display: none; }
+    .member-tab { padding: 8px 14px; border-radius: 10px 10px 0 0; font-size: 13px; font-weight: 500;
+      color: #777; border: none; border-bottom: 3px solid transparent; background: transparent;
+      white-space: nowrap; cursor: pointer; transition: all 0.15s ease; font-family: inherit; }
+    .member-tab.active { font-weight: 700; background: #fff5f6; }
+    .xmas-add-section { padding: 14px 16px; background: #fff8f8; border-bottom: 1px solid #ffe0e0; }
+    .xmas-add-btn { width: 100%; padding: 12px; border-radius: 12px;
+      border: 2px dashed rgba(196,30,58,0.35); background: transparent;
+      color: #C41E3A; font-size: 15px; font-weight: 600; cursor: pointer;
+      font-family: inherit; transition: all 0.15s; }
+    .xmas-add-btn:hover { background: rgba(196,30,58,0.06); border-color: #C41E3A; }
+    .christmas-items { padding: 12px 16px 20px; }
+    .xmas-item-card { background: #fff; border-radius: 14px; margin-bottom: 8px; padding: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #f0f0f2;
+      animation: slideIn 0.18s ease; }
+    .xmas-item-top { display: flex; align-items: center; gap: 10px; }
+    .xmas-item-name { flex: 1; font-size: 15px; color: #111; font-weight: 500; }
+    .xmas-item-meta { display: flex; align-items: center; gap: 8px; margin-top: 7px; flex-wrap: wrap; }
+    .xmas-store-tag { font-size: 12px; color: #777; background: #f3f3f3;
+      border-radius: 20px; padding: 3px 10px; }
+    .xmas-link-btn { font-size: 12px; color: #C41E3A; background: #fff5f6;
+      border-radius: 20px; padding: 3px 10px; text-decoration: none; font-weight: 600;
+      border: 1px solid rgba(196,30,58,0.2); }
+
+    /* Christmas add modal */
+    .xmas-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000;
+      display: flex; align-items: flex-end; justify-content: center; animation: fadeIn 0.15s ease; }
+    .xmas-modal { background: #fff; border-radius: 20px 20px 0 0; padding: 22px 20px 38px;
+      width: 100%; max-width: 480px; animation: slideUp 0.2s ease; }
+    .xmas-modal-title { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 18px; }
+    .xmas-modal-label { font-size: 11px; font-weight: 700; color: #aaa; text-transform: uppercase;
+      letter-spacing: 0.06em; margin-bottom: 6px; }
+    .xmas-modal-input { width: 100%; padding: 11px 14px; border-radius: 12px;
+      border: 1.5px solid #e8e8ec; font-size: 15px; font-family: inherit; outline: none;
+      margin-bottom: 14px; color: #111; }
+    .xmas-modal-input:focus { border-color: #C41E3A; }
+    .xmas-modal-hint { font-size: 11px; color: #bbb; margin-top: -10px; margin-bottom: 14px; }
+    .xmas-modal-actions { display: flex; gap: 8px; margin-top: 4px; }
+    .xmas-modal-cancel { flex: 1; padding: 13px; border-radius: 12px; border: 1.5px solid #e8e8ec;
+      background: #fff; font-size: 15px; font-family: inherit; cursor: pointer; font-weight: 600; color: #777; }
+    .xmas-modal-add { flex: 2; padding: 13px; border-radius: 12px; border: none; background: #C41E3A;
+      color: #fff; font-size: 15px; font-family: inherit; cursor: pointer; font-weight: 700; }
+
+    /* ── Vacations Tab (embedded, self-service dashboards) ───── */
+    .vacation-area { padding: 0; }
+    .vacation-toolbar { display: flex; align-items: center; justify-content: space-between;
+      gap: 8px; background: #fff; padding: 10px 16px; border-bottom: 1px solid #eee; }
+    .vacation-subtabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; flex: 1; }
+    .vacation-subtabs::-webkit-scrollbar { display: none; }
+    .vacation-actions { display: flex; gap: 6px; flex-shrink: 0; }
+    .vacation-action-btn { border: none; border-radius: 20px; padding: 6px 12px; font-size: 12px;
+      font-weight: 600; cursor: pointer; font-family: inherit; white-space: nowrap; }
+    .vacation-remove-btn { background: #fdeceb; color: #c0392b; }
+    .vacation-add-btn { background: #1F5C73; color: #fff; }
+    .vacation-frame-wrap { min-height: 380px; }
+    .vacation-frame-wrap iframe { width: 100%; border: none; display: block; }
+    .vacation-empty { text-align: center; padding: 60px 20px; color: #bbb; }
+
+    /* Vacation add modal */
+    .vacation-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000;
+      display: flex; align-items: flex-end; justify-content: center; animation: fadeIn 0.15s ease; }
+    .vacation-modal { background: #fff; border-radius: 20px 20px 0 0; padding: 22px 20px 38px;
+      width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto; animation: slideUp 0.2s ease; }
+    .vacation-modal-title { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 18px; }
+    .vacation-modal-label { font-size: 11px; font-weight: 700; color: #aaa; text-transform: uppercase;
+      letter-spacing: 0.06em; margin-bottom: 6px; }
+    .vacation-modal-input { width: 100%; padding: 11px 14px; border-radius: 12px;
+      border: 1.5px solid #e8e8ec; font-size: 15px; font-family: inherit; outline: none;
+      margin-bottom: 14px; color: #111; }
+    .vacation-modal-input:focus { border-color: #1F5C73; }
+    .vacation-modal-color { width: 100%; height: 42px; border-radius: 12px; border: 1.5px solid #e8e8ec;
+      margin-bottom: 14px; cursor: pointer; }
+    .vacation-modal-file { width: 100%; padding: 10px; border-radius: 12px; border: 1.5px dashed #ccc;
+      font-size: 13px; font-family: inherit; margin-bottom: 6px; background: #fafafa; }
+    .vacation-modal-filename { font-size: 12px; color: #2E7D32; font-weight: 600; margin-bottom: 14px; min-height: 16px; }
+    .vacation-modal-hint { font-size: 11px; color: #bbb; margin: -8px 0 14px; line-height: 1.4; }
+    .vacation-modal-actions { display: flex; gap: 8px; margin-top: 4px; }
+    .vacation-modal-cancel { flex: 1; padding: 13px; border-radius: 12px; border: 1.5px solid #e8e8ec;
+      background: #fff; font-size: 15px; font-family: inherit; cursor: pointer; font-weight: 600; color: #777; }
+    .vacation-modal-add { flex: 2; padding: 13px; border-radius: 12px; border: none; background: #1F5C73;
+      color: #fff; font-size: 15px; font-family: inherit; cursor: pointer; font-weight: 700; }
+    .vacation-confirm-text { font-size: 14px; color: #555; line-height: 1.5; margin-bottom: 18px; }
+    .vacation-confirm-remove { background: #c0392b !important; }
+
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: #1a1a1a; color: #fff; padding: 10px 20px; border-radius: 24px;
+      font-size: 14px; font-weight: 500; z-index: 9999; white-space: nowrap;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25); animation: fadeUp 0.2s ease; pointer-events: none; }
+    @keyframes fadeUp { from{opacity:0;transform:translate(-50%,10px)} to{opacity:1;transform:translate(-50%,0)} }
+    .hidden { display: none !important; }
+    button { font-family: inherit; }
+
+    /* ── Desktop layout ───────────────────────────────────────
+       Mobile stays exactly as designed (narrow, single column).
+       On wider screens, the app widens out and stacked lists
+       become responsive multi-column grids instead of one long
+       vertical column with empty space on either side. */
+    @media (min-width: 860px) {
+      .app { max-width: 1100px; }
+      .header, .add-bar, .favs-panel, .meals-area, .christmas-items,
+      .list-area, .vacation-toolbar { padding-left: 32px; padding-right: 32px; }
+
+      .list-area {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 12px;
+        align-content: start;
+      }
+      .item-row { margin-bottom: 0; }
+      .empty-state { grid-column: 1 / -1; }
+
+      .christmas-items {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 10px;
+        align-content: start;
+      }
+      .xmas-item-card { margin-bottom: 0; }
+
+      #weekly-grid, #trip-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 12px;
+        align-content: start;
+      }
+      .meal-day-card { margin-bottom: 0; min-width: 0; }
+
+      /* vacation-frame-wrap now auto-sizes to its content on all breakpoints */
+    }
