@@ -780,3 +780,5 @@ html, body {
 
 .plan-days button.today { border-color: var(--family); color: var(--family); }
 .plan-days button:active { background: #eef4ff; }
+
+.rtag.p-ours { background: #EDE8F7; color: #534AB7; }

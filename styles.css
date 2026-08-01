@@ -430,3 +430,61 @@
 }
 .rx-day.today { border-color: #B96C25; color: #B96C25; }
 .rx-day:active { background: #fdf4ea; }
+
+/* ── Add-your-own recipes ────────────────────────────────────── */
+.rx-add-btn {
+  width: 100%; font-family: inherit; font-size: 14px; font-weight: 700;
+  padding: 12px; margin-bottom: 12px; border: 0; border-radius: 10px;
+  background: #B96C25; color: #fff; cursor: pointer;
+}
+.rx-add-btn:active { opacity: .8; }
+
+.rx-tag.ours { background: #EDE8F7; color: #534AB7; }
+
+.rxf-modes { display: flex; gap: 8px; margin-bottom: 16px; }
+.rxf-mode {
+  flex: 1; font-family: inherit; font-size: 13px; font-weight: 600;
+  padding: 10px; border-radius: 999px; border: 1.5px solid #ddd;
+  background: #fff; color: #666; cursor: pointer;
+}
+.rxf-mode.on { background: #B96C25; border-color: #B96C25; color: #fff; }
+
+.rxf-note { font-size: 12.5px; color: #888; line-height: 1.5; margin-bottom: 10px; }
+
+.rxf-input, .rxf-area {
+  width: 100%; font-family: inherit; font-size: 14.5px; color: #222;
+  padding: 11px 13px; border: 1.5px solid #ddd; border-radius: 10px;
+  background: #fff; -webkit-appearance: none;
+}
+.rxf-input:focus, .rxf-area:focus { outline: none; border-color: #B96C25; }
+.rxf-area { min-height: 130px; line-height: 1.5; resize: vertical; }
+.rxf-area.tall { min-height: 240px; }
+
+.rxf-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+.rxf-picks { display: flex; flex-wrap: wrap; gap: 6px; }
+.rxf-pick {
+  font-family: inherit; font-size: 12.5px; font-weight: 600;
+  padding: 7px 12px; border-radius: 999px;
+  border: 1.5px solid #ddd; background: #fff; color: #666; cursor: pointer;
+}
+.rxf-pick.on { background: #B96C25; border-color: #B96C25; color: #fff; }
+
+.rxf-parse {
+  width: 100%; font-family: inherit; font-size: 14px; font-weight: 700;
+  padding: 13px; margin-top: 12px; border: 0; border-radius: 10px;
+  background: #B96C25; color: #fff; cursor: pointer;
+}
+
+.rxf-actions { display: flex; gap: 8px; margin-top: 22px; }
+.rxf-save {
+  flex: 1; font-family: inherit; font-size: 15px; font-weight: 700;
+  padding: 14px; border: 0; border-radius: 10px;
+  background: #2A6B4F; color: #fff; cursor: pointer;
+}
+.rxf-delete {
+  font-family: inherit; font-size: 14px; font-weight: 600;
+  padding: 14px 18px; border: 1.5px solid #e0c0c0; border-radius: 10px;
+  background: #fff; color: #A32D2D; cursor: pointer;
+}
+.rxf-delete.hidden { display: none; }

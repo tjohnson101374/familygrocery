@@ -442,10 +442,18 @@ const RX_FILTERS = [
 ];
 
 const rxActive = { protein: new Set(), dish: new Set(), method: new Set() };
-let rxStore = "shopping";
+let rxStore   = "shopping";
+let myRecipes = [];   // yours, live from Firebase
+let rxEditing = null;
+
+// The PPP library is fixed reference data in code; anything you add
+// lives in Firebase. Browsing sees one merged list.
+function allRecipes() {
+  return RECIPES.concat(myRecipes);
+}
 
 function rxMatches() {
-  return RECIPES.filter(r =>
+  return allRecipes().filter(r =>
     RX_FILTERS.every(f => {
       const sel = rxActive[f.key];
       return sel.size === 0 || sel.has(r[f.key]);
@@ -478,15 +486,16 @@ function renderRecipes() {
     wrap.appendChild(row);
   });
 
-  const list = rxMatches();
+  const list  = rxMatches();
+  const total = allRecipes().length;
   const count = document.getElementById("rx-count");
   count.innerHTML = "";
   const txt = document.createElement("span");
-  txt.textContent = list.length === RECIPES.length
-    ? `${RECIPES.length} recipes`
-    : `${list.length} of ${RECIPES.length} recipes`;
+  txt.textContent = list.length === total
+    ? `${total} recipes`
+    : `${list.length} of ${total} recipes`;
   count.appendChild(txt);
-  if (list.length !== RECIPES.length) {
+  if (list.length !== total) {
     const clear = document.createElement("button");
     clear.className   = "rx-clear";
     clear.textContent = "Clear filters";
@@ -515,8 +524,9 @@ function renderRecipes() {
       `Serves ${r.serves} · ${r.prep} prep · ${r.cookLabel} ${r.cook}`;
     const tags = card.querySelector(".rx-tags");
     if (r.protein !== "none") tags.appendChild(rxTag(r.protein, "p-" + r.protein));
-    tags.appendChild(rxTag(r.method));
-    tags.appendChild(rxTag("wk " + r.week));
+    if (r.method) tags.appendChild(rxTag(r.method));
+    if (r.custom)     tags.appendChild(rxTag("ours", "ours"));
+    else if (r.week)  tags.appendChild(rxTag("wk " + r.week));
     card.onclick = () => openRecipe(r);
     listEl.appendChild(card);
   });
@@ -539,12 +549,31 @@ function openRecipe(r) {
 
   const meta = document.getElementById("rx-meta");
   meta.innerHTML = "";
-  [`Serves ${r.serves}`, `${r.calories} cal each`, `${r.prep} prep`,
-   `${r.cookLabel} ${r.cook}`, r.method, `Week ${r.week}`].forEach(t => {
-    const s = document.createElement("span");
-    s.textContent = t;
-    meta.appendChild(s);
+  [ r.serves && `Serves ${r.serves}`,
+    r.calories && `${r.calories} cal each`,
+    r.prep && `${r.prep} prep`,
+    r.cook && `${r.cookLabel || "cook"} ${r.cook}`,
+    r.method,
+    r.week ? `Week ${r.week}` : null,
+    r.source || null,
+  ].filter(Boolean).forEach(t => {
+    const el = document.createElement("span");
+    el.textContent = t;
+    meta.appendChild(el);
   });
+
+  const editBtn = document.getElementById("rx-edit-wrap");
+  if (editBtn) editBtn.remove();
+  if (r.custom) {
+    const wrap = document.createElement("div");
+    wrap.id = "rx-edit-wrap";
+    const b = document.createElement("button");
+    b.className   = "rxf-mode";
+    b.textContent = "Edit this recipe";
+    b.onclick = () => { closeRecipe(); openRecipeForm(r); };
+    wrap.appendChild(b);
+    meta.after(wrap);
+  }
 
   renderRxStores();
 
@@ -620,6 +649,193 @@ function closeRecipe() { document.getElementById("rx-overlay").classList.add("hi
 document.getElementById("rx-close").onclick = closeRecipe;
 document.getElementById("rx-overlay").addEventListener("click", e => {
   if (e.target === document.getElementById("rx-overlay")) closeRecipe();
+});
+
+
+// ── Add / edit your own recipes ──────────────────────────────────
+const RXF_PICKS = {
+  protein: ["chicken","beef","pork","seafood","meatless","none"],
+  dish:    ["soup","pasta","mexican","casserole","sandwich","salad","asian","skillet","breakfast","dessert"],
+  method:  ["slow cooker","oven","stovetop","no-cook"],
+};
+const RXF_LABELS = {
+  none: "None", skillet: "Other main", soup: "Soup & chili",
+  mexican: "Mexican", asian: "Asian", sandwich: "Sandwich",
+};
+let rxfPicked = { protein: "chicken", dish: "skillet", method: "oven" };
+
+function rxfLabel(v) {
+  return RXF_LABELS[v] || v.charAt(0).toUpperCase() + v.slice(1);
+}
+
+function renderRxfPicks() {
+  Object.keys(RXF_PICKS).forEach(key => {
+    const wrap = document.getElementById("rxf-" + key);
+    wrap.innerHTML = "";
+    RXF_PICKS[key].forEach(v => {
+      const b = document.createElement("button");
+      b.className   = "rxf-pick" + (rxfPicked[key] === v ? " on" : "");
+      b.textContent = rxfLabel(v);
+      b.onclick = () => { rxfPicked[key] = v; renderRxfPicks(); };
+      wrap.appendChild(b);
+    });
+  });
+}
+
+// Guess tags from the text so a pasted recipe lands in the right
+// filters without anyone having to think about it. Always editable.
+function rxfGuess(text) {
+  const t = text.toLowerCase();
+  const has = re => new RegExp(re).test(t);
+  let protein = "meatless";
+  if (has("shrimp|salmon|tilapia|crab|tuna|\\bfish\\b|scallop")) protein = "seafood";
+  else if (has("\\bchicken\\b|rotisserie|turkey"))               protein = "chicken";
+  else if (has("ground beef|chuck roast|brisket|steak|\\bbeef\\b")) protein = "beef";
+  else if (has("\\bpork\\b|bacon|sausage|\\bham\\b"))          protein = "pork";
+
+  let dish = "skillet";
+  if (has("soup|chili|stew|gumbo|chowder"))                    dish = "soup";
+  else if (has("salad"))                                       dish = "salad";
+  else if (has("taco|enchilada|burrito|quesadilla|fajita"))     dish = "mexican";
+  else if (has("pasta|lasagna|spaghetti|macaroni|alfredo|ziti")) dish = "pasta";
+  else if (has("sandwich|wrap|slider|burger|melt"))            dish = "sandwich";
+  else if (has("casserole|\\bbake\\b|pot pie"))                dish = "casserole";
+  else if (has("stir.fry|teriyaki|sesame|\\bthai\\b"))         dish = "asian";
+  else if (has("\\bpie\\b|cake|cookie|brownie|dessert|ice cream")) dish = "dessert";
+  else if (has("pancake|waffle|french toast|egg bites|\\bgrits\\b")) dish = "breakfast";
+
+  let method = "stovetop";
+  if (has("slow cooker|crockpot|crock pot")) method = "slow cooker";
+  else if (has("preheat oven|\\bbake\\b|oven to"))  method = "oven";
+  return { protein, dish, method };
+}
+
+// Split a pasted block into a name, ingredients and steps. Uses
+// section headings when they exist and falls back to shape: lines
+// that start with a quantity are ingredients, prose is a step.
+function rxfSplit(raw) {
+  const lines = raw.split("\n").map(l => l.trim()).filter(Boolean);
+  if (!lines.length) return null;
+
+  const ING_HEAD  = /^(ingredients?|you.?ll need|what you need)\b/i;
+  const STEP_HEAD = /^(directions?|instructions?|method|steps|preparation|how to)\b/i;
+  const QTY = /^([\u2022\u00b7\-*]\s*)?(\d|\u00bc|\u00bd|\u00be|\u2153|\u2154|\u215b|a |an |one |two |three |half |pinch|dash|salt|pepper)/i;
+
+  let name = "", mode = "", ings = [], steps = [];
+  lines.forEach((line, i) => {
+    if (ING_HEAD.test(line))  { mode = "ing";  return; }
+    if (STEP_HEAD.test(line)) { mode = "step"; return; }
+    if (!name && i < 3 && !QTY.test(line) && line.length < 80) { name = line; return; }
+
+    const clean = line.replace(/^[\u2022\u00b7\-*]\s*/, "").replace(/^\d{1,2}[.)]\s*/, "");
+    if (mode === "ing")       ings.push(clean);
+    else if (mode === "step") steps.push(clean);
+    else if (/^\d{1,2}[.)]\s/.test(line) || (line.length > 90 && !QTY.test(line))) steps.push(clean);
+    else if (QTY.test(line) && line.length < 90) ings.push(clean);
+    else steps.push(clean);
+  });
+
+  const serves = (raw.match(/serves?\s*:?\s*([\d\-\u2013 to]+)/i) || [])[1];
+  return { name: name || "Untitled recipe", ings, steps, serves: serves ? serves.trim() : "" };
+}
+
+function rxfSetMode(mode) {
+  document.getElementById("rxf-mode-paste").classList.toggle("on", mode === "paste");
+  document.getElementById("rxf-mode-form").classList.toggle("on",  mode === "form");
+  document.getElementById("rxf-paste-pane").classList.toggle("hidden", mode !== "paste");
+  document.getElementById("rxf-form-pane").classList.toggle("hidden",  mode !== "form");
+}
+
+function openRecipeForm(existing) {
+  rxEditing = existing || null;
+  document.getElementById("rxf-title").textContent = existing ? "Edit recipe" : "Add a recipe";
+  document.getElementById("rxf-delete").classList.toggle("hidden", !existing);
+  document.getElementById("rxf-paste").value = "";
+
+  const g = id => document.getElementById(id);
+  g("rxf-name").value   = existing ? existing.name   : "";
+  g("rxf-serves").value = existing ? existing.serves : "";
+  g("rxf-prep").value   = existing ? existing.prep   : "";
+  g("rxf-cook").value   = existing ? existing.cook   : "";
+  g("rxf-source").value = existing ? (existing.source || "") : "";
+  g("rxf-ings").value   = existing ? existing.ingredients.join("\n") : "";
+  g("rxf-steps").value  = existing ? existing.steps.join("\n") : "";
+  rxfPicked = existing
+    ? { protein: existing.protein, dish: existing.dish, method: existing.method }
+    : { protein: "chicken", dish: "skillet", method: "oven" };
+
+  renderRxfPicks();
+  rxfSetMode(existing ? "form" : "paste");
+  document.getElementById("rxf-overlay").classList.remove("hidden");
+}
+
+function closeRecipeForm() {
+  document.getElementById("rxf-overlay").classList.add("hidden");
+  rxEditing = null;
+}
+
+document.getElementById("rx-add-btn").onclick   = () => openRecipeForm(null);
+document.getElementById("rxf-close").onclick    = closeRecipeForm;
+document.getElementById("rxf-mode-paste").onclick = () => rxfSetMode("paste");
+document.getElementById("rxf-mode-form").onclick  = () => rxfSetMode("form");
+document.getElementById("rxf-overlay").addEventListener("click", e => {
+  if (e.target === document.getElementById("rxf-overlay")) closeRecipeForm();
+});
+
+document.getElementById("rxf-parse").onclick = () => {
+  const raw = document.getElementById("rxf-paste").value;
+  const out = rxfSplit(raw);
+  if (!out) { showToast("Paste a recipe first"); return; }
+  document.getElementById("rxf-name").value   = out.name;
+  document.getElementById("rxf-serves").value = out.serves;
+  document.getElementById("rxf-ings").value   = out.ings.join("\n");
+  document.getElementById("rxf-steps").value  = out.steps.join("\n");
+  rxfPicked = rxfGuess(raw);
+  renderRxfPicks();
+  rxfSetMode("form");
+  showToast(`Found ${out.ings.length} ingredients, ${out.steps.length} steps`);
+};
+
+document.getElementById("rxf-save").onclick = async () => {
+  const g   = id => document.getElementById(id).value.trim();
+  const name = g("rxf-name");
+  if (!name) { showToast("Give it a name"); return; }
+  const lines = id => document.getElementById(id).value
+    .split("\n").map(l => l.trim()).filter(Boolean);
+
+  const entry = {
+    name,
+    serves: g("rxf-serves"), prep: g("rxf-prep"),
+    cook: g("rxf-cook"), cookLabel: "cook",
+    protein: rxfPicked.protein, dish: rxfPicked.dish, method: rxfPicked.method,
+    category: rxfPicked.dish === "dessert" ? "dessert"
+            : rxfPicked.dish === "breakfast" ? "breakfast" : "main",
+    ingredients: lines("rxf-ings"), steps: lines("rxf-steps"),
+    source: g("rxf-source"), updatedAt: Date.now(),
+  };
+
+  if (rxEditing) await set(ref(db, `customRecipes/${rxEditing.fbKey}`), entry);
+  else           await push(ref(db, "customRecipes"), entry);
+
+  closeRecipeForm();
+  showToast(rxEditing ? "Recipe updated" : "Recipe saved");
+};
+
+document.getElementById("rxf-delete").onclick = async () => {
+  if (!rxEditing) return;
+  if (!confirm(`Delete "${rxEditing.name}"? This can't be undone.`)) return;
+  await remove(ref(db, `customRecipes/${rxEditing.fbKey}`));
+  closeRecipeForm();
+  showToast("Recipe deleted");
+};
+
+onValue(ref(db, "customRecipes"), snap => {
+  const val = snap.val() || {};
+  myRecipes = Object.entries(val).map(([key, v]) => ({
+    ...v, fbKey: key, id: "my-" + key, custom: true, week: null, box: "ours",
+    ingredients: v.ingredients || [], steps: v.steps || [],
+  }));
+  if (activeStore === "recipes") renderRecipes();
 });
 
 // ── Render: vacations (self-service, multiple trips via sub-tabs) ─

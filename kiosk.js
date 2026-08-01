@@ -502,8 +502,13 @@ const FILTERS = [
 
 const activeFilters = { protein: new Set(), dish: new Set(), method: new Set() };
 
+// Recipes you add from your phone live in Firebase; the PPP library
+// is fixed data in code. The browser shows one merged list.
+let myRecipes = [];
+function allRecipes() { return RECIPES.concat(myRecipes); }
+
 function matchingRecipes() {
-  return RECIPES.filter(r =>
+  return allRecipes().filter(r =>
     FILTERS.every(f => {
       const sel = activeFilters[f.key];
       return sel.size === 0 || sel.has(r[f.key]);
@@ -538,9 +543,10 @@ function renderFilters() {
 
 function renderRecipes() {
   renderFilters();
-  const list = matchingRecipes();
+  const list  = matchingRecipes();
+  const total = allRecipes().length;
   document.getElementById("recipe-count").textContent =
-    list.length === RECIPES.length ? RECIPES.length : `${list.length} of ${RECIPES.length}`;
+    list.length === total ? total : `${list.length} of ${total}`;
 
   const wrap = document.getElementById("recipe-list");
   wrap.innerHTML = "";
@@ -564,13 +570,15 @@ function renderRecipes() {
 
     const meta = document.createElement("div");
     meta.className   = "rmeta";
-    meta.textContent = `Serves ${r.serves} · ${r.prep} prep · ${r.cookLabel} ${r.cook}`;
+    meta.textContent = [r.serves && `Serves ${r.serves}`, r.prep && `${r.prep} prep`,
+      r.cook && `${r.cookLabel || "cook"} ${r.cook}`].filter(Boolean).join(" · ");
 
     const tags = document.createElement("div");
     tags.className = "rtags";
     if (r.protein !== "none") tags.appendChild(tag(r.protein, "p-" + r.protein));
-    tags.appendChild(tag(r.method));
-    tags.appendChild(tag(`wk ${r.week}`));
+    if (r.method) tags.appendChild(tag(r.method));
+    if (r.custom)    tags.appendChild(tag("ours", "p-ours"));
+    else if (r.week) tags.appendChild(tag(`wk ${r.week}`));
 
     card.appendChild(name);
     card.appendChild(meta);
@@ -610,8 +618,10 @@ function openRecipe(r) {
 
   const meta = document.getElementById("rsheet-meta");
   meta.innerHTML = "";
-  [`Serves ${r.serves}`, `${r.calories} cal each`, `${r.prep} prep`,
-   `${r.cookLabel} ${r.cook}`, r.method, `Week ${r.week}`].forEach(t => {
+  [ r.serves && `Serves ${r.serves}`, r.calories && `${r.calories} cal each`,
+    r.prep && `${r.prep} prep`, r.cook && `${r.cookLabel || "cook"} ${r.cook}`,
+    r.method, r.week ? `Week ${r.week}` : null, r.source || null,
+  ].filter(Boolean).forEach(t => {
     const s = document.createElement("span");
     s.textContent = t;
     meta.appendChild(s);
@@ -823,6 +833,15 @@ function renderTrips() {
     shownTripId = trip.id;
   }
 }
+
+onValue(ref(db, "customRecipes"), snap => {
+  const val = snap.val() || {};
+  myRecipes = Object.entries(val).map(([key, v]) => ({
+    ...v, id: "my-" + key, custom: true, week: null, box: "ours",
+    ingredients: v.ingredients || [], steps: v.steps || [],
+  }));
+  if (activeView === "recipes") renderRecipes();
+});
 
 onValue(ref(db, "christmas"), snap => {
   christmas = snap.val() || {};

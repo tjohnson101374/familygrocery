@@ -99,6 +99,7 @@
 
   <!-- ── Vacations Area (self-service embedded dashboards) ─────── -->
   <div class="recipes-area hidden" id="recipes-area">
+    <button class="rx-add-btn" id="rx-add-btn">+ Add your own recipe</button>
     <div class="rx-filters" id="rx-filters"></div>
     <div class="rx-count" id="rx-count"></div>
     <div class="rx-list" id="rx-list"></div>
@@ -156,6 +157,69 @@
   </div>
 
   <!-- Meal → Grocery modal -->
+  <div class="rx-overlay hidden" id="rxf-overlay">
+    <div class="rx-modal">
+      <div class="rx-modal-head">
+        <span id="rxf-title">Add a recipe</span>
+        <button class="rx-close" id="rxf-close" aria-label="Close">&#10005;</button>
+      </div>
+      <div class="rx-scroll">
+        <div class="rxf-modes">
+          <button class="rxf-mode on" id="rxf-mode-paste">Paste a recipe</button>
+          <button class="rxf-mode" id="rxf-mode-form">Type it out</button>
+        </div>
+
+        <div id="rxf-paste-pane">
+          <div class="rx-h">Paste the whole thing</div>
+          <p class="rxf-note">Copy a recipe from a website or type it in — name, ingredients and steps all together. I'll split it up, and you can fix anything before saving.</p>
+          <textarea class="rxf-area tall" id="rxf-paste" placeholder="Chicken Tortilla Soup&#10;&#10;Ingredients&#10;1 lb chicken breast&#10;2 cans diced tomatoes&#10;&#10;Directions&#10;1. Add everything to the slow cooker.&#10;2. Cook on low 6 hours."></textarea>
+          <button class="rxf-parse" id="rxf-parse">Split it up &#8594;</button>
+        </div>
+
+        <div id="rxf-form-pane" class="hidden">
+          <div class="rx-h">Name</div>
+          <input class="rxf-input" id="rxf-name" type="text" placeholder="What's it called?">
+
+          <div class="rxf-grid">
+            <div>
+              <div class="rx-h">Serves</div>
+              <input class="rxf-input" id="rxf-serves" type="text" placeholder="6">
+            </div>
+            <div>
+              <div class="rx-h">Prep</div>
+              <input class="rxf-input" id="rxf-prep" type="text" placeholder="15 minutes">
+            </div>
+            <div>
+              <div class="rx-h">Cook</div>
+              <input class="rxf-input" id="rxf-cook" type="text" placeholder="30 minutes">
+            </div>
+          </div>
+
+          <div class="rx-h">Protein</div>
+          <div class="rxf-picks" id="rxf-protein"></div>
+          <div class="rx-h">Kind</div>
+          <div class="rxf-picks" id="rxf-dish"></div>
+          <div class="rx-h">How</div>
+          <div class="rxf-picks" id="rxf-method"></div>
+
+          <div class="rx-h">Ingredients <span class="rx-hint">one per line</span></div>
+          <textarea class="rxf-area" id="rxf-ings"></textarea>
+
+          <div class="rx-h">Directions <span class="rx-hint">one step per line</span></div>
+          <textarea class="rxf-area" id="rxf-steps"></textarea>
+
+          <div class="rx-h">Where it came from <span class="rx-hint">optional</span></div>
+          <input class="rxf-input" id="rxf-source" type="text" placeholder="Link or where you found it">
+
+          <div class="rxf-actions">
+            <button class="rxf-delete hidden" id="rxf-delete">Delete</button>
+            <button class="rxf-save" id="rxf-save">Save recipe</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="rx-overlay hidden" id="rx-overlay">
     <div class="rx-modal">
       <div class="rx-modal-head">
