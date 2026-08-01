@@ -497,7 +497,9 @@ const FILTERS = [
     ["asian","Asian"], ["skillet","Other mains"],
     ["breakfast","Breakfast"], ["dessert","Dessert"] ] },
   { key: "method", label: "How", options: [
-    ["slow cooker","Slow cooker"], ["oven","Oven"], ["stovetop","Stovetop"] ] },
+    ["slow cooker","Slow cooker"], ["oven","Oven"], ["stovetop","Stovetop"],
+    ["blackstone","Blackstone"], ["smoker","Smoker"], ["air fryer","Air fryer"],
+    ["grill","Grill"], ["no-cook","No-cook"] ] },
 ];
 
 const activeFilters = { protein: new Set(), dish: new Set(), method: new Set() };

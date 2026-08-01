@@ -438,7 +438,9 @@ const RX_FILTERS = [
     ["asian","Asian"], ["skillet","Other mains"],
     ["breakfast","Breakfast"], ["dessert","Dessert"] ] },
   { key: "method", label: "How", options: [
-    ["slow cooker","Slow cooker"], ["oven","Oven"], ["stovetop","Stovetop"] ] },
+    ["slow cooker","Slow cooker"], ["oven","Oven"], ["stovetop","Stovetop"],
+    ["blackstone","Blackstone"], ["smoker","Smoker"], ["air fryer","Air fryer"],
+    ["grill","Grill"], ["no-cook","No-cook"] ] },
 ];
 
 const rxActive = { protein: new Set(), dish: new Set(), method: new Set() };
@@ -656,10 +658,11 @@ document.getElementById("rx-overlay").addEventListener("click", e => {
 const RXF_PICKS = {
   protein: ["chicken","beef","pork","seafood","meatless","none"],
   dish:    ["soup","pasta","mexican","casserole","sandwich","salad","asian","skillet","breakfast","dessert"],
-  method:  ["slow cooker","oven","stovetop","no-cook"],
+  method:  ["slow cooker","oven","stovetop","blackstone","smoker","air fryer","grill","no-cook"],
 };
 const RXF_LABELS = {
   none: "None", skillet: "Other main", soup: "Soup & chili",
+  "air fryer": "Air fryer", "slow cooker": "Slow cooker", "no-cook": "No-cook",
   mexican: "Mexican", asian: "Asian", sandwich: "Sandwich",
 };
 let rxfPicked = { protein: "chicken", dish: "skillet", method: "oven" };
@@ -705,8 +708,12 @@ function rxfGuess(text) {
   else if (has("pancake|waffle|french toast|egg bites|\\bgrits\\b")) dish = "breakfast";
 
   let method = "stovetop";
-  if (has("slow cooker|crockpot|crock pot")) method = "slow cooker";
-  else if (has("preheat oven|\\bbake\\b|oven to"))  method = "oven";
+  if (has("air.?fry"))                                        method = "air fryer";
+  else if (has("blackstone|flat.?top|\\bgriddle\\b"))          method = "blackstone";
+  else if (has("smoker|smoke it|pellet grill|pit boss|traeger|wood chips")) method = "smoker";
+  else if (has("slow cooker|crockpot|crock pot"))             method = "slow cooker";
+  else if (has("\\bgrill\\b|charcoal|over direct heat"))       method = "grill";
+  else if (has("preheat oven|\\bbake\\b|oven to"))             method = "oven";
   return { protein, dish, method };
 }
 
@@ -719,12 +726,17 @@ function rxfSplit(raw) {
 
   const ING_HEAD  = /^(ingredients?|you.?ll need|what you need)\b/i;
   const STEP_HEAD = /^(directions?|instructions?|method|steps|preparation|how to)\b/i;
+  // Metadata lines sit above the ingredients on most cards and pages.
+  // Pull the useful numbers out of them instead of mistaking them for
+  // a step, which is what happens if you just let them fall through.
+  const META = /^(serves|servings|yield|makes|prep|cook|bake|total|calories|difficulty|course|cuisine)\b\s*:?/i;
   const QTY = /^([\u2022\u00b7\-*]\s*)?(\d|\u00bc|\u00bd|\u00be|\u2153|\u2154|\u215b|a |an |one |two |three |half |pinch|dash|salt|pepper)/i;
 
-  let name = "", mode = "", ings = [], steps = [];
+  let name = "", mode = "", ings = [], steps = [], metaLines = [];
   lines.forEach((line, i) => {
     if (ING_HEAD.test(line))  { mode = "ing";  return; }
     if (STEP_HEAD.test(line)) { mode = "step"; return; }
+    if (!mode && META.test(line)) { metaLines.push(line); return; }
     if (!name && i < 3 && !QTY.test(line) && line.length < 80) { name = line; return; }
 
     const clean = line.replace(/^[\u2022\u00b7\-*]\s*/, "").replace(/^\d{1,2}[.)]\s*/, "");
@@ -735,8 +747,15 @@ function rxfSplit(raw) {
     else steps.push(clean);
   });
 
-  const serves = (raw.match(/serves?\s*:?\s*([\d\-\u2013 to]+)/i) || [])[1];
-  return { name: name || "Untitled recipe", ings, steps, serves: serves ? serves.trim() : "" };
+  const meta = metaLines.join(" | ") + " | " + raw;
+  const grab = re => { const m = meta.match(re); return m ? m[1].trim() : ""; };
+  return {
+    name:   name || "Untitled recipe",
+    ings, steps,
+    serves: grab(/(?:serves|servings|makes|yield)\s*:?\s*([\d]+(?:\s*[-\u2013to]+\s*\d+)?)/i),
+    prep:   grab(/prep(?:\s*time)?\s*:?\s*([\w\s]{1,18}?)(?:\||\n|$)/i),
+    cook:   grab(/(?:cook|bake)(?:\s*time)?\s*:?\s*([\w\s]{1,18}?)(?:\||\n|$)/i),
+  };
 }
 
 function rxfSetMode(mode) {
@@ -788,6 +807,8 @@ document.getElementById("rxf-parse").onclick = () => {
   if (!out) { showToast("Paste a recipe first"); return; }
   document.getElementById("rxf-name").value   = out.name;
   document.getElementById("rxf-serves").value = out.serves;
+  if (out.prep) document.getElementById("rxf-prep").value = out.prep;
+  if (out.cook) document.getElementById("rxf-cook").value = out.cook;
   document.getElementById("rxf-ings").value   = out.ings.join("\n");
   document.getElementById("rxf-steps").value  = out.steps.join("\n");
   rxfPicked = rxfGuess(raw);
