@@ -812,3 +812,10 @@ html, body {
   text-transform: uppercase; color: var(--ink-faint);
   min-width: 76px;
 }
+
+.cook-chip {
+  margin-left: auto; flex-shrink: 0;
+  font-size: 14px; font-weight: 700; color: #fff;
+  padding: 5px 12px; border-radius: 999px; white-space: nowrap;
+}
+.meal .cook-chip + .meal-edit { margin-left: 10px; }

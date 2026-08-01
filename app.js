@@ -1012,6 +1012,19 @@ onValue(ref(db, "customRecipes"), snap => {
 });
 
 
+// Whoever is making dinner that night. Colours match the calendars so
+// a glance at the wall reads the same way as the schedule does.
+const COOKS = [
+  { id: "mom",     name: "Mom",     color: "#B0306A" },
+  { id: "dad",     name: "Dad",     color: "#2952A3" },
+  { id: "trinity", name: "Trinity", color: "#A32929" },
+  { id: "sierra",  name: "Sierra",  color: "#0D7813" },
+  { id: "kelsey",  name: "Kelsey",  color: "#7A367A" },
+  { id: "out",     name: "Eating out", color: "#5F5E5A" },
+];
+
+function cookById(id) { return COOKS.find(c => c.id === id) || null; }
+
 // ── Meal slots: shared helpers ───────────────────────────────────
 // Weekly plans only have dinner; trip plans have all three. Both
 // store an optional "<meal>Recipe" key alongside the text so a night
@@ -1063,6 +1076,13 @@ async function clearMeal(planType, dateStr, meal) {
   const base = mealBase(planType, dateStr);
   await remove(ref(db, `${base}/${meal}`));
   await remove(ref(db, `${base}/${meal}Recipe`));
+  await remove(ref(db, `${base}/${meal}Cook`));
+}
+
+async function setCook(planType, dateStr, meal, cookId) {
+  const path = `${mealBase(planType, dateStr)}/${meal}Cook`;
+  if (cookId) await set(ref(db, path), cookId);
+  else        await remove(ref(db, path));
 }
 
 async function moveMeal(planType, fromDate, fromMeal, toDate, toMeal) {
@@ -1070,6 +1090,7 @@ async function moveMeal(planType, fromDate, fromMeal, toDate, toMeal) {
   const val = day[fromMeal];
   if (!val) return;
   await planMeal(planType, toDate, toMeal, val, day[fromMeal + "Recipe"]);
+  await setCook(planType, toDate, toMeal, day[fromMeal + "Cook"]);
   if (!(fromDate === toDate && fromMeal === toMeal)) {
     await clearMeal(planType, fromDate, fromMeal);
   }
@@ -1113,6 +1134,7 @@ function openMealActions(planType, dateStr, meal) {
     });
   }
 
+  renderCookPicks();
   openMealActionsDays();
   document.getElementById("ma-clear").onclick = async () => {
     await clearMeal(planType, dateStr, meal);
@@ -1120,6 +1142,26 @@ function openMealActions(planType, dateStr, meal) {
     showToast("Cleared");
   };
   document.getElementById("ma-overlay").classList.remove("hidden");
+}
+
+function renderCookPicks() {
+  const wrap = document.getElementById("ma-cooks");
+  wrap.innerHTML = "";
+  const current = mealDay(maCtx.planType, maCtx.dateStr)[maCtx.meal + "Cook"];
+  COOKS.forEach(c => {
+    const b = document.createElement("button");
+    b.className   = "ma-cook" + (current === c.id ? " on" : "");
+    b.textContent = c.name;
+    if (current === c.id) { b.style.background = c.color; b.style.borderColor = c.color; }
+    b.onclick = async () => {
+      // Tapping the person already chosen clears it, so a night can go
+      // back to nobody in particular.
+      await setCook(maCtx.planType, maCtx.dateStr, maCtx.meal,
+                    current === c.id ? null : c.id);
+      renderCookPicks();
+    };
+    wrap.appendChild(b);
+  });
 }
 
 function renderMaSlots() {
@@ -1459,6 +1501,16 @@ function buildMealCard(dateStr, slots, planType) {
     });
     cartBtn.addEventListener("click", () => { openMealModal(dateStr, meal, planType); });
     slot.appendChild(lbl); slot.appendChild(inp); slot.appendChild(cartBtn);
+
+    const cook = cookById(mealDay(planType, dateStr)[meal + "Cook"]);
+    if (value && cook) {
+      const chip = document.createElement("span");
+      chip.className     = "meal-cook";
+      chip.textContent   = cook.name;
+      chip.style.background = cook.color;
+      chip.title = `${cook.name} is cooking`;
+      slot.appendChild(chip);
+    }
 
     if (value) {
       const actBtn = document.createElement("button");

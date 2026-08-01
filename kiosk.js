@@ -68,6 +68,18 @@ const STORES = [
 
 const ALL_IDS = ["shopping", "target", "walmart", "costco", "hardware", "homedepot", "lowes", "other"];
 
+// Whoever is making that night's dinner.
+const COOKS = [
+  { id: "mom",     name: "Mom",     color: "#B0306A" },
+  { id: "dad",     name: "Dad",     color: "#2952A3" },
+  { id: "trinity", name: "Trinity", color: "#A32929" },
+  { id: "sierra",  name: "Sierra",  color: "#0D7813" },
+  { id: "kelsey",  name: "Kelsey",  color: "#7A367A" },
+  { id: "out",     name: "Eating out", color: "#5F5E5A" },
+];
+
+function cookById(id) { return COOKS.find(c => c.id === id) || null; }
+
 const MEMBERS = [
   { id: "mom",     name: "Mom",     color: "#B0306A" },
   { id: "dad",     name: "Dad",     color: "#2952A3" },
@@ -256,6 +268,15 @@ function renderMeals() {
     row.appendChild(day);
     row.appendChild(what);
 
+    const cook = cookById((weeklyMeals[dateStr] || {}).dinnerCook);
+    if (value && cook) {
+      const chip = document.createElement("span");
+      chip.className        = "cook-chip";
+      chip.textContent      = cook.name;
+      chip.style.background = cook.color;
+      row.appendChild(chip);
+    }
+
     const linkId = (weeklyMeals[dateStr] || {}).dinnerRecipe;
     if (linkId) {
       const edit = document.createElement("button");
@@ -292,11 +313,17 @@ function recentDinners() {
   return seen.slice(0, 14);
 }
 
+async function setCook(dateStr, cookId) {
+  const path = `mealplan/weekly/${dateStr}/dinnerCook`;
+  if (cookId) await set(ref(db, path), cookId);
+  else        await remove(ref(db, path));
+}
+
 async function saveMeal(dateStr, value, recipeId) {
   const base = `mealplan/weekly/${dateStr}`;
   const v    = (value || "").trim();
   if (v) { await set(ref(db, `${base}/dinner`), v); }
-  else   { await remove(ref(db, `${base}/dinner`)); }
+  else   { await remove(ref(db, `${base}/dinner`)); await setCook(dateStr, null); }
   // Typing a night by hand clears any link to the recipe library —
   // it is no longer that meal, so a stale link would just mislead.
   if (recipeId) await set(ref(db, `${base}/dinnerRecipe`), recipeId);
@@ -321,6 +348,7 @@ async function moveMealTo(fromDate, toDate) {
   const day = weeklyMeals[fromDate] || {};
   if (!day.dinner || fromDate === toDate) return;
   await saveMeal(toDate, day.dinner, day.dinnerRecipe);
+  await setCook(toDate, day.dinnerCook);
   await saveMeal(fromDate, "");
 }
 
@@ -334,6 +362,7 @@ function closeSheet() {
 
 function openXmasSheet() {
   document.getElementById("sheet-move").classList.add("hidden");
+  document.getElementById("sheet-cook").classList.add("hidden");
   sheetMode = "xmas";
   const member = memberById(activeMember);
   sheetTitle.textContent = `Add to ${member.name}'s list`;
@@ -350,6 +379,7 @@ function openXmasSheet() {
 
 function openAddSheet() {
   document.getElementById("sheet-move").classList.add("hidden");
+  document.getElementById("sheet-cook").classList.add("hidden");
   sheetMode  = "grocery";
   sheetStore = activeStore;
   sheetTitle.textContent = "Add an item";
@@ -374,7 +404,33 @@ function openMealSheet(dateStr, current) {
   sheetInput.value = current || "";
   renderSheetChips();
   renderMoveRow(dateStr, current);
+  renderCookRow(dateStr);
   sheet.classList.remove("hidden");
+}
+
+function renderCookRow(dateStr) {
+  const row = document.getElementById("sheet-cook");
+  row.innerHTML = "";
+  row.classList.remove("hidden");
+
+  const lbl = document.createElement("span");
+  lbl.className   = "plan-label";
+  lbl.textContent = "Cooking";
+  row.appendChild(lbl);
+
+  const current = (weeklyMeals[dateStr] || {}).dinnerCook;
+  COOKS.forEach(c => {
+    const b = document.createElement("button");
+    b.className   = "mv" + (current === c.id ? " on" : "");
+    b.textContent = c.name;
+    if (current === c.id) { b.style.background = c.color; b.style.borderColor = c.color; b.style.color = "#fff"; }
+    b.addEventListener("click", async () => {
+      // Tap the chosen person again to clear the night.
+      await setCook(dateStr, current === c.id ? null : c.id);
+      renderCookRow(dateStr);
+    });
+    row.appendChild(b);
+  });
 }
 
 // Moving or clearing a night, without retyping it.

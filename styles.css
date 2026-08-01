@@ -528,3 +528,17 @@
   font-size: 11px; font-weight: 700; letter-spacing: .08em;
   text-transform: uppercase; color: #B96C25; margin: 14px 0 7px;
 }
+
+.ma-cooks { display: flex; flex-wrap: wrap; gap: 7px; }
+.ma-cook {
+  font-family: inherit; font-size: 13px; font-weight: 700;
+  padding: 10px 14px; border-radius: 999px;
+  border: 1.5px solid #ddd; background: #fff; color: #444; cursor: pointer;
+}
+.ma-cook.on { color: #fff; }
+
+.meal-cook {
+  flex-shrink: 0; font-size: 10px; font-weight: 700;
+  letter-spacing: .03em; color: #fff;
+  padding: 4px 8px; border-radius: 999px; white-space: nowrap;
+}
