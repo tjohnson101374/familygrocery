@@ -99,6 +99,7 @@ let activeStore = "shopping";
 const lists     = {};
 let favorites   = {};
 let weeklyMeals = {};
+let mealWeek    = 0;   // 0 = this week, 1 = next
 
 ALL_IDS.forEach(id => { lists[id] = {}; });
 
@@ -243,16 +244,29 @@ async function addItem(storeId, text) {
 }
 
 // ── Meals ────────────────────────────────────────────────────────
+function renderMealWeekToggle() {
+  const wrap = document.getElementById("meal-week-toggle");
+  wrap.innerHTML = "";
+  WEEK_LABELS.forEach((label, i) => {
+    const b = document.createElement("button");
+    b.className   = mealWeek === i ? "on" : "";
+    b.textContent = i === 0 ? "This week" : "Next week";
+    b.addEventListener("click", () => {
+      mealWeek = i;
+      renderMealWeekToggle();
+      renderMeals();
+    });
+    wrap.appendChild(b);
+  });
+}
+
 function renderMeals() {
-  const wrap  = document.getElementById("meal-list");
-  const start = getMonday(new Date());
+  const wrap = document.getElementById("meal-list");
   wrap.innerHTML = "";
 
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(start);
-    d.setDate(d.getDate() + i);
-    const dateStr = localDateStr(d);
-    const value   = (weeklyMeals[dateStr] || {}).dinner || "";
+  weekDates(mealWeek).forEach(dateStr => {
+    const d     = new Date(dateStr + "T00:00:00");
+    const value = (weeklyMeals[dateStr] || {}).dinner || "";
 
     const row = document.createElement("div");
     row.className = "meal" + (isToday(d) ? " today" : "");
@@ -299,7 +313,7 @@ function renderMeals() {
     }
 
     wrap.appendChild(row);
-  }
+  });
 }
 
 // Distinct dinners already planned, newest first — the tap-to-reuse
@@ -1088,6 +1102,7 @@ loadCalendars();
 renderClock();
 renderStoreStrip();
 renderGrocery();
+renderMealWeekToggle();
 renderMeals();
 
 // The Google Calendar embeds resolve "this week" and "today" when

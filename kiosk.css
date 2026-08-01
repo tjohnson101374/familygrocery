@@ -819,3 +819,15 @@ html, body {
   padding: 5px 12px; border-radius: 999px; white-space: nowrap;
 }
 .meal .cook-chip + .meal-edit { margin-left: 10px; }
+
+.week-toggle { display: inline-flex; gap: 6px; }
+.week-toggle button {
+  font-family: inherit; font-size: 14px; font-weight: 700;
+  letter-spacing: 0; text-transform: none;
+  padding: 7px 13px; border-radius: 999px;
+  border: 2px solid var(--line-heavy); background: #fff;
+  color: var(--ink-soft); cursor: pointer; white-space: nowrap;
+}
+.week-toggle button.on {
+  background: var(--ink); border-color: var(--ink); color: #fff;
+}
