@@ -428,7 +428,49 @@ function render() {
 // Mood-first browsing: narrow by protein and kind of food, then tap
 // straight through to ingredients you can add to the grocery list or
 // a night you want to cook it.
+
+// ── Time ─────────────────────────────────────────────────────────
+// Times on the cards are free text ("8-10 hours", "30-35 minutes",
+// "1 hour"). Take the top of any range, since that is the number you
+// have to plan around, and total prep + cook.
+function parseMinutes(str) {
+  if (!str) return 0;
+  const re = /(\d+(?:\.\d+)?)\s*\+?\s*(?:[-\u2013]|\bto\b)?\s*(\d+(?:\.\d+)?)?\s*(hour|hr|minute|min)/gi;
+  let total = 0, m;
+  while ((m = re.exec(String(str)))) {
+    const n = parseFloat(m[2] || m[1]);
+    total += /^h/i.test(m[3]) ? n * 60 : n;
+  }
+  return total;
+}
+
+function totalMinutes(r) {
+  return parseMinutes(r.prep) + parseMinutes(r.cook);
+}
+
+function formatMinutes(mins) {
+  if (!mins) return "";
+  if (mins < 60) return `${Math.round(mins)} min`;
+  const h = Math.floor(mins / 60), m = Math.round(mins % 60);
+  return m ? `${h} hr ${m} min` : `${h} hr`;
+}
+
+// Non-overlapping buckets, so selecting two of them reads as a union
+// the same way the other filters do.
+function timeBucket(r) {
+  const t = totalMinutes(r);
+  if (!t)        return "unknown";
+  if (t <= 30)   return "quick";
+  if (t <= 60)   return "hour";
+  if (t <= 180)  return "medium";
+  return "long";
+}
+
 const RX_FILTERS = [
+  { key: "time", label: "Time", get: timeBucket, options: [
+    ["quick","30 min or less"], ["hour","30\u201360 min"],
+    ["medium","1\u20133 hrs"], ["long","3+ hrs"] ] },
+
   { key: "protein", label: "Protein", options: [
     ["chicken","Chicken"], ["beef","Beef"], ["pork","Pork"],
     ["seafood","Seafood"], ["meatless","Meatless"] ] },
@@ -443,7 +485,7 @@ const RX_FILTERS = [
     ["grill","Grill"], ["no-cook","No-cook"] ] },
 ];
 
-const rxActive = { protein: new Set(), dish: new Set(), method: new Set() };
+const rxActive = { time: new Set(), protein: new Set(), dish: new Set(), method: new Set() };
 let rxStore   = "shopping";
 let myRecipes = [];   // yours, live from Firebase
 let rxEditing = null;
@@ -462,7 +504,7 @@ function rxMatches() {
   return allRecipes().filter(r =>
     RX_FILTERS.every(f => {
       const sel = rxActive[f.key];
-      return sel.size === 0 || sel.has(r[f.key]);
+      return sel.size === 0 || sel.has(f.get ? f.get(r) : r[f.key]);
     })
   );
 }
@@ -526,8 +568,12 @@ function renderRecipes() {
       '<div class="rx-cmeta"></div>' +
       '<div class="rx-tags"></div>';
     card.querySelector(".rx-name").textContent  = r.name;
-    card.querySelector(".rx-cmeta").textContent =
-      `Serves ${r.serves} · ${r.prep} prep · ${r.cookLabel} ${r.cook}`;
+    const tot = formatMinutes(totalMinutes(r));
+    card.querySelector(".rx-cmeta").textContent = [
+      r.serves && `Serves ${r.serves}`,
+      r.prep && `${r.prep} prep`,
+      tot && `${tot} total`,
+    ].filter(Boolean).join(" · ");
     const tags = card.querySelector(".rx-tags");
     if (r.protein !== "none") tags.appendChild(rxTag(r.protein, "p-" + r.protein));
     if (r.method) tags.appendChild(rxTag(r.method));
@@ -559,6 +605,7 @@ function openRecipe(r) {
     r.calories && `${r.calories} cal each`,
     r.prep && `${r.prep} prep`,
     r.cook && `${r.cookLabel || "cook"} ${r.cook}`,
+    formatMinutes(totalMinutes(r)) && `${formatMinutes(totalMinutes(r))} total`,
     r.method,
     r.week ? `Week ${r.week}` : null,
     r.source || null,
@@ -619,6 +666,14 @@ function openRecipe(r) {
 
   const days = document.getElementById("rx-days");
   days.innerHTML = "";
+
+  const weekHead = document.createElement("div");
+  weekHead.className   = "rx-planhead";
+  weekHead.textContent = "This week — dinner";
+  days.appendChild(weekHead);
+
+  const weekRow = document.createElement("div");
+  weekRow.className = "rx-dayrow";
   const start = getMonday(new Date());
   for (let i = 0; i < 7; i++) {
     const d = new Date(start);
@@ -628,12 +683,57 @@ function openRecipe(r) {
     btn.className   = "rx-day" + (isToday(d) ? " today" : "");
     btn.textContent = d.toLocaleDateString("en-US", { weekday: "short" });
     btn.onclick = async () => {
-      await saveMealField("weekly", dateStr, "dinner", r.name);
-      await set(ref(db, `mealplan/weekly/${dateStr}/dinnerRecipe`), r.id);
+      await planMeal("weekly", dateStr, "dinner", r.name, r.id);
       closeRecipe();
       showToast(`Planned for ${displayDate(d)}`);
     };
-    days.appendChild(btn);
+    weekRow.appendChild(btn);
+  }
+  days.appendChild(weekRow);
+
+  // Trip mode adds breakfast and lunch, so planning there needs to
+  // know which slot as well as which day.
+  const trip = tripDates();
+  if (trip.length) {
+    let rxSlot = "dinner";
+
+    const tripHead = document.createElement("div");
+    tripHead.className   = "rx-planhead";
+    tripHead.textContent = "Trip";
+    days.appendChild(tripHead);
+
+    const slotRow = document.createElement("div");
+    slotRow.className = "ma-slots";
+    const tripRow = document.createElement("div");
+    tripRow.className = "rx-dayrow";
+
+    const paintSlots = () => {
+      slotRow.innerHTML = "";
+      [["breakfast","Breakfast"],["lunch","Lunch"],["dinner","Dinner"]].forEach(([id, label]) => {
+        const b = document.createElement("button");
+        b.className   = "ma-slot" + (rxSlot === id ? " on" : "");
+        b.textContent = label;
+        b.onclick = () => { rxSlot = id; paintSlots(); };
+        slotRow.appendChild(b);
+      });
+    };
+    paintSlots();
+
+    trip.forEach(ds => {
+      const d   = new Date(ds + "T00:00:00");
+      const btn = document.createElement("button");
+      btn.className   = "rx-day" + (isToday(d) ? " today" : "");
+      btn.textContent = d.toLocaleDateString("en-US", { month: "numeric", day: "numeric" });
+      btn.onclick = async () => {
+        await planMeal("trip", ds, rxSlot, r.name, r.id);
+        closeRecipe();
+        showToast(`Planned for ${displayDate(d)}`);
+      };
+      tripRow.appendChild(btn);
+    });
+
+    days.appendChild(slotRow);
+    days.appendChild(tripRow);
   }
 
   document.getElementById("rx-overlay").classList.remove("hidden");
@@ -862,6 +962,147 @@ onValue(ref(db, "customRecipes"), snap => {
     ingredients: v.ingredients || [], steps: v.steps || [],
   }));
   if (activeStore === "recipes") renderRecipes();
+});
+
+
+// ── Meal slots: shared helpers ───────────────────────────────────
+// Weekly plans only have dinner; trip plans have all three. Both
+// store an optional "<meal>Recipe" key alongside the text so a night
+// can point back at the recipe it came from.
+function mealBase(planType, dateStr) {
+  return planType === "weekly"
+    ? `mealplan/weekly/${dateStr}`
+    : `mealplan/trip/days/${dateStr}`;
+}
+
+function mealDay(planType, dateStr) {
+  return planType === "weekly"
+    ? (mealPlanData.weekly || {})[dateStr] || {}
+    : ((mealPlanData.trip || {}).days || {})[dateStr] || {};
+}
+
+function tripDates() {
+  const cfg = (mealPlanData.trip || {}).config || {};
+  if (!cfg.active || !cfg.startDate || !cfg.endDate) return [];
+  const out = [], end = new Date(cfg.endDate + "T00:00:00");
+  for (let d = new Date(cfg.startDate + "T00:00:00"); d <= end; d.setDate(d.getDate() + 1)) {
+    out.push(localDateStr(d));
+  }
+  return out;
+}
+
+async function planMeal(planType, dateStr, meal, name, recipeId) {
+  const base = mealBase(planType, dateStr);
+  await set(ref(db, `${base}/${meal}`), name);
+  if (recipeId) await set(ref(db, `${base}/${meal}Recipe`), recipeId);
+  else          await remove(ref(db, `${base}/${meal}Recipe`));
+}
+
+async function clearMeal(planType, dateStr, meal) {
+  const base = mealBase(planType, dateStr);
+  await remove(ref(db, `${base}/${meal}`));
+  await remove(ref(db, `${base}/${meal}Recipe`));
+}
+
+async function moveMeal(planType, fromDate, fromMeal, toDate, toMeal) {
+  const day = mealDay(planType, fromDate);
+  const val = day[fromMeal];
+  if (!val) return;
+  await planMeal(planType, toDate, toMeal, val, day[fromMeal + "Recipe"]);
+  if (!(fromDate === toDate && fromMeal === toMeal)) {
+    await clearMeal(planType, fromDate, fromMeal);
+  }
+}
+
+// ── Meal actions sheet ───────────────────────────────────────────
+let maCtx = null;
+
+function openMealActions(planType, dateStr, meal) {
+  const day = mealDay(planType, dateStr);
+  const val = day[meal];
+  if (!val) return;
+  maCtx = { planType, dateStr, meal, slot: meal };
+
+  document.getElementById("ma-title").textContent =
+    displayDate(new Date(dateStr + "T00:00:00"));
+  document.getElementById("ma-meal").textContent = val;
+
+  const linkId  = day[meal + "Recipe"];
+  const openBtn = document.getElementById("ma-open");
+  openBtn.classList.toggle("hidden", !linkId);
+  openBtn.onclick = () => {
+    const r = recipeById(linkId);
+    closeMealActions();
+    if (r) openRecipe(r);
+    else showToast("That recipe is no longer in the library");
+  };
+
+  const isTrip = planType === "trip";
+  document.getElementById("ma-slot-h").classList.toggle("hidden", !isTrip);
+  const slotsEl = document.getElementById("ma-slots");
+  slotsEl.classList.toggle("hidden", !isTrip);
+  slotsEl.innerHTML = "";
+  if (isTrip) {
+    [["breakfast","Breakfast"],["lunch","Lunch"],["dinner","Dinner"]].forEach(([id, label]) => {
+      const b = document.createElement("button");
+      b.className   = "ma-slot" + (maCtx.slot === id ? " on" : "");
+      b.textContent = label;
+      b.onclick = () => { maCtx.slot = id; openMealActionsDays(); renderMaSlots(); };
+      slotsEl.appendChild(b);
+    });
+  }
+
+  openMealActionsDays();
+  document.getElementById("ma-clear").onclick = async () => {
+    await clearMeal(planType, dateStr, meal);
+    closeMealActions();
+    showToast("Cleared");
+  };
+  document.getElementById("ma-overlay").classList.remove("hidden");
+}
+
+function renderMaSlots() {
+  document.querySelectorAll("#ma-slots .ma-slot").forEach((b, i) => {
+    b.classList.toggle("on", ["breakfast","lunch","dinner"][i] === maCtx.slot);
+  });
+}
+
+function openMealActionsDays() {
+  const wrap = document.getElementById("ma-days");
+  wrap.innerHTML = "";
+  const dates = maCtx.planType === "weekly"
+    ? Array.from({ length: 7 }, (_, i) => {
+        const d = new Date(getMonday(new Date()));
+        d.setDate(d.getDate() + i);
+        return localDateStr(d);
+      })
+    : tripDates();
+
+  dates.forEach(ds => {
+    const d   = new Date(ds + "T00:00:00");
+    const btn = document.createElement("button");
+    const same = ds === maCtx.dateStr && maCtx.slot === maCtx.meal;
+    btn.className = "ma-day" + (isToday(d) ? " today" : "") + (same ? " current" : "");
+    btn.textContent = maCtx.planType === "weekly"
+      ? d.toLocaleDateString("en-US", { weekday: "short" })
+      : d.toLocaleDateString("en-US", { month: "numeric", day: "numeric" });
+    btn.onclick = async () => {
+      if (same) return;
+      await moveMeal(maCtx.planType, maCtx.dateStr, maCtx.meal, ds, maCtx.slot);
+      closeMealActions();
+      showToast(`Moved to ${displayDate(d)}`);
+    };
+    wrap.appendChild(btn);
+  });
+}
+
+function closeMealActions() {
+  document.getElementById("ma-overlay").classList.add("hidden");
+  maCtx = null;
+}
+document.getElementById("ma-close").onclick = closeMealActions;
+document.getElementById("ma-overlay").addEventListener("click", e => {
+  if (e.target === document.getElementById("ma-overlay")) closeMealActions();
 });
 
 // ── Render: vacations (self-service, multiple trips via sub-tabs) ─
@@ -1136,32 +1377,26 @@ function buildMealCard(dateStr, slots, planType) {
     // Typing over the text breaks that link, since it is no longer the
     // same meal — better a missing button than one that opens the
     // wrong recipe.
-    const linkId = (planType === "weekly" && meal === "dinner")
-      ? ((mealPlanData.weekly || {})[dateStr] || {}).dinnerRecipe
-      : null;
+    const linkId = mealDay(planType, dateStr)[meal + "Recipe"];
 
     inp.addEventListener("change", async () => {
       const v = inp.value.trim();
       await saveMealField(planType, dateStr, meal, v);
       const linked = recipeById(linkId);
       if (linkId && (!v || !linked || v !== linked.name)) {
-        await remove(ref(db, `mealplan/weekly/${dateStr}/dinnerRecipe`));
+        await remove(ref(db, `${mealBase(planType, dateStr)}/${meal}Recipe`));
       }
     });
     cartBtn.addEventListener("click", () => { openMealModal(dateStr, meal, planType); });
     slot.appendChild(lbl); slot.appendChild(inp); slot.appendChild(cartBtn);
 
-    if (linkId) {
-      const openBtn = document.createElement("button");
-      openBtn.className   = "meal-recipe-btn";
-      openBtn.title       = "Open the recipe";
-      openBtn.textContent = "📖";
-      openBtn.addEventListener("click", () => {
-        const r = recipeById(linkId);
-        if (r) openRecipe(r);
-        else showToast("That recipe is no longer in the library");
-      });
-      slot.appendChild(openBtn);
+    if (value) {
+      const actBtn = document.createElement("button");
+      actBtn.className   = "meal-recipe-btn";
+      actBtn.title       = "Open, move or clear";
+      actBtn.textContent = linkId ? "📖" : "⋯";
+      actBtn.addEventListener("click", () => openMealActions(planType, dateStr, meal));
+      slot.appendChild(actBtn);
     }
     card.appendChild(slot);
   });

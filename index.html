@@ -157,6 +157,24 @@
   </div>
 
   <!-- Meal → Grocery modal -->
+  <div class="rx-overlay hidden" id="ma-overlay">
+    <div class="rx-modal ma-modal">
+      <div class="rx-modal-head">
+        <span id="ma-title">Meal</span>
+        <button class="rx-close" id="ma-close" aria-label="Close">&#10005;</button>
+      </div>
+      <div class="rx-scroll">
+        <div class="ma-meal" id="ma-meal"></div>
+        <button class="ma-act open hidden" id="ma-open">📖 Open the recipe</button>
+        <div class="rx-h">Move it to</div>
+        <div class="rx-h ma-sub hidden" id="ma-slot-h">Which meal</div>
+        <div class="ma-slots hidden" id="ma-slots"></div>
+        <div class="ma-days" id="ma-days"></div>
+        <button class="ma-act clear" id="ma-clear">Clear this meal</button>
+      </div>
+    </div>
+  </div>
+
   <div class="rx-overlay hidden" id="rxf-overlay">
     <div class="rx-modal">
       <div class="rx-modal-head">

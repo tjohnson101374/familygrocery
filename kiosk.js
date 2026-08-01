@@ -303,6 +303,13 @@ let sheetMode  = "grocery";   // "grocery" | "meal" | "xmas"
 let sheetDate  = null;
 let sheetStore = "shopping";
 
+async function moveMealTo(fromDate, toDate) {
+  const day = weeklyMeals[fromDate] || {};
+  if (!day.dinner || fromDate === toDate) return;
+  await saveMeal(toDate, day.dinner, day.dinnerRecipe);
+  await saveMeal(fromDate, "");
+}
+
 function closeSheet() {
   sheet.classList.add("hidden");
   sheetInput.value  = "";
@@ -312,6 +319,7 @@ function closeSheet() {
 }
 
 function openXmasSheet() {
+  document.getElementById("sheet-move").classList.add("hidden");
   sheetMode = "xmas";
   const member = memberById(activeMember);
   sheetTitle.textContent = `Add to ${member.name}'s list`;
@@ -327,6 +335,7 @@ function openXmasSheet() {
 }
 
 function openAddSheet() {
+  document.getElementById("sheet-move").classList.add("hidden");
   sheetMode  = "grocery";
   sheetStore = activeStore;
   sheetTitle.textContent = "Add an item";
@@ -350,7 +359,46 @@ function openMealSheet(dateStr, current) {
   sheetInput.placeholder = "What's for dinner?";
   sheetInput.value = current || "";
   renderSheetChips();
+  renderMoveRow(dateStr, current);
   sheet.classList.remove("hidden");
+}
+
+// Moving or clearing a night, without retyping it.
+function renderMoveRow(dateStr, current) {
+  const row = document.getElementById("sheet-move");
+  row.innerHTML = "";
+  if (!current) { row.classList.add("hidden"); return; }
+  row.classList.remove("hidden");
+
+  const lbl = document.createElement("span");
+  lbl.className   = "plan-label";
+  lbl.textContent = "Move to";
+  row.appendChild(lbl);
+
+  const start = getMonday(new Date());
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(start);
+    d.setDate(d.getDate() + i);
+    const ds = localDateStr(d);
+    const b  = document.createElement("button");
+    b.className   = "mv" + (ds === dateStr ? " current" : "") + (isToday(d) ? " today" : "");
+    b.textContent = d.toLocaleDateString("en-US", { weekday: "short" });
+    b.addEventListener("click", async () => {
+      if (ds === dateStr) return;
+      await moveMealTo(dateStr, ds);
+      closeSheet();
+    });
+    row.appendChild(b);
+  }
+
+  const clear = document.createElement("button");
+  clear.className   = "mv clear";
+  clear.textContent = "Clear";
+  clear.addEventListener("click", async () => {
+    await saveMeal(dateStr, "");
+    closeSheet();
+  });
+  row.appendChild(clear);
 }
 
 function renderSheetTabs() {
@@ -512,7 +560,49 @@ function setView(id) {
 // Browsing is mood-first: pick a protein and a kind of food, and the
 // list narrows. Filters are additive within a group, so tapping both
 // "chicken" and "beef" shows either.
+
+// ── Time ─────────────────────────────────────────────────────────
+// Times on the cards are free text ("8-10 hours", "30-35 minutes",
+// "1 hour"). Take the top of any range, since that is the number you
+// have to plan around, and total prep + cook.
+function parseMinutes(str) {
+  if (!str) return 0;
+  const re = /(\d+(?:\.\d+)?)\s*\+?\s*(?:[-\u2013]|\bto\b)?\s*(\d+(?:\.\d+)?)?\s*(hour|hr|minute|min)/gi;
+  let total = 0, m;
+  while ((m = re.exec(String(str)))) {
+    const n = parseFloat(m[2] || m[1]);
+    total += /^h/i.test(m[3]) ? n * 60 : n;
+  }
+  return total;
+}
+
+function totalMinutes(r) {
+  return parseMinutes(r.prep) + parseMinutes(r.cook);
+}
+
+function formatMinutes(mins) {
+  if (!mins) return "";
+  if (mins < 60) return `${Math.round(mins)} min`;
+  const h = Math.floor(mins / 60), m = Math.round(mins % 60);
+  return m ? `${h} hr ${m} min` : `${h} hr`;
+}
+
+// Non-overlapping buckets, so selecting two of them reads as a union
+// the same way the other filters do.
+function timeBucket(r) {
+  const t = totalMinutes(r);
+  if (!t)        return "unknown";
+  if (t <= 30)   return "quick";
+  if (t <= 60)   return "hour";
+  if (t <= 180)  return "medium";
+  return "long";
+}
+
 const FILTERS = [
+  { key: "time", label: "Time", get: timeBucket, options: [
+    ["quick","30 min or less"], ["hour","30\u201360 min"],
+    ["medium","1\u20133 hrs"], ["long","3+ hrs"] ] },
+
   { key: "protein", label: "Protein", options: [
     ["chicken","Chicken"], ["beef","Beef"], ["pork","Pork"],
     ["seafood","Seafood"], ["meatless","Meatless"] ] },
@@ -527,7 +617,7 @@ const FILTERS = [
     ["grill","Grill"], ["no-cook","No-cook"] ] },
 ];
 
-const activeFilters = { protein: new Set(), dish: new Set(), method: new Set() };
+const activeFilters = { time: new Set(), protein: new Set(), dish: new Set(), method: new Set() };
 
 // Recipes you add from your phone live in Firebase; the PPP library
 // is fixed data in code. The browser shows one merged list.
@@ -542,7 +632,7 @@ function matchingRecipes() {
   return allRecipes().filter(r =>
     FILTERS.every(f => {
       const sel = activeFilters[f.key];
-      return sel.size === 0 || sel.has(r[f.key]);
+      return sel.size === 0 || sel.has(f.get ? f.get(r) : r[f.key]);
     })
   );
 }
@@ -602,7 +692,8 @@ function renderRecipes() {
     const meta = document.createElement("div");
     meta.className   = "rmeta";
     meta.textContent = [r.serves && `Serves ${r.serves}`, r.prep && `${r.prep} prep`,
-      r.cook && `${r.cookLabel || "cook"} ${r.cook}`].filter(Boolean).join(" · ");
+      formatMinutes(totalMinutes(r)) && `${formatMinutes(totalMinutes(r))} total`,
+    ].filter(Boolean).join(" · ");
 
     const tags = document.createElement("div");
     tags.className = "rtags";
@@ -651,7 +742,7 @@ function openRecipe(r) {
   meta.innerHTML = "";
   [ r.serves && `Serves ${r.serves}`, r.calories && `${r.calories} cal each`,
     r.prep && `${r.prep} prep`, r.cook && `${r.cookLabel || "cook"} ${r.cook}`,
-    r.method, r.week ? `Week ${r.week}` : null, r.source || null,
+    formatMinutes(totalMinutes(r)) && `${formatMinutes(totalMinutes(r))} total`, r.method, r.week ? `Week ${r.week}` : null, r.source || null,
   ].filter(Boolean).forEach(t => {
     const s = document.createElement("span");
     s.textContent = t;

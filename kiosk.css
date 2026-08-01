@@ -791,3 +791,16 @@ html, body {
   line-height: 1; cursor: pointer;
 }
 .meal.linked .what { text-decoration: underline; text-decoration-color: var(--line-heavy); text-underline-offset: 3px; }
+
+.move-row { flex-wrap: wrap; align-items: center; gap: 8px; border-top: 2px solid var(--line); }
+.move-row.hidden { display: none; }
+
+.mv {
+  font-family: inherit; font-size: 16px; font-weight: 700;
+  padding: 11px 15px; border-radius: 10px;
+  border: 2px solid var(--line-heavy); background: #fff; color: var(--ink);
+  cursor: pointer;
+}
+.mv.today   { border-color: var(--family); color: var(--family); }
+.mv.current { background: var(--bg); color: var(--ink-faint); }
+.mv.clear   { border-color: #e0c0c0; color: #A32D2D; margin-left: auto; }
