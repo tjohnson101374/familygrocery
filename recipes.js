@@ -29,15 +29,15 @@ export const RECIPES = [
    "15 oz carton ricotta cheese",
    "½ cup Parmesan cheese, grated",
    "½ tsp dried parsley flakes",
-   "3 cups mozzarella cheese,"
+   "3 cups mozzarella cheese, shredded"
   ],
   "steps": [
-   "In large saucepan, combine ground beef, sausage, and",
-   "Meanwhile, in medium-size bowl, stir together ricotta,",
-   "Lightly spray 2 (8x8-inch) disposable foil pans with cooking",
+   "In large saucepan, combine ground beef, sausage, and onion. Cook until meat is browned and crumbly; drain. Add spaghetti sauce, tomato sauce, garlic, salt, and Italian seasoning. Remove from heat, and allow to cool.",
+   "Meanwhile, in medium-size bowl, stir together ricotta, Parmesan, and parsley.",
+   "Lightly spray 2 (8x8-inch) disposable foil pans with cooking spray. Spread some sauce into bottom of each pan. Top with layer of 2-3 noodles (breaking noodles if needed). Spoon about ¾ cup sauce over noodles. Top each pan with dollops of cheese mixture and evenly sprinkle with mozzarella cheese. Repeat.",
    "Cover with plastic wrap and aluminum foil. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Preheat oven to 350°F. Remove foil and plastic wrap; then"
+   "Preheat oven to 350°F. Remove foil and plastic wrap; then cover again with foil. Bake 45 minutes. Remove foil and continue baking additional 15 minutes. Let stand 10 minutes before serving."
   ]
  },
  {
@@ -55,18 +55,19 @@ export const RECIPES = [
   "serves": "6-8",
   "calories": 438,
   "ingredients": [
-   "1 lb pkg cheese tortellini, frozen",
+   "1 lb pkg cheese tortellini, frozen or fresh",
    "2 (15 oz) jars alfredo sauce",
    "2 cloves garlic, minced",
    "½ cup prepared pesto",
    "1 cup mozzarella cheese, shredded",
    "¼ cup Parmesan cheese, grated",
-   "2 cups rotisserie chicken,"
+   "2 cups rotisserie chicken, shredded (optional)"
   ],
   "steps": [
-   "In large bowl, combine tortellini, alfredo sauce, garlic, pesto,",
-   "Pour into greased 13x9-inch disposable foil pan. Top with",
-   "To cook from frozen, preheat oven to 375°F. Remove plastic"
+   "In large bowl, combine tortellini, alfredo sauce, garlic, pesto, and mozzarella cheese.",
+   "Pour into greased 13x9-inch disposable foil pan. Top with Parmesan cheese. Cover with plastic wrap and aluminum foil. Label and freeze.",
+   "To cook from frozen, preheat oven to 375°F. Remove plastic wrap and foil; cover again with foil. Bake 50 minutes. Remove foil and bake additional 10 minutes until browned and bubbly.",
+   "Note: If using chicken, combine with pasta mixture before freezing."
   ]
  },
  {
@@ -93,9 +94,10 @@ export const RECIPES = [
    "½ tsp pepper"
   ],
   "steps": [
-   "Sprinkle all ingredients over brisket, rub, and wrap tightly",
+   "Sprinkle all ingredients over brisket, rub, and wrap tightly in aluminum foil. Place in 2 gallon-size zip-top bag. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Keep brisket wrapped in foil and wrap second piece of foil"
+   "Keep brisket wrapped in foil and wrap second piece of foil around meat. Preheat oven to 275°F. Place onto baking sheet, then bake for 5 hours.",
+   "Note: Save this for a day when you’re at home."
   ]
  },
  {
@@ -113,16 +115,16 @@ export const RECIPES = [
   "serves": "4-6",
   "calories": 159,
   "ingredients": [
-   "10-12 chicken tenderloins,",
+   "10-12 chicken tenderloins, about 2 lb",
    "½ cup prepared pesto",
    "3 Tbsps lemon juice",
    "½ cup mozzarella cheese, shredded"
   ],
   "steps": [
-   "In gallon-size zip-top bag, combine chicken tenderloins,",
+   "In gallon-size zip-top bag, combine chicken tenderloins, pesto, and lemon juice. Knead bag to combine ingredients. Add mozzarella cheese to quart-size zip-top bag and place both bags into another gallon-size zip-top bag. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Preheat oven to 375°F. Place chicken into 13x9-inch baking",
-   "Remove foil and sprinkle cheese over top of chicken. Bake",
+   "Preheat oven to 375°F. Place chicken into 13x9-inch baking dish and cover with aluminum foil. Bake 25-30 minutes.",
+   "Remove foil and sprinkle cheese over top of chicken. Bake additional 5 minutes. Turn broiler to high and broil 1-2 minutes until cheese begins to brown.",
    "Serve with rice or over pasta with extra pesto, if desired."
   ]
  },
@@ -141,19 +143,19 @@ export const RECIPES = [
   "serves": "8",
   "calories": 600,
   "ingredients": [
-   "1½ lb boneless, skinless chicken",
-   "14 oz pkg smoked sausage, cut into",
+   "1½ lb boneless, skinless chicken breasts, cubed",
+   "14 oz pkg smoked sausage, cut into ¼-inch thick slices",
    "3 cups frozen cubed hashbrowns",
    "12 oz pkg frozen lima beans",
-   "12 oz pkg frozen vegetable",
+   "12 oz pkg frozen vegetable gumbo mix",
    "14.5 oz can petite diced tomatoes",
    "1 cup barbecue sauce",
    "1 oz pkg Italian dressing mix"
   ],
   "steps": [
-   "In large bowl, stir together all ingredients. Pour into 13x9-inch",
-   "When ready to cook, thaw in refrigerator 1-2 days. Remove",
-   "Preheat oven to 350°F. Bake, covered 1 hour or until chicken",
+   "In large bowl, stir together all ingredients. Pour into 13x9-inch disposable foil pan. Cover with plastic wrap and aluminum foil. Label and freeze.",
+   "When ready to cook, thaw in refrigerator 1-2 days. Remove plastic wrap and foil; replace foil.",
+   "Preheat oven to 350°F. Bake, covered 1 hour or until chicken is cooked through and vegetables are tender. Remove foil, stir, and bake additional 15 minutes.",
    "Serve with extra barbecue sauce, if desired."
   ]
  },
@@ -181,11 +183,11 @@ export const RECIPES = [
    "¼ cup butter, melted"
   ],
   "steps": [
-   "Combine bread crumbs, Parmesan cheese, garlic powder, and",
-   "Dip chicken into ranch dressing, making sure to coat both",
-   "Flash freeze on baking sheet. Once frozen, move to gallon-",
-   "Preheat oven to 400°F. Place thawed chicken onto greased",
-   "Bake 30-35 minutes or until chicken is cooked through. Broil"
+   "Combine bread crumbs, Parmesan cheese, garlic powder, and sprinkle of salt and pepper on plate. Cut chicken into tenders, if desired.",
+   "Dip chicken into ranch dressing, making sure to coat both sides and then roll in bread crumb mixture.",
+   "Flash freeze on baking sheet. Once frozen, move to gallon- size zip-top bag. Label and return to freezer. When ready to cook, thaw in refrigerator 1-2 days.",
+   "Preheat oven to 400°F. Place thawed chicken onto greased baking sheet; drizzle with melted butter.",
+   "Bake 30-35 minutes or until chicken is cooked through. Broil last 5 minutes to crisp up breading."
   ]
  },
  {
@@ -211,16 +213,17 @@ export const RECIPES = [
    "1 Tbsp sesame oil",
    "1 Tbsp squeezeable ginger",
    "3 cloves garlic, minced",
-   "¼ tsp crushed red pepper",
+   "¼ tsp crushed red pepper flakes (optional)",
    "green onions, for garnish (optional)"
   ],
   "steps": [
-   "Add all ingredients for marinade into quart-size zip-top bag.",
+   "Add all ingredients for marinade into quart-size zip-top bag. Squeeze to combine. Place salmon into separate gallon-size zip-top bag. Label and freeze together.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
    "Combine salmon and marinade; refrigerate 30 minutes.",
-   "Preheat oven to 375°F. Line baking sheet with long piece of",
-   "Bake 15-20 minutes or until fish flakes easily with fork. Open",
-   "Garnish with green onions, if desired."
+   "Preheat oven to 375°F. Line baking sheet with long piece of foil. Remove salmon from marinade and place on foil. Pour marinade over salmon and fold up all 4 corners of foil. Seal foil, leaving small opening on top.",
+   "Bake 15-20 minutes or until fish flakes easily with fork. Open packet and broil 1-2 minutes to caramelize top of fish.",
+   "Garnish with green onions, if desired.",
+   "Note: Cooking time will vary depending on thickness of salmon. Try it grilled for even more flavor!"
   ]
  },
  {
@@ -239,7 +242,7 @@ export const RECIPES = [
   "calories": 481,
   "ingredients": [
    "20 oz pkg refrigerated hashbrowns",
-   "1½ cups Colby Jack",
+   "1½ cups Colby Jack cheese, shredded",
    "1 cup ham, chopped",
    "4 oz can diced green chiles",
    "¼ cup green onions, sliced",
@@ -249,10 +252,10 @@ export const RECIPES = [
    "¼ tsp pepper"
   ],
   "steps": [
-   "Arrange potatoes in greased 13x9-inch disposable foil pan.",
-   "Stir together eggs, milk, salt, and pepper. Pour egg mixture",
+   "Arrange potatoes in greased 13x9-inch disposable foil pan. Sprinkle with cheese, ham, green chiles, and onions.",
+   "Stir together eggs, milk, salt, and pepper. Pour egg mixture over potatoes. Cover with plastic wrap and aluminum foil. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Preheat oven to 350°F. Bake uncovered, 45 minutes or until"
+   "Preheat oven to 350°F. Bake uncovered, 45 minutes or until browned and set. Let stand 5 minutes before serving."
   ]
  },
  {
@@ -263,14 +266,14 @@ export const RECIPES = [
   "category": "main",
   "dish": "skillet",
   "protein": "chicken",
-  "method": "oven",
+  "method": "grill",
   "prep": "10 minutes",
   "cookLabel": "cook",
   "cook": "20 minutes",
   "serves": "4-6",
   "calories": 422,
   "ingredients": [
-   "2-3 lb boneless, skinless chicken",
+   "2-3 lb boneless, skinless chicken breasts, cut into quarters",
    "1 cup brown sugar",
    "¾ cup ketchup",
    "1/3 cup chicken broth",
@@ -278,10 +281,10 @@ export const RECIPES = [
    "2 cloves garlic, minced"
   ],
   "steps": [
-   "In large mixing bowl, combine brown sugar, ketchup, chicken",
-   "Place chicken into gallon-size zip-top bag and pour remaining",
+   "In large mixing bowl, combine brown sugar, ketchup, chicken broth, soy sauce, and garlic. Measure out 11/3 cups marinade and pour into quart-size zip-top bag.",
+   "Place chicken into gallon-size zip-top bag and pour remaining marinade from bowl over chicken. Place both bags into another gallon-size zip-top bag. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Discard the marinade and drain chicken. Grill chicken covered"
+   "Discard the marinade and drain chicken. Grill chicken covered over medium heat for 6-8 minutes on each side. During last five minutes of cooking, baste chicken with additional marinade. To bake chicken, preheat oven to 375°F, then bake 20-25 minutes or until cooked."
   ]
  },
  {
@@ -306,15 +309,17 @@ export const RECIPES = [
    "1 Tbsp ketchup",
    "3 green onions, chopped",
    "2 cloves garlic, minced",
-   "⅛ tsp crushed red pepper",
+   "⅛ tsp crushed red pepper flakes (optional)",
+   "serving day",
    "1 head iceberg lettuce",
-   "optional toppings: sliced green"
+   "optional toppings: sliced green onions and sesame seeds"
   ],
   "steps": [
    "Whisk all ingredients together except ground beef.",
-   "In gallon-size zip-top bag, add beef and sauce; knead",
+   "In gallon-size zip-top bag, add beef and sauce; knead together. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "In large skillet, cook beef mixture until browned and crumbly."
+   "In large skillet, cook beef mixture until browned and crumbly. Serve in lettuce wraps and garnish with sliced green onions and sesame seeds, if desired.",
+   "Note: Double recipe as needed."
   ]
  },
  {
@@ -332,22 +337,23 @@ export const RECIPES = [
   "serves": "6",
   "calories": 362,
   "ingredients": [
-   "2 lb boneless, skinless chicken",
+   "2 lb boneless, skinless chicken breasts, cut into bite-size pieces",
    "1/3 cup cornstarch",
    "¼ cup honey",
    "1 Tbsp soy sauce",
    "1 clove garlic, minced",
    "1 tsp sesame seeds",
-   "¼ tsp crushed red pepper",
+   "¼ tsp crushed red pepper flakes (optional)",
+   "serving day",
    "2-3 Tbsps canola oil",
    "1 head iceberg lettuce",
-   "optional toppings: shredded"
+   "optional toppings: shredded carrots, crispy rice noodles, and sliced green onions"
   ],
   "steps": [
-   "Add chicken and cornstarch to gallon-size zip-top bag. Knead",
-   "In quart-size zip-top bag, combine remaining ingredients. Add",
+   "Add chicken and cornstarch to gallon-size zip-top bag. Knead to combine.",
+   "In quart-size zip-top bag, combine remaining ingredients. Add both bags to another gallon-size zip-top bag. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "In wok or large skillet, heat canola oil over medium-high"
+   "In wok or large skillet, heat canola oil over medium-high heat. Add chicken and stir -fry, separating chicken pieces and stirring until most pieces have some golden brown edges. Add sauce and cook. Stir constantly 1-2 minutes until sauce is boiling and thickens slightly. Serve in lettuce wraps with optional toppings, if desired."
   ]
  },
  {
@@ -365,16 +371,16 @@ export const RECIPES = [
   "serves": "8",
   "calories": 497,
   "ingredients": [
-   "4 lb chicken wings, split at joints",
+   "4 lb chicken wings, split at joints and remove tips",
    "1 cup barbecue sauce",
    "¼ cup orange juice",
    "2 Tbsps honey"
   ],
   "steps": [
-   "Combine all ingredients in gallon-size zip-top bag.",
+   "Combine all ingredients in gallon-size zip-top bag. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Place contents of bag into slow cooker. Cover and cook on",
-   "Remove wings from slow cooker and place onto foil-lined"
+   "Place contents of bag into slow cooker. Cover and cook on low 4-5 hours or high 3-4 hours.",
+   "Remove wings from slow cooker and place onto foil-lined baking sheet. Broil 3-4 minutes on each side or until desired crispness. Serve with extra barbecue sauce, if desired."
   ]
  },
  {
@@ -392,7 +398,7 @@ export const RECIPES = [
   "serves": "6",
   "calories": 430,
   "ingredients": [
-   "2-3 lb chuck or shoulder",
+   "2-3 lb chuck or shoulder roast, trimmed",
    "1 large yellow onion, sliced",
    "1 green bell pepper, sliced",
    "1½ tsps ground cumin",
@@ -401,15 +407,16 @@ export const RECIPES = [
    "2 cloves garlic, minced",
    "¼ cup orange juice",
    "3 tsps lime juice",
+   "serving day",
    "1 pkg hamburger buns",
-   "optional toppings: provolone"
+   "optional toppings: provolone cheese, sliced avocado, and mayonnaise"
   ],
   "steps": [
-   "Place all ingredients except buns and optional toppings into",
+   "Place all ingredients except buns and optional toppings into gallon-size zip-top bag. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Place contents of bag into slow cooker. Cover and cook on",
+   "Place contents of bag into slow cooker. Cover and cook on low 8-10 hours.",
    "Shred meat and discard any fat.",
-   "Serve on toasted buns or rolls. Add sliced provolone cheese,"
+   "Serve on toasted buns or rolls. Add sliced provolone cheese, sliced avocado, and mayonnaise, if desired."
   ]
  },
  {
@@ -433,10 +440,11 @@ export const RECIPES = [
    "1 cup barbecue sauce"
   ],
   "steps": [
-   "Combine all ingredients into a gallon-size zip-top bag. Label",
+   "Combine all ingredients into a gallon-size zip-top bag. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Place contents of bag into slow cooker. Cover and cook on",
-   "Serve with extra barbecue sauce, if desired."
+   "Place contents of bag into slow cooker. Cover and cook on low 5-6 hours.",
+   "Serve with extra barbecue sauce, if desired.",
+   "Note: To cook from frozen, transfer contents of bag to slow cooker, cover and cook on low 7-8 hours."
   ]
  },
  {
@@ -459,14 +467,14 @@ export const RECIPES = [
    "2 large eggs",
    "1 cup Italian bread crumbs",
    "14 oz jar pizza sauce, divided",
-   "8 oz mozzarella cheese, shredded"
+   "8 oz mozzarella cheese, shredded and divided"
   ],
   "steps": [
-   "In large mixing bowl, combine ground beef, Italian sausage,",
-   "Shape into loaf and place into gallon-size zip-top bag. Label",
-   "Reserve ½ cup pizza sauce and ½ cup cheese in 2 separate",
+   "In large mixing bowl, combine ground beef, Italian sausage, eggs, bread crumbs, 1 cup pizza sauce, and 1½ cups mozzarella cheese. Mix with hands until well combined. Don’t overmix.",
+   "Shape into loaf and place into gallon-size zip-top bag. Label and freeze.",
+   "Reserve ½ cup pizza sauce and ½ cup cheese in 2 separate quart-size zip-top bags. Freeze together with meatloaf.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Preheat oven to 350°F. Remove meatloaf from zip-top bag,"
+   "Preheat oven to 350°F. Remove meatloaf from zip-top bag, place on baking sheet lined with aluminum foil, and bake 30 minutes. Remove from oven, top with remaining sauce, and bake 30 minutes. Then add remaining cheese and place back in oven for additional 10 minutes."
   ]
  },
  {
@@ -492,14 +500,16 @@ export const RECIPES = [
    "8 oz pkg cream cheese, softened",
    "2 Tbsps milk",
    "½ cup Parmesan cheese, grated",
-   "1/2 cup green peppers,",
+   "1/2 cup green peppers, chopped (optional)",
+   "serving day",
    "2.8 oz can crispy fried onions"
   ],
   "steps": [
-   "In large skillet, cook ground beef until browned and crumbly;",
-   "Add thin layer of spaghetti sauce to bottom of 11x7-inch",
+   "In large skillet, cook ground beef until browned and crumbly; drain, then add spaghetti sauce. In microwave-safe bowl, combine onions, peppers, and butter. Cover and heat on high for approximately 4 minutes or until onions are translucent. Add cream cheese and milk to onion and pepper mixture. Stir until the cream cheese is melted, microwaving if needed.",
+   "Add thin layer of spaghetti sauce to bottom of 11x7-inch disposable foil pan. Add cooked spaghetti noodles, cream cheese mixture, and spaghetti sauce. Sprinkle with Parmesan cheese. Cover with plastic wrap and aluminum foil. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Preheat oven to 350°F. Remove foil and plastic wrap. Bake"
+   "Preheat oven to 350°F. Remove foil and plastic wrap. Bake 25 minutes. Remove from oven and top with reserved can of crispy fried onions. Return to oven and bake additional 5 minutes. Serve with Parmesan cheese, if desired.",
+   "Note: Label crispy fried onions and save for serving day."
   ]
  },
  {
@@ -510,14 +520,14 @@ export const RECIPES = [
   "category": "main",
   "dish": "skillet",
   "protein": "chicken",
-  "method": "oven",
+  "method": "grill",
   "prep": "10 minutes",
   "cookLabel": "cook",
   "cook": "10 minutes",
   "serves": "4-6",
   "calories": 231,
   "ingredients": [
-   "4-6 boneless, skinless chicken",
+   "4-6 boneless, skinless chicken breasts",
    "3 Tbsps red wine vinegar",
    "3 Tbsps olive oil",
    "2 Tbsps fresh basil, minced",
@@ -526,9 +536,9 @@ export const RECIPES = [
    "¼ tsp pepper"
   ],
   "steps": [
-   "In gallon-size zip-top bag, combine all ingredients.",
+   "In gallon-size zip-top bag, combine all ingredients. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Drain chicken, discarding marinade. Grill chicken, covered,"
+   "Drain chicken, discarding marinade. Grill chicken, covered, over medium heat 5-7 minutes on each side. Or bake at 375°F for 20-25 minutes until fully cooked."
   ]
  },
  {
@@ -537,7 +547,7 @@ export const RECIPES = [
   "box": "freezer",
   "week": 4,
   "category": "main",
-  "dish": "mexican",
+  "dish": "skillet",
   "protein": "pork",
   "method": "slow cooker",
   "prep": "5 minutes",
@@ -553,14 +563,15 @@ export const RECIPES = [
    "1 Tbsp ground cumin",
    "¼ tsp crushed red pepper flakes",
    "¼ tsp pepper",
+   "serving day",
    "corn or flour tortillas",
-   "optional toppings: shredded"
+   "optional toppings: shredded cheddar cheese, salsa, and sour cream"
   ],
   "steps": [
-   "In gallon-size zip-top bag, combine pork, salsa verde, onion,",
+   "In gallon-size zip-top bag, combine pork, salsa verde, onion, garlic, cumin, red pepper flakes, and pepper. Knead bag to combine. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Transfer contents of bag to slow cooker. Cover and cook on",
-   "Shred pork and mix with sauce in slow cooker. Serve over"
+   "Transfer contents of bag to slow cooker. Cover and cook on low 6-8 hours.",
+   "Shred pork and mix with sauce in slow cooker. Serve over corn or flour tortillas with desired toppings."
   ]
  },
  {
@@ -571,7 +582,7 @@ export const RECIPES = [
   "category": "main",
   "dish": "sandwich",
   "protein": "chicken",
-  "method": "stovetop",
+  "method": "grill",
   "prep": "5 minutes",
   "cookLabel": "cook",
   "cook": "10 minutes",
@@ -582,16 +593,18 @@ export const RECIPES = [
    "½ cup Italian dressing",
    "1 tsp lime juice",
    "1½ tsps honey",
+   "serving day",
    "sourdough bread",
    "lettuce",
    "tomato",
    "mayonnaise"
   ],
   "steps": [
-   "Mix Italian dressing, lime juice, and honey in gallon-size zip-",
+   "Mix Italian dressing, lime juice, and honey in gallon-size zip- top bag; add chicken tenderloins to marinade and knead to combine. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "In large, nonstick skillet, cook chicken tenderloins until done,",
-   "Serve on toasted sourdough bread with lettuce, tomato,"
+   "In large, nonstick skillet, cook chicken tenderloins until done, about 10 minutes.",
+   "Serve on toasted sourdough bread with lettuce, tomato, and mayonnaise.",
+   "Note: These are great on the grill, too!"
   ]
  },
  {
@@ -602,7 +615,7 @@ export const RECIPES = [
   "category": "main",
   "dish": "mexican",
   "protein": "beef",
-  "method": "stovetop",
+  "method": "oven",
   "prep": "15 minutes",
   "cookLabel": "cook",
   "cook": "40 minutes",
@@ -617,15 +630,16 @@ export const RECIPES = [
    "15 oz can ranch-style beans",
    "10 oz can Ro- Tel tomatoes",
    "½ cup salsa",
-   "8 oz Mexican-blend cheese,"
+   "8 oz Mexican-blend cheese, shredded and divided"
   ],
   "steps": [
-   "Cook spaghetti noodles according to package directions",
-   "In large skillet, cook ground beef with onions until beef is",
-   "Pour mixture into greased 13x9-inch disposable foil pan. Let",
+   "Cook spaghetti noodles according to package directions for al dente.",
+   "In large skillet, cook ground beef with onions until beef is browned and crumbly; drain. Stir in taco seasoning, 1/2 cup water, beans, tomatoes, and salsa. Mix well and add 1 cup cheese and cooked spaghetti noodles.",
+   "Pour mixture into greased 13x9-inch disposable foil pan. Let cool and top with remaining cheese.",
    "Cover with plastic wrap and aluminum foil. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Remove from refrigerator 30 minutes prior to baking. Preheat"
+   "Remove from refrigerator 30 minutes prior to baking. Preheat oven to 350°F. Remove plastic wrap and aluminum foil; replace foil. Bake, covered, 30 minutes. Uncover and bake additional 10 minutes.",
+   "Note: Serve with sour cream, if desired."
   ]
  },
  {
@@ -645,7 +659,7 @@ export const RECIPES = [
   "ingredients": [
    "1½ lb stew beef",
    "1/2 large yellow onion, chopped",
-   "15 oz can pinto beans, rinsed",
+   "15 oz can pinto beans, rinsed and drained",
    "28 oz can petite diced tomatoes",
    "1 cup beef broth",
    "1 Tbsp chili powder",
@@ -654,12 +668,12 @@ export const RECIPES = [
    "¼ tsp crushed red pepper flakes",
    "¼ tsp dried oregano",
    "¼ tsp pepper",
-   "optional toppings: shredded"
+   "optional toppings: shredded cheddar cheese, sour cream, and diced avocados"
   ],
   "steps": [
-   "Place all ingredients into gallon-size zip-top bag. Knead gently",
+   "Place all ingredients into gallon-size zip-top bag. Knead gently to combine. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Place contents of bag into slow cooker. Cover and cook on",
+   "Place contents of bag into slow cooker. Cover and cook on low 8 hours.",
    "Serve with optional toppings, if desired."
   ]
  },
@@ -670,8 +684,8 @@ export const RECIPES = [
   "week": 5,
   "category": "main",
   "dish": "soup",
-  "protein": "chicken",
-  "method": "stovetop",
+  "protein": "pork",
+  "method": "slow cooker",
   "prep": "5 minutes",
   "cookLabel": "cook",
   "cook": "6 hours",
@@ -681,7 +695,7 @@ export const RECIPES = [
    "1 lb breakfast sausage",
    "3 cloves garlic, minced",
    "12 oz pkg frozen mirepoix blend",
-   "2 (14 oz) cans great northern",
+   "2 (14 oz) cans great northern beans, drained",
    "28 oz can diced tomatoes",
    "¾ tsp dried rosemary",
    "1 tsp dried oregano",
@@ -689,10 +703,11 @@ export const RECIPES = [
    "32 oz carton chicken broth"
   ],
   "steps": [
-   "In medium skillet, cook sausage until browned",
-   "Add sausage and remaining ingredients except chicken broth",
+   "In medium skillet, cook sausage until browned and crumbly; drain.",
+   "Add sausage and remaining ingredients except chicken broth to gallon-size zip-top bag. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Place all contents of bag and reserved chicken broth into slow"
+   "Place all contents of bag and reserved chicken broth into slow cooker. Cover and cook on low 6 hours.",
+   "Note: Label chicken broth and save for serving day."
   ]
  },
  {
@@ -711,19 +726,19 @@ export const RECIPES = [
   "calories": 397,
   "ingredients": [
    "12 large eggs, beaten",
-   "½ lb breakfast sausage, browned",
+   "½ lb breakfast sausage, browned and drained",
    "¾ cup salsa",
-   "1 cup cheddar cheese, shredded",
-   "8 taco-size flour tortillas",
+   "1 cup cheddar cheese, shredded (or other cheese)",
+   "8 taco-size flour tortillas (or use low-carb)",
    "hot sauce (optional)"
   ],
   "steps": [
-   "In large, greased skillet, scramble eggs until cooked but still",
-   "Warm tortillas in microwave about 15 seconds, until warm",
-   "Distribute eggs, sausage mixture, and cheese evenly over",
-   "Flash-freeze burritos in single layer on wax paper-lined",
-   "When frozen, wrap each burrito in aluminum foil.",
-   "To serve: Remove foil and wrap in paper towel. Heat each"
+   "In large, greased skillet, scramble eggs until cooked but still glossy. Add salsa to the cooked sausage.",
+   "Warm tortillas in microwave about 15 seconds, until warm and flexible.",
+   "Distribute eggs, sausage mixture, and cheese evenly over tortillas. Add couple of shakes of hot sauce, if desired. Roll burritos by folding top of tortilla over egg mixture, folding in sides, and rolling to other end.",
+   "Flash-freeze burritos in single layer on wax paper-lined cookie sheet.",
+   "When frozen, wrap each burrito in aluminum foil. Place wrapped burritos into gallon-size zip-top bag. Label and freeze.",
+   "To serve: Remove foil and wrap in paper towel. Heat each burrito in microwave 1½-2 minutes (depending on microwave power)."
   ]
  },
  {
@@ -747,13 +762,13 @@ export const RECIPES = [
    "¼ cup milk",
    "½ tsp garlic salt",
    "1 cup cheddar cheese, shredded",
-   "1 premade 9-inch deep-dish"
+   "1 premade 9-inch deep-dish pie crust"
   ],
   "steps": [
-   "In medium skillet, cook sausage until browned and crumbly;",
-   "In large bowl, whisk eggs, cream, milk, and garlic salt until well",
-   "Pour egg mixture into pie crust. Cover with plastic wrap and",
-   "When ready to bake, preheat oven to 375°F. Remove foil and"
+   "In medium skillet, cook sausage until browned and crumbly; drain well.",
+   "In large bowl, whisk eggs, cream, milk, and garlic salt until well combined. Whisk in cooked sausage and cheese.",
+   "Pour egg mixture into pie crust. Cover with plastic wrap and aluminum foil. Place onto baking sheet and carefully place into freezer, making sure quiche is level. Once frozen, remove baking sheet from freezer.",
+   "When ready to bake, preheat oven to 375°F. Remove foil and plastic wrap, then place foil loosely back over quiche and put into oven. Bake 50 minutes. Remove foil and continue baking for 30 minutes or until top turns golden brown."
   ]
  },
  {
@@ -763,7 +778,7 @@ export const RECIPES = [
   "week": 5,
   "category": "main",
   "dish": "asian",
-  "protein": "meatless",
+  "protein": "chicken",
   "method": "slow cooker",
   "prep": "5 minutes",
   "cookLabel": "cook",
@@ -771,16 +786,16 @@ export const RECIPES = [
   "serves": "6",
   "calories": 485,
   "ingredients": [
-   "2 lb boneless, skinless",
+   "2 lb boneless, skinless chicken breasts",
    "1 cup orange marmalade",
    "1 cup barbecue sauce",
    "3 Tbsps soy sauce",
-   "⅛ tsp crushed red pepper"
+   "⅛ tsp crushed red pepper flakes (optional)"
   ],
   "steps": [
-   "Add chicken and remaining ingredients to gallon-size zip-top",
+   "Add chicken and remaining ingredients to gallon-size zip-top bag. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Pour contents of bag into slow cooker. Cover and cook on low",
+   "Pour contents of bag into slow cooker. Cover and cook on low 6 hours or high 4 hours.",
    "When done, shred chicken and serve over rice, if desired."
   ]
  },
@@ -811,10 +826,11 @@ export const RECIPES = [
    "2 cups potato chips, crushed"
   ],
   "steps": [
-   "In large mixing bowl, combine soup, mayonnaise, onion,",
-   "Spoon mixture into 13x9-inch disposable foil pan. Cover",
+   "In large mixing bowl, combine soup, mayonnaise, onion, lemon juice, and salt. Stir in chicken, celery, and almonds.",
+   "Spoon mixture into 13x9-inch disposable foil pan. Cover with plastic wrap and aluminum foil. Label and freeze. Freeze shredded cheese in separate bag and tape to casserole.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Preheat oven to 350°F. Remove foil and plastic wrap, then"
+   "Preheat oven to 350°F. Remove foil and plastic wrap, then replace foil. Bake 30 minutes. Uncover; add cheese and crushed potato chips on top. Bake, uncovered, additional 15 minutes.",
+   "Note: Label and store potato chips for serving day."
   ]
  },
  {
@@ -836,16 +852,16 @@ export const RECIPES = [
    "10.5 oz can cream of chicken soup",
    "½ cup milk",
    "6 oz pkg stuffing mix",
-   "½ lb deli ham, sliced and cut into",
+   "½ lb deli ham, sliced and cut into 1-inch strips",
    "½ cup Swiss cheese, shredded",
    "2 cups cheddar cheese, shredded"
   ],
   "steps": [
-   "Prepare stuffing mix according to package directions. Spray",
-   "Place cooked chicken into pan; layer with ham, Swiss cheese, 1",
+   "Prepare stuffing mix according to package directions. Spray 13x9-inch disposable foil pan with cooking spray. Whisk soup and milk.",
+   "Place cooked chicken into pan; layer with ham, Swiss cheese, 1 cup cheddar cheese, soup mixture, and stuffing. Sprinkle with remaining cheddar cheese.",
    "Cover with plastic wrap and aluminum foil. Label and freeze.",
-   "When ready to cook, thaw in refrigerator 1-2 days. Set onto",
-   "Remove foil and plastic wrap, then replace foil loosely. Bake"
+   "When ready to cook, thaw in refrigerator 1-2 days. Set onto counter for 30 minutes while preheating oven to 350°F.",
+   "Remove foil and plastic wrap, then replace foil loosely. Bake 45 minutes. Remove foil and bake additional 10 minutes."
   ]
  },
  {
@@ -866,19 +882,19 @@ export const RECIPES = [
    "5 cups cooked chicken, diced",
    "24 oz jar spaghetti sauce",
    "2 cups mozzarella cheese, shredded",
-   "1 cup Parmesan cheese, shredded",
+   "1 cup Parmesan cheese, shredded for the topping",
    "2 cups panko bread crumbs",
    "1 tsp Italian seasoning",
    "1½ tsps garlic powder",
    "3 Tbsps olive oil"
   ],
   "steps": [
-   "Spray 13x9-inch disposable foil pan with cooking spray. Place",
-   "Sprinkle mozzarella cheese on top of chicken, then top with",
-   "In small bowl, add first three topping ingredients and stir",
-   "Sprinkle bread crumb topping over Parmesan layer. Cover",
-   "When ready to cook, thaw in refrigerator 1-2 days. Remove",
-   "Preheat oven to 350°F. Bake 40 minutes, or until bubbly and"
+   "Spray 13x9-inch disposable foil pan with cooking spray. Place chicken into bottom of pan. Pour spaghetti sauce over top and combine to make sure chicken is thoroughly coated. Spread evenly across bottom of pan.",
+   "Sprinkle mozzarella cheese on top of chicken, then top with Parmesan cheese.",
+   "In small bowl, add first three topping ingredients and stir gently with fork. Then add olive oil and continue to toss until bread crumbs are evenly coated.",
+   "Sprinkle bread crumb topping over Parmesan layer. Cover with plastic wrap and aluminum foil. Label and freeze.",
+   "When ready to cook, thaw in refrigerator 1-2 days. Remove foil and plastic wrap.",
+   "Preheat oven to 350°F. Bake 40 minutes, or until bubbly and bread crumbs are toasted."
   ]
  },
  {
@@ -889,7 +905,7 @@ export const RECIPES = [
   "category": "main",
   "dish": "skillet",
   "protein": "pork",
-  "method": "oven",
+  "method": "grill",
   "prep": "5 minutes",
   "cookLabel": "cook",
   "cook": "30 minutes",
@@ -909,9 +925,9 @@ export const RECIPES = [
    "¼ tsp cayenne pepper"
   ],
   "steps": [
-   "In large bowl, combine all ingredients except pork tenderloins.",
+   "In large bowl, combine all ingredients except pork tenderloins. Pour half of marinade into gallon-size zip-top bag; add tenderloins. Seal bag and knead to coat. Pour remaining marinade into quart-size zip-top bag. Label and freeze bags together.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Drain and discard marinade from meat. Grill, covered,"
+   "Drain and discard marinade from meat. Grill, covered, over indirect medium heat 20-35 minutes or until internal temperature reaches 145°F. Turn tenderloins occasionally and baste with reserved marinade. Let stand 5 minutes before slicing. Serve over rice, if desired."
   ]
  },
  {
@@ -931,19 +947,19 @@ export const RECIPES = [
   "ingredients": [
    "8 oz ham, chopped",
    "3 large croissants",
-   "1 cup Swiss cheese, shredded",
+   "1 cup Swiss cheese, shredded (or other cheese)",
    "6 large eggs",
-   "1 cup half-and-half",
+   "1 cup half-and-half (or whipping cream)",
    "1 Tbsp yellow mustard",
    "2 Tbsps honey",
    "¼ tsp salt",
    "¼ tsp pepper"
   ],
   "steps": [
-   "Tear croissants into pieces. Place into greased 11x7-inch",
-   "Whisk eggs, half-and-half, mustard, honey, salt, and pepper;",
+   "Tear croissants into pieces. Place into greased 11x7-inch disposable foil pan. Top with ham and cheese.",
+   "Whisk eggs, half-and-half, mustard, honey, salt, and pepper; pour over ham and cheese. Cover with plastic wrap and aluminum foil. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Preheat oven to 325°F. Remove foil and plastic wrap, then"
+   "Preheat oven to 325°F. Remove foil and plastic wrap, then replace foil. Bake, covered, 35 minutes. Uncover and bake additional 25 minutes or until browned and center is set."
   ]
  },
  {
@@ -954,7 +970,7 @@ export const RECIPES = [
   "category": "dessert",
   "dish": "dessert",
   "protein": "none",
-  "method": "stovetop",
+  "method": "oven",
   "prep": "15 minutes",
   "cookLabel": "cook",
   "cook": "30 minutes",
@@ -967,14 +983,14 @@ export const RECIPES = [
    "1 pkg brown gravy mix",
    "14.5 oz can low-sodium beef broth",
    "2 Tbsps Worcestershire sauce",
-   "32 oz carton refrigerated"
+   "32 oz carton refrigerated mashed potatoes"
   ],
   "steps": [
-   "In large skillet, cook ground beef and onion until beef is",
+   "In large skillet, cook ground beef and onion until beef is browned and crumbly; drain and return to skillet. Stir in vegetables, gravy mix, broth, and Worcestershire sauce. Bring to boil, reduce heat, and simmer 5 minutes or until thickened.",
    "Heat potatoes according to package directions.",
-   "Pour meat mixture into 13x9-inch disposable foil pan. Spoon",
+   "Pour meat mixture into 13x9-inch disposable foil pan. Spoon mashed potatoes over top and spread until smooth. Let cool.",
    "Cover with plastic wrap and aluminum foil. Label and freeze.",
-   "When ready to cook, thaw in refrigerator 1-2 days. Remove"
+   "When ready to cook, thaw in refrigerator 1-2 days. Remove foil and plastic wrap. Preheat oven to 350°F and bake about 30 minutes or until warmed throughout. Serve over biscuits or garlic Texas toast, if desired."
   ]
  },
  {
@@ -985,7 +1001,7 @@ export const RECIPES = [
   "category": "main",
   "dish": "skillet",
   "protein": "pork",
-  "method": "oven",
+  "method": "grill",
   "prep": "5 minutes",
   "cookLabel": "cook",
   "cook": "25 minutes",
@@ -999,9 +1015,9 @@ export const RECIPES = [
    "2 tsps garlic powder"
   ],
   "steps": [
-   "In gallon-size zip-top bag, mix soy sauce, red wine vinegar,",
+   "In gallon-size zip-top bag, mix soy sauce, red wine vinegar, honey, and garlic powder. Knead bag to blend and add in pork chops. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Set grill to high heat and grill 5-8 minutes per side until"
+   "Set grill to high heat and grill 5-8 minutes per side until cooked through. Or bake at 400°F for 25 minutes, or until internal temperature reaches 145°F."
   ]
  },
  {
@@ -1011,7 +1027,7 @@ export const RECIPES = [
   "week": 7,
   "category": "main",
   "dish": "mexican",
-  "protein": "meatless",
+  "protein": "chicken",
   "method": "slow cooker",
   "prep": "10 minutes",
   "cookLabel": "cook",
@@ -1019,21 +1035,23 @@ export const RECIPES = [
   "serves": "6",
   "calories": 477,
   "ingredients": [
-   "1½ lb boneless, skinless",
+   "1½ lb boneless, skinless chicken breasts",
    "1 large yellow onion, chopped",
    "16 oz jar salsa",
-   "15 oz can black beans, rinsed",
+   "15 oz can black beans, rinsed and drained",
    "1 cup frozen corn",
    "1 oz pkg taco seasoning",
-   "2 (8.8 oz) pkgs Spanish-style",
-   "1 jalapeño, finely chopped",
-   "optional toppings: cilantro, diced"
+   "2 (8.8 oz) pkgs Spanish-style ready rice",
+   "1 jalapeño, finely chopped (optional)",
+   "serving day",
+   "optional toppings: cilantro, diced onions, avocados, shredded cheese, sour cream, and lime wedges"
   ],
   "steps": [
-   "In gallon-size zip-top bag, combine chicken, onion, salsa,",
+   "In gallon-size zip-top bag, combine chicken, onion, salsa, beans, corn, taco seasoning, and jalapeño, if using. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Transfer contents of bag to slow cooker. Cover and cook on",
-   "Serve chicken mixture over prepared rice with optional"
+   "Transfer contents of bag to slow cooker. Cover and cook on low 5-6 hours or high 4 hours. Remove chicken, shred, and return to slow cooker.",
+   "Serve chicken mixture over prepared rice with optional toppings, if desired.",
+   "Note: Label and store Spanish-style ready rice for serving day."
   ]
  },
  {
@@ -1053,20 +1071,20 @@ export const RECIPES = [
   "ingredients": [
    "2 lb lean ground beef",
    "1 large yellow onion, chopped",
-   "2 (12 oz) pkgs frozen",
+   "2 (12 oz) pkgs frozen mixed vegetables",
    "28 oz can crushed tomatoes",
    "8 oz can tomato sauce",
    "1 green bell pepper, chopped",
    "1 pkg dry onion soup mix",
    "½ tsp dried oregano",
-   "32 oz carton low-sodium",
+   "32 oz carton low-sodium beef broth",
    "1 tsp sugar (optional)"
   ],
   "steps": [
-   "In large skillet, cook ground beef and onion until beef is",
-   "In gallon-size zip-top bag, add beef and remaining ingredients",
+   "In large skillet, cook ground beef and onion until beef is browned and crumbly; drain.",
+   "In gallon-size zip-top bag, add beef and remaining ingredients except beef broth. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Place contents of bag and reserved beef broth into slow cooker."
+   "Place contents of bag and reserved beef broth into slow cooker. Cover and cook on low 6-7 hours or high 3-4 hours. Or, add to large stockpot, bring to boil; reduce heat and simmer at least 1 hour, stirring occasionally."
   ]
  },
  {
@@ -1092,10 +1110,10 @@ export const RECIPES = [
    "1 cup mozzarella cheese, shredded"
   ],
   "steps": [
-   "Cook ziti according to package directions to al dente.",
-   "Spread into 13x9-inch disposable foil pan. Top with remaining",
+   "Cook ziti according to package directions to al dente. Combine cooked pasta, 2 cups marinara sauce, ricotta, Parmesan, and garlic.",
+   "Spread into 13x9-inch disposable foil pan. Top with remaining marinara sauce and mozzarella.",
    "Cover with plastic wrap and aluminum foil. Label and freeze.",
-   "When ready to cook, thaw in refrigerator 1-2 days. Remove"
+   "When ready to cook, thaw in refrigerator 1-2 days. Remove foil and plastic wrap. Preheat oven to 400°F and bake 30 minutes or until bubbly and browned."
   ]
  },
  {
@@ -1114,10 +1132,10 @@ export const RECIPES = [
   "calories": 273,
   "ingredients": [
    "1 lb lean ground beef",
-   "2 large eggs, beaten with",
+   "2 large eggs, beaten with ½ cup milk",
    "½ cup Parmesan cheese, grated",
    "1 cup panko or Italian bread crumbs",
-   "1 Tbsp onion powder or 1 small",
+   "1 Tbsp onion powder or 1 small onion, minced",
    "2-3 cloves garlic, minced",
    "½ tsp dried oregano",
    "1 tsp dried basil",
@@ -1128,10 +1146,11 @@ export const RECIPES = [
   ],
   "steps": [
    "In large bowl, mix all ingredients together by hand.",
-   "Form into golf ball-size meatballs and place onto",
-   "Flash freeze on baking sheet, then place into gallon-size zip-",
-   "When ready to cook, thaw in refrigerator 1-2 days. Preheat",
-   "Serve alone or with your favorite pasta sauce and spaghetti or"
+   "Form into golf ball-size meatballs and place onto baking sheet.",
+   "Flash freeze on baking sheet, then place into gallon-size zip- top bag. Label and return to freezer.",
+   "When ready to cook, thaw in refrigerator 1-2 days. Preheat oven to 350°F and bake 30 minutes.",
+   "Serve alone or with your favorite pasta sauce and spaghetti or as meatball subs.",
+   "Note: If cooking meatballs prior to freezing, follow baking directions."
   ]
  },
  {
@@ -1141,8 +1160,8 @@ export const RECIPES = [
   "week": 8,
   "category": "main",
   "dish": "sandwich",
-  "protein": "meatless",
-  "method": "oven",
+  "protein": "beef",
+  "method": "grill",
   "prep": "5 minutes",
   "cookLabel": "cook",
   "cook": "10 minutes",
@@ -1152,13 +1171,14 @@ export const RECIPES = [
    "2 lb ground chuck",
    "1 cup cheddar cheese, shredded",
    "1 oz pkg dry ranch dressing mix",
+   "serving day",
    "hamburger buns or lettuce leaves"
   ],
   "steps": [
-   "Mix beef, cheese, and ranch dressing mix until well combined.",
-   "Place into gallon-size zip-top bag with small square of wax",
+   "Mix beef, cheese, and ranch dressing mix until well combined. Shape into 6 patties of equal size and thickness.",
+   "Place into gallon-size zip-top bag with small square of wax paper between each patty. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Grill patties, covered with grill lid, over direct high heat about"
+   "Grill patties, covered with grill lid, over direct high heat about 5 minutes on each side. Serve on hamburger buns, lettuce leaves, or your favorite burger toppings."
   ]
  },
  {
@@ -1168,7 +1188,7 @@ export const RECIPES = [
   "week": 8,
   "category": "main",
   "dish": "skillet",
-  "protein": "meatless",
+  "protein": "chicken",
   "method": "slow cooker",
   "prep": "10 minutes",
   "cookLabel": "cook",
@@ -1176,7 +1196,7 @@ export const RECIPES = [
   "serves": "6",
   "calories": 400,
   "ingredients": [
-   "2 lb boneless, skinless",
+   "2 lb boneless, skinless chicken breasts",
    "2 cups ketchup",
    "¼ cup Worcestershire sauce",
    "3 Tbsps light brown sugar",
@@ -1184,9 +1204,9 @@ export const RECIPES = [
    "1 Tbsp hot sauce"
   ],
   "steps": [
-   "In gallon-size zip-top bag, place ketchup, Worcestershire",
+   "In gallon-size zip-top bag, place ketchup, Worcestershire sauce, brown sugar, chili powder, and hot sauce. Knead gently to combine. Place chicken breasts inside bag. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Place contents of bag into slow cooker. Cover and cook on"
+   "Place contents of bag into slow cooker. Cover and cook on low 6-8 hours. Shred chicken and return to slow cooker; mix thoroughly."
   ]
  },
  {
@@ -1196,7 +1216,7 @@ export const RECIPES = [
   "week": 8,
   "category": "main",
   "dish": "skillet",
-  "protein": "meatless",
+  "protein": "chicken",
   "method": "slow cooker",
   "prep": "10 minutes",
   "cookLabel": "cook",
@@ -1204,8 +1224,8 @@ export const RECIPES = [
   "serves": "6",
   "calories": 335,
   "ingredients": [
-   "1½ lb boneless, skinless",
-   "15 oz can black beans, rinsed",
+   "1½ lb boneless, skinless chicken breasts",
+   "15 oz can black beans, rinsed and drained",
    "10 oz can Ro- Tel tomatoes",
    "1 cup frozen corn kernels",
    "½ cup salsa",
@@ -1218,9 +1238,9 @@ export const RECIPES = [
    "1 jalapeño, diced (optional)"
   ],
   "steps": [
-   "In gallon-size zip-top bag, combine all ingredients except",
+   "In gallon-size zip-top bag, combine all ingredients except lime juice. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Place contents of bag into slow cooker. Cover and cook on",
+   "Place contents of bag into slow cooker. Cover and cook on low 7-8 hours or high 3-4 hours. Stir in lime juice.",
    "Serve over rice, tortillas, or tortilla chips, if desired."
   ]
  },
@@ -1229,8 +1249,8 @@ export const RECIPES = [
   "name": "incredible baked oatmeal",
   "box": "freezer",
   "week": 8,
-  "category": "main",
-  "dish": "skillet",
+  "category": "breakfast",
+  "dish": "breakfast",
   "protein": "meatless",
   "method": "oven",
   "prep": "15 minutes",
@@ -1249,17 +1269,17 @@ export const RECIPES = [
    "½ cup craisins",
    "1 large sweet apple, chopped",
    "2 very ripe bananas, smashed",
-   "½ cup coconut oil, melted",
+   "½ cup coconut oil, melted (or canola oil)",
    "2 large eggs, beaten",
    "1 cup milk",
    "cinnamon sugar (optional)"
   ],
   "steps": [
-   "In large mixing bowl, combine oats, sugars, salt, baking",
-   "Mix oil, eggs, and milk together. Pour over oat mixture and",
-   "Pour into greased 8x8-inch disposable foil pan. Cover with",
+   "In large mixing bowl, combine oats, sugars, salt, baking powder, cinnamon, pecans, craisins, apples, and bananas.",
+   "Mix oil, eggs, and milk together. Pour over oat mixture and stir until well combined.",
+   "Pour into greased 8x8-inch disposable foil pan. Cover with plastic wrap and aluminum foil. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Preheat oven to 350°F. Remove foil and plastic wrap. Bake",
+   "Preheat oven to 350°F. Remove foil and plastic wrap. Bake 25-30 minutes or until set.",
    "Sprinkle individual servings with cinnamon sugar, if desired."
   ]
  },
@@ -1286,9 +1306,9 @@ export const RECIPES = [
   "steps": [
    "Spray 8x8-inch disposable foil pan with cooking spray.",
    "Boil tortellini according to package directions, until al dente.",
-   "Spread thin layer of spaghetti sauce into bottom of foil pan.",
+   "Spread thin layer of spaghetti sauce into bottom of foil pan. Place half of cooked tortellini over sauce. Top with half of spinach, sauce, and Italian-blend cheese. Repeat layers. Cover with plastic wrap and aluminum foil. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Preheat oven to 350°F. Bake, uncovered, 45 minutes or until"
+   "Preheat oven to 350°F. Bake, uncovered, 45 minutes or until hot and bubbly."
   ]
  },
  {
@@ -1314,15 +1334,16 @@ export const RECIPES = [
    "1 tsp salt",
    "3 tsps ground cumin",
    "1 tsp cayenne pepper",
+   "serving day",
    "burrito-size flour tortillas",
-   "optional toppings: shredded"
+   "optional toppings: shredded cheddar cheese, salsa, sour cream, and sliced olives"
   ],
   "steps": [
-   "Drain chiles, reserving liquid. Coarsely chop chiles; place into",
-   "In small bowl, combine garlic, salt, cumin, and cayenne; rub",
+   "Drain chiles, reserving liquid. Coarsely chop chiles; place into gallon-size zip-top bag. Add tomatoes, onions, and reserved drained liquid.",
+   "In small bowl, combine garlic, salt, cumin, and cayenne; rub over roast. Place into zip-top bag with other ingredients. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Place all contents of bag into slow cooker. Cover and cook on",
-   "Remove roast; shred with 2 forks. Return to slow cooker;"
+   "Place all contents of bag into slow cooker. Cover and cook on low 8 hours.",
+   "Remove roast; shred with 2 forks. Return to slow cooker; heat throughout. Using slotted spoon, serve in tortillas with optional toppings, if desired."
   ]
  },
  {
@@ -1350,10 +1371,11 @@ export const RECIPES = [
    "½ tsp dried thyme"
   ],
   "steps": [
-   "Combine all ingredients into gallon-size zip-top bag. Knead to",
+   "Combine all ingredients into gallon-size zip-top bag. Knead to mix. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Place contents of bag into slow cooker. Cover and cook on",
-   "Shred meat and serve over pasta, rice, baked potatoes,"
+   "Place contents of bag into slow cooker. Cover and cook on low 8-10 hours or high 6-7 hours.",
+   "Shred meat and serve over pasta, rice, baked potatoes, polenta, cauliflower rice, or zucchini noodles.",
+   "Note: Mirepoix blend is chopped onions, celery, and carrots found in most grocery stores’ freezer sections."
   ]
  },
  {
@@ -1371,7 +1393,7 @@ export const RECIPES = [
   "serves": "6",
   "calories": 625,
   "ingredients": [
-   "2 lb boneless, skinless chicken",
+   "2 lb boneless, skinless chicken thighs, chopped",
    "1 medium ham bone or ham hock",
    "32 oz carton chicken broth",
    "1½ cups ham, diced",
@@ -1379,15 +1401,16 @@ export const RECIPES = [
    "4 stalks celery, chopped",
    "4 cloves garlic, diced",
    "2 cups water",
+   "serving day",
    "1 lb pkg gnocchi pasta",
    "1 cup heavy cream",
    "6 oz Swiss cheese, shredded"
   ],
   "steps": [
-   "Place first 8 ingredients into a gallon-size zip-top bag.",
+   "Place first 8 ingredients into a gallon-size zip-top bag. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Place contents of bag into slow cooker. Cover and cook",
-   "Open slow cooker and add gnocchi. Replace lid and cook",
+   "Place contents of bag into slow cooker. Cover and cook on low 8 hours.",
+   "Open slow cooker and add gnocchi. Replace lid and cook additional hour.",
    "Stir in heavy cream. Serve with shredded Swiss cheese."
   ]
  },
@@ -1411,19 +1434,20 @@ export const RECIPES = [
    "3 cloves garlic, minced",
    "1 red pepper, diced",
    "4 oz can diced green chiles, drained",
-   "15 oz can black beans, rinsed",
+   "15 oz can black beans, rinsed and drained",
    "1 Tbsp chili powder",
    "½ tsp ground paprika",
+   "serving day",
    "8 taco-size flour tortillas",
    "2 cups enchilada sauce",
-   "1-1½ cups cheddar"
+   "1-1½ cups cheddar cheese, shredded"
   ],
   "steps": [
-   "In gallon-size zip-top bag, place browned ground beef, onion,",
+   "In gallon-size zip-top bag, place browned ground beef, onion, garlic, red pepper, green chiles, black beans, chili powder, and paprika. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Place contents of bag into large skillet and cook over",
-   "Divide beef filling evenly between 8 flour tortillas. Roll tightly",
-   "Preheat oven to 375°F. Bake 30-35 minutes or until sauce is"
+   "Place contents of bag into large skillet and cook over medium-high heat until vegetables are tender.",
+   "Divide beef filling evenly between 8 flour tortillas. Roll tightly and place into greased 13x9-inch baking pan. Pour enchilada sauce evenly over enchiladas. Sprinkle with cheese and cover pan with foil.",
+   "Preheat oven to 375°F. Bake 30-35 minutes or until sauce is bubbly and cheese is melted."
   ]
  },
  {
@@ -1433,7 +1457,7 @@ export const RECIPES = [
   "week": 10,
   "category": "main",
   "dish": "skillet",
-  "protein": "chicken",
+  "protein": "beef",
   "method": "oven",
   "prep": "20 minutes",
   "cookLabel": "cook",
@@ -1443,7 +1467,7 @@ export const RECIPES = [
   "ingredients": [
    "20-24 jumbo pasta shells",
    "15 oz carton ricotta cheese",
-   "3 cups mozzarella cheese,",
+   "3 cups mozzarella cheese, shredded and divided",
    "¼ cup Parmesan cheese, grated",
    "2 Tbsps dried parsley flakes",
    "1 tsp Italian seasoning",
@@ -1452,11 +1476,12 @@ export const RECIPES = [
    "2 (24 oz) jars spaghetti sauce"
   ],
   "steps": [
-   "Cook pasta shells according to package directions",
-   "Mix ricotta, 1 cup mozzarella, Parmesan, parsley, Italian",
-   "Stuff shells with cheese mixture and 1 frozen meatball per",
-   "When ready to cook, thaw in refrigerator 1-2 days. Remove",
-   "Preheat oven to 350°F. Bake 30 minutes or until bubbly."
+   "Cook pasta shells according to package directions for al dente.",
+   "Mix ricotta, 1 cup mozzarella, Parmesan, parsley, Italian seasoning, and egg.",
+   "Stuff shells with cheese mixture and 1 frozen meatball per shell. Place shells into greased 13x9-inch disposable foil pan. Top with 1½ jars (or more) spaghetti sauce and 2 cups mozzarella cheese. Cover with plastic wrap and aluminum foil. Label and freeze.",
+   "When ready to cook, thaw in refrigerator 1-2 days. Remove foil and plastic wrap, then replace foil.",
+   "Preheat oven to 350°F. Bake 30 minutes or until bubbly.",
+   "Note: For meatless meals, omit meatballs."
   ]
  },
  {
@@ -1483,9 +1508,10 @@ export const RECIPES = [
   ],
   "steps": [
    "Place salmon into gallon-size zip-top bag.",
-   "In small bowl, combine remaining ingredients. Pour into bag",
+   "In small bowl, combine remaining ingredients. Pour into bag and knead around to coat salmon. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Preheat oven to 350°F. Carefully place salmon onto foil-"
+   "Preheat oven to 350°F. Carefully place salmon onto foil- lined baking sheet. Bake 25 minutes or until fish flakes easily with fork.",
+   "Note: Cooking time will vary depending on thickness of salmon."
   ]
  },
  {
@@ -1510,9 +1536,9 @@ export const RECIPES = [
    "1 oz packet mesquite marinade"
   ],
   "steps": [
-   "In gallon-size zip-top bag, add roast and remaining",
+   "In gallon-size zip-top bag, add roast and remaining ingredients. Knead to combine. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Place contents of bag into slow cooker. Cover and cook on",
+   "Place contents of bag into slow cooker. Cover and cook on low 8 hours or until meat shreds easily.",
    "Shred meat and serve."
   ]
  },
@@ -1524,7 +1550,7 @@ export const RECIPES = [
   "category": "main",
   "dish": "skillet",
   "protein": "pork",
-  "method": "oven",
+  "method": "slow cooker",
   "prep": "5 minutes",
   "cookLabel": "cook",
   "cook": "25 minutes",
@@ -1542,9 +1568,10 @@ export const RECIPES = [
    "1 tsp dried rosemary"
   ],
   "steps": [
-   "Combine all ingredients in gallon-size zip-top bag. Knead to",
+   "Combine all ingredients in gallon-size zip-top bag. Knead to mix. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Grill, covered, over medium heat about 20-25 minutes or"
+   "Grill, covered, over medium heat about 20-25 minutes or until internal temperature reaches 145°F. Let stand 5 minutes before serving.",
+   "Note: Slow cooker instructions: Cover and cook on low 7-8 hours or high 4-5 hours."
   ]
  },
  {
@@ -1572,10 +1599,10 @@ export const RECIPES = [
    "1 Tbsp horseradish"
   ],
   "steps": [
-   "In medium bowl, mix mayonnaise, poppy seeds, spicy",
-   "Place wrapped sandwiches into two gallon-size zip-top bags.",
+   "In medium bowl, mix mayonnaise, poppy seeds, spicy mustard, Worcestershire sauce, and horseradish. Spread sauce onto both sides of buns. Divide roast beef evenly over buns and top with provolone cheese. Wrap each sandwich in foil.",
+   "Place wrapped sandwiches into two gallon-size zip-top bags. Label and freeze.",
    "Remove sandwiches from bags, but keep wrapped in foil.",
-   "Preheat oven to 350°F, then bake 20-30 minutes, wrapped"
+   "Preheat oven to 350°F, then bake 20-30 minutes, wrapped in foil (20 minutes if thawed, and 30 minutes if frozen)."
   ]
  },
  {
@@ -1602,10 +1629,10 @@ export const RECIPES = [
    "1 Tbsp Worcestershire sauce"
   ],
   "steps": [
-   "Remove rolls from package in one big piece, lay flat, and slice",
-   "Layer cheese slices over both sections of sandwiches,",
-   "Brush tops of sandwiches with remaining butter sauce. Wrap",
-   "When ready to cook, thaw in refrigerator 1-2 days. Preheat"
+   "Remove rolls from package in one big piece, lay flat, and slice in two. In small bowl, combine butter, poppy seeds, mustard, and Worcestershire sauce. Brush or spoon about half of butter mixture over open-faced bread.",
+   "Layer cheese slices over both sections of sandwiches, covering as much as possible. Layer ham over bottom section of sandwiches. Carefully flip top section over onto bottom section. Place sandwich rolls onto piece of aluminum foil.",
+   "Brush tops of sandwiches with remaining butter sauce. Wrap sandwiches entirely with aluminum foil. Label and freeze.",
+   "When ready to cook, thaw in refrigerator 1-2 days. Preheat oven to 375°F, then bake 20-25 minutes until centers are heated and cheese has melted."
   ]
  },
  {
@@ -1614,7 +1641,7 @@ export const RECIPES = [
   "box": "freezer",
   "week": 11,
   "category": "main",
-  "dish": "skillet",
+  "dish": "pasta",
   "protein": "meatless",
   "method": "oven",
   "prep": "20 minutes",
@@ -1624,20 +1651,20 @@ export const RECIPES = [
   "calories": 301,
   "ingredients": [
    "24 oz carton cottage cheese",
-   "1½ cups mozzarella",
+   "1½ cups mozzarella cheese, shredded",
    "2 tsps Italian seasoning",
    "½ tsp garlic salt",
    "¼ tsp pepper",
    "8 oz pkg manicotti",
-   "¾ cup Italian-blend",
+   "¾ cup Italian-blend cheese, shredded",
    "24 oz jar spaghetti sauce"
   ],
   "steps": [
-   "Spray bottom of 13x9-inch disposable foil pan thoroughly",
-   "In small bowl, mix cottage cheese, mozzarella, Italian",
-   "Spoon cheese mixture into uncooked manicotti tubes",
-   "When ready to cook, thaw in refrigerator 1-2 days. Remove",
-   "Preheat oven to 375°F. Bake at least 45 minutes. Let stand"
+   "Spray bottom of 13x9-inch disposable foil pan thoroughly with cooking spray. Pour half of jar of spaghetti sauce into pan and spread evenly.",
+   "In small bowl, mix cottage cheese, mozzarella, Italian seasoning, garlic salt, and pepper.",
+   "Spoon cheese mixture into uncooked manicotti tubes and place tubes into pan on top of spaghetti sauce. Pour remaining spaghetti sauce over manicotti and spread evenly over pan. Sprinkle with cheese. Cover pan with plastic wrap and aluminum foil. Label and freeze.",
+   "When ready to cook, thaw in refrigerator 1-2 days. Remove foil and plastic wrap, then replace foil loosely.",
+   "Preheat oven to 375°F. Bake at least 45 minutes. Let stand 5 minutes before serving."
   ]
  },
  {
@@ -1661,9 +1688,9 @@ export const RECIPES = [
    "14 oz can beef stock or broth"
   ],
   "steps": [
-   "Combine all ingredients into gallon-size zip-top bag. Gently",
+   "Combine all ingredients into gallon-size zip-top bag. Gently knead to combine. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Add contents of bag into slow cooker. Cover and cook",
+   "Add contents of bag into slow cooker. Cover and cook on low 6 hours.",
    "Serve over mashed potatoes, rice, or cauliflower rice."
   ]
  },
@@ -1674,7 +1701,7 @@ export const RECIPES = [
   "week": 11,
   "category": "main",
   "dish": "skillet",
-  "protein": "meatless",
+  "protein": "chicken",
   "method": "slow cooker",
   "prep": "5 minutes",
   "cookLabel": "cook",
@@ -1682,7 +1709,7 @@ export const RECIPES = [
   "serves": "6",
   "calories": 386,
   "ingredients": [
-   "2 lb boneless, skinless",
+   "2 lb boneless, skinless chicken thighs",
    "1/3 cup honey",
    "1/3 cup soy sauce",
    "6 cloves garlic, minced",
@@ -1694,10 +1721,10 @@ export const RECIPES = [
   ],
   "steps": [
    "Add chicken thighs to gallon-size zip-top bag.",
-   "In small bowl, mix honey, soy sauce, garlic, apple cider vinegar,",
+   "In small bowl, mix honey, soy sauce, garlic, apple cider vinegar, Worcestershire sauce, and olive oil. Pour over chicken thighs. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Place contents of bag into slow cooker. Cover and cook on",
-   "Mix cornstarch and water; pour into slow cooker. Gently stir;"
+   "Place contents of bag into slow cooker. Cover and cook on low 6 hours.",
+   "Mix cornstarch and water; pour into slow cooker. Gently stir; return cover and cook additional 30 minutes."
   ]
  },
  {
@@ -1715,7 +1742,7 @@ export const RECIPES = [
   "serves": "6",
   "calories": 337,
   "ingredients": [
-   "2 lb beef chuck roast, cut into",
+   "2 lb beef chuck roast, cut into bite-size pieces",
    "1 large yellow onion, sliced",
    "6 stalks celery, sliced",
    "6 carrots, sliced",
@@ -1726,10 +1753,10 @@ export const RECIPES = [
    "2 Tbsps water"
   ],
   "steps": [
-   "Place all ingredients except cornstarch and water into gallon-",
+   "Place all ingredients except cornstarch and water into gallon- size zip-top bag. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Place contents of bag into slow cooker. Cover and cook on",
-   "Mix cornstarch and 2 tablespoons water; add to slow cooker;"
+   "Place contents of bag into slow cooker. Cover and cook on low 6-8 hours.",
+   "Mix cornstarch and 2 tablespoons water; add to slow cooker; stir well. Cover and cook additional 30 minutes."
   ]
  },
  {
@@ -1747,16 +1774,16 @@ export const RECIPES = [
   "serves": "8",
   "calories": 504,
   "ingredients": [
-   "4 lb chicken wings, split at joints",
+   "4 lb chicken wings, split at joints and remove tips",
    "1 cup mild buffalo wing sauce",
    "2 Tbsps butter",
    "6 Tbsps honey"
   ],
   "steps": [
-   "Combine all ingredients in gallon-size zip-top bag.",
+   "Combine all ingredients in gallon-size zip-top bag. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Place contents of bag into slow cooker. Cover and cook on",
-   "Remove wings from slow cooker and place onto foil-lined"
+   "Place contents of bag into slow cooker. Cover and cook on low 4-5 hours or high 3-4 hours.",
+   "Remove wings from slow cooker and place onto foil-lined baking sheet. Broil 3-4 minutes on each side or until desired crispness. Serve with extra wing sauce, if desired."
   ]
  },
  {
@@ -1767,14 +1794,14 @@ export const RECIPES = [
   "category": "main",
   "dish": "skillet",
   "protein": "chicken",
-  "method": "oven",
+  "method": "grill",
   "prep": "20 minutes",
   "cookLabel": "cook",
   "cook": "30 minutes",
   "serves": "6",
   "calories": 345,
   "ingredients": [
-   "2 lb boneless, skinless chicken",
+   "2 lb boneless, skinless chicken breasts, cubed",
    "½ cup Italian dressing",
    "¼ cup low-sodium soy sauce",
    "½ cup Worcestershire sauce",
@@ -1783,10 +1810,10 @@ export const RECIPES = [
    "wooden skewers"
   ],
   "steps": [
-   "Cut skewers in half and alternate chicken and vegetables to",
-   "In small bowl, combine Italian dressing, soy sauce, and",
+   "Cut skewers in half and alternate chicken and vegetables to create colorful pattern. Then, place skewers into gallon-size zip-top bag.",
+   "In small bowl, combine Italian dressing, soy sauce, and Worcestershire sauce. Pour into bag over the skewers. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Prepare grill to medium heat. Place kabobs onto grill, rotating"
+   "Prepare grill to medium heat. Place kabobs onto grill, rotating often and basting with leftover marinade. Grill about 20 minutes or until chicken juices run clear."
   ]
  },
  {
@@ -1804,24 +1831,25 @@ export const RECIPES = [
   "serves": "4",
   "calories": 274,
   "ingredients": [
+   "marinade",
    "¼ cup olive oil",
    "4 cloves garlic, minced",
    "1 Tbsp lime juice",
-   "1 Tbsp cajun seasoning",
-   "1 lb large shrimp, peeled",
+   "1 Tbsp cajun seasoning fajita",
+   "1 lb large shrimp, peeled and deveined",
    "2 bell peppers, sliced",
    "1 large yellow onion, sliced",
    "¼ cup fresh cilantro, chopped",
    "1 Tbsp olive oil",
    "1 pkg taco-size flour tortillas",
-   "optional toppings: cilantro,"
+   "optional toppings: cilantro, diced onions, avocados, shredded cheese, sour cream, and lime wedges"
   ],
   "steps": [
-   "In small bowl, combine marinade ingredients. Add shrimp to",
+   "In small bowl, combine marinade ingredients. Add shrimp to gallon-size zip-top bag. In separate gallon-size bag, add peppers, onions, cilantro, and half of marinade mixture. Pour remaining marinade into quart-size zip-top bag. Label and freeze all 3 bags together.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "In medium bowl, pat shrimp dry with paper towels, then add",
-   "In large skillet, heat 1 tablespoon olive oil until hot.",
-   "Serve in warmed flour tortillas with optional toppings,"
+   "In medium bowl, pat shrimp dry with paper towels, then add remaining marinade, stirring to combine.",
+   "In large skillet, heat 1 tablespoon olive oil until hot. Add vegetables and sauté until soft and golden brown at the edges. Add shrimp and cook until shrimp is pink, about 3 minutes.",
+   "Serve in warmed flour tortillas with optional toppings, if desired."
   ]
  },
  {
@@ -1839,23 +1867,24 @@ export const RECIPES = [
   "serves": "8",
   "calories": 399,
   "ingredients": [
-   "11/2 lb boneless, skinless chicken",
+   "11/2 lb boneless, skinless chicken breasts, diced",
    "4½ cups red potatoes, diced",
    "3 cups broccoli florets",
    "½ cup cooked bacon, crumbled",
    "1/2 large yellow onion, sliced",
-   "3 cups cheddar cheese, shredded",
-   "1 cup heavy cream (or half-",
+   "3 cups cheddar cheese, shredded and divided",
+   "1 cup heavy cream (or half- and-half)",
    "2 Tbsps butter, chopped",
    "salt and pepper",
    "garlic powder"
   ],
   "steps": [
-   "Grease 2 (8x8-inch) disposable foil pans. In both pans, layer",
-   "Pour ½ cup heavy cream over each pan and sprinkle each dish",
-   "Cover with plastic wrap and aluminum foil. Freeze ½ cup",
-   "When ready to cook, thaw in refrigerator 1-2 days. Remove",
-   "Preheat oven to 350°F. Bake, covered 1 hour or until chicken"
+   "Grease 2 (8x8-inch) disposable foil pans. In both pans, layer half potatoes, chicken, broccoli, crumbled bacon, and onion, followed by 1 cup shredded cheddar cheese per pan. Sprinkle each pan with salt, pepper, and garlic powder to taste.",
+   "Pour ½ cup heavy cream over each pan and sprinkle each dish with 1 tablespoon chopped butter.",
+   "Cover with plastic wrap and aluminum foil. Freeze ½ cup cheddar cheese with each dish. Label and freeze.",
+   "When ready to cook, thaw in refrigerator 1-2 days. Remove bag of cheese and set aside. Remove foil and plastic wrap, then replace foil.",
+   "Preheat oven to 350°F. Bake, covered 1 hour or until chicken is cooked and potatoes are tender. Sprinkle with reserved cheese and bake uncovered 5-10 minutes more until cheese is bubbly.",
+   "Note: Parboiling potatoes before freezing will help potatoes retain their color."
   ]
  },
  {
@@ -1875,20 +1904,21 @@ export const RECIPES = [
   "ingredients": [
    "3 lb chuck roast",
    "1 large yellow onion, sliced",
-   "1 large green pepper, cut into",
-   "1 large red pepper, cut into",
+   "1 large green pepper, cut into ½-inch strips",
+   "1 large red pepper, cut into ½-inch strips",
    "1 cup water",
    "4 cloves garlic, minced",
+   "serving day",
    "1/3 cup cornstarch",
    "½ cup low-sodium soy sauce",
    "2 tsps sugar"
   ],
   "steps": [
-   "In gallon-size zip-top bag, place roast, onion, peppers, 1 cup",
+   "In gallon-size zip-top bag, place roast, onion, peppers, 1 cup water, and garlic. Label and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Place contents of bag into slow cooker. Cover and cook on",
-   "Remove roast from slow cooker, transfer vegetables and",
-   "Slice or shred beef, return to slow cooker, add vegetables, and"
+   "Place contents of bag into slow cooker. Cover and cook on low 6-8 hours.",
+   "Remove roast from slow cooker, transfer vegetables and juices to large saucepan. Bring to boil. In small bowl, whisk cornstarch, soy sauce, and sugar until smooth. Add mixture to vegetables and return to boil, stirring constantly. Cook until mixture thickens, 1-2 minutes.",
+   "Slice or shred beef, return to slow cooker, add vegetables, and heat 30 minutes."
   ]
  },
  {
@@ -1915,18 +1945,20 @@ export const RECIPES = [
    "1 Tbsp dried oregano",
    "½ tsp salt",
    "¼ tsp pepper",
+   "serving day",
    "8 oz ball fresh mozzarella cheese",
    "2 Roma tomatoes, sliced",
    "fresh basil leaves",
-   "2 heads Romaine lettuce, chopped",
+   "2 heads Romaine lettuce, chopped (need 12 cups)",
    "balsamic vinaigrette dressing"
   ],
   "steps": [
-   "Add first 9 ingredients to a gallon-size zip-top bag, and knead",
+   "Add first 9 ingredients to a gallon-size zip-top bag, and knead to combine. Label, and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
    "Remove steaks from bag; discard marinade.",
-   "In a large skillet, cook steak over medium heat, 5-7 minutes",
-   "Top steaks with a slice of mozzarella cheese, tomato and fresh"
+   "In a large skillet, cook steak over medium heat, 5-7 minutes per side, or until desired doneness.",
+   "Top steaks with a slice of mozzarella cheese, tomato and fresh basil. Slice and serve over fresh salad greens. Toss with desired amount of dressing.",
+   "Note: Nutritional information does not include dressing."
   ]
  },
  {
@@ -1944,7 +1976,7 @@ export const RECIPES = [
   "serves": "6",
   "calories": 509,
   "ingredients": [
-   "2 lbs boneless, skinless chicken",
+   "2 lbs boneless, skinless chicken thighs, trimmed",
    "14 oz can unsweetened coconut milk",
    "½ cup creamy peanut butter",
    "2 cloves garlic, minced",
@@ -1957,16 +1989,17 @@ export const RECIPES = [
    "1 tsp ground cumin",
    "1 tsp garam masala",
    "½ tsp red pepper flakes",
+   "serving day",
    "Romaine lettuce hearts",
    "chopped peanuts",
    "chopped cilantro"
   ],
   "steps": [
-   "In a medium bowl, combine coconut milk, peanut butter,",
-   "Pour mixture into a gallon-size zip-top bag; add chicken.",
+   "In a medium bowl, combine coconut milk, peanut butter, garlic, ginger, lime juice, soy sauce, honey, sesame oil, curry powder, cumin, garam masala and red pepper flakes. Whisk until smooth.",
+   "Pour mixture into a gallon-size zip-top bag; add chicken. Label, and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Add contents of freezer bag to crockpot. Cover and cook on",
-   "Shred or cut chicken into small pieces. Spoon into lettuce"
+   "Add contents of freezer bag to crockpot. Cover and cook on low 6 hours or on high 4 hours.",
+   "Shred or cut chicken into small pieces. Spoon into lettuce leaf; top with peanuts and cilantro to serve."
   ]
  },
  {
@@ -1984,7 +2017,7 @@ export const RECIPES = [
   "serves": "6",
   "calories": 407,
   "ingredients": [
-   "2 medium pork tenderloins",
+   "2 medium pork tenderloins (about 3 lbs)",
    "12-15 slices bacon",
    "¼ cup packed brown sugar",
    "1 tsp paprika",
@@ -1996,13 +2029,13 @@ export const RECIPES = [
   ],
   "steps": [
    "Combine all ingredients except bacon and pork in a small bowl.",
-   "Rub seasonings over pork, then wrap with bacon, overlapping",
-   "Wrap prepared pork tightly in foil and place into a gallon-size",
+   "Rub seasonings over pork, then wrap with bacon, overlapping some if needed.",
+   "Wrap prepared pork tightly in foil and place into a gallon-size zip-top bag.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
    "Preheat oven to 375°F.",
-   "Meanwhile, heat a large, oven-safe skillet over",
-   "Add thawed pork to pan, seam side down, and sear two",
-   "Transfer skillet to oven and roast 20-25 minutes or until",
+   "Meanwhile, heat a large, oven-safe skillet over medium-high heat.",
+   "Add thawed pork to pan, seam side down, and sear two minutes per side until bacon is lightly browned.",
+   "Transfer skillet to oven and roast 20-25 minutes or until internal temperature reaches 145°F.",
    "Let tenderloins rest a few minutes before slicing."
   ]
  },
@@ -2021,25 +2054,25 @@ export const RECIPES = [
   "serves": "8",
   "calories": 594,
   "ingredients": [
-   "8 oz spaghetti noodles, broken",
+   "8 oz spaghetti noodles, broken in half",
    "3 Tbsps butter",
    "1 large yellow onion, diced",
    "1 small green bell pepper, chopped",
    "4 cloves garlic, minced",
    "5 1/2 cups diced, cooked chicken",
-   "4 cups shredded cheese, divided",
-   "2 (10.5 oz) cans cream of chicken",
+   "4 cups shredded cheese, divided (your favorite or Monterey Jack cheese)",
+   "2 (10.5 oz) cans cream of chicken or mushroom soup",
    "1 soup can milk",
    "1 ½ tsps seasoning salt"
   ],
   "steps": [
-   "Cook spaghetti noodles according to package directions until",
-   "In a large skillet, melt butter then sauté onion and bell",
-   "In a large bowl, thoroughly mix together onion mixture, diced",
-   "Transfer mixture to a greased 13x9-inch disposable foil pan.",
+   "Cook spaghetti noodles according to package directions until al dente; drain.",
+   "In a large skillet, melt butter then sauté onion and bell pepper until softened; add garlic and continue sautéeing another minute.",
+   "In a large bowl, thoroughly mix together onion mixture, diced chicken, 3 cups shredded cheese, cream of soups, milk and seasoning salt.",
+   "Transfer mixture to a greased 13x9-inch disposable foil pan. Cover with plastic wrap and aluminum foil. Add remaining 1 cup cheese to a separate quart-size bag and attach to casserole. Label, and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Remove from refrigerator 30 minutes before baking. Preheat",
-   "Bake, uncovered, 30-40 minutes until bubbly. Add remaining"
+   "Remove from refrigerator 30 minutes before baking. Preheat oven to 350°F. Remove foil and plastic wrap.",
+   "Bake, uncovered, 30-40 minutes until bubbly. Add remaining cheese, return to oven another 5 minutes or until cheese is melted."
   ]
  },
  {
@@ -2059,24 +2092,24 @@ export const RECIPES = [
   "ingredients": [
    "4 slices bacon, diced",
    "6 large eggs",
-   "1 ¼ cups (4% milkfat)",
-   "1 ¼ cups shredded Gruyere cheese",
+   "1 ¼ cups (4% milkfat) cottage cheese",
+   "1 ¼ cups shredded Gruyere cheese (or a blend of Gruyere and cheddar or Monterey Jack)",
    "2 Tbsps cornstarch",
    "¼ tsp salt",
    "⅛ tsp freshly ground pepper",
    "½ tsp hot sauce, such as Tabasco"
   ],
   "steps": [
-   "Bring a pot of water to boil. Preheat oven to 300°F, with",
-   "Place a 13x9-inch metal or ceramic baking dish (not silicone)",
+   "Bring a pot of water to boil. Preheat oven to 300°F, with racks in middle and lowest positions.",
+   "Place a 13x9-inch metal or ceramic baking dish (not silicone) onto lower rack, and carefully fill halfway with boiling water. This creates steam, which helps with custard texture.",
    "Cook bacon until crisp; drain on paper towels.",
    "Spray a nonstick muffin pan generously with cooking spray.",
-   "Blend eggs, cheeses, cornstarch, salt, pepper and hot sauce",
-   "Pour egg mixture into muffin pan, filling each well 3/4 full.",
-   "Bake on the middle rack 20-25 minutes until eggs are set and",
-   "Remove from oven, and let stand 5 minutes. Use a small",
+   "Blend eggs, cheeses, cornstarch, salt, pepper and hot sauce in blender until smooth.",
+   "Pour egg mixture into muffin pan, filling each well 3/4 full. Divide and press bacon into batter to avoid it floating on top.",
+   "Bake on the middle rack 20-25 minutes until eggs are set and start pulling away from the edges.",
+   "Remove from oven, and let stand 5 minutes. Use a small spoon to loosen the edges, and carefully lift them out onto a plate.",
    "Once cool, label and freeze in an airtight container.",
-   "Microwave frozen egg bites on a paper towel 60-90 seconds"
+   "Microwave frozen egg bites on a paper towel 60-90 seconds (or longer, if needed) at 50% power."
   ]
  },
  {
@@ -2087,7 +2120,7 @@ export const RECIPES = [
   "category": "dessert",
   "dish": "dessert",
   "protein": "none",
-  "method": "oven",
+  "method": "no-cook",
   "prep": "15 minutes",
   "cookLabel": "freeze",
   "cook": "4 hours",
@@ -2099,14 +2132,15 @@ export const RECIPES = [
    "24 chocolate mint cookies, divided",
    "8 oz container whipped topping",
    "1 chocolate or Oreo pie crust",
-   "12 drops green food"
+   "12 drops green food coloring, optional"
   ],
   "steps": [
    "Crush 16 chocolate mint cookies.",
-   "In a large bowl, beat cream cheese with an electric mixer until",
+   "In a large bowl, beat cream cheese with an electric mixer until light and fluffy. Add in sweetened condensed milk and food coloring, if using; beat until smooth. Stir in crushed cookies until mixed well.",
    "Gently fold in whipped topping. Spoon into prepared pie crust.",
-   "Cover with plastic wrap and aluminum foil. Label, and freeze",
-   "Remove from freezer, and set on counter 10 minutes to"
+   "Cover with plastic wrap and aluminum foil. Label, and freeze 4 hours or overnight.",
+   "Remove from freezer, and set on counter 10 minutes to soften before cutting. Crumble remaining 8 mint cookies over top to serve.",
+   "Note: For testing purposes, we used Keebler grasshopper mint & fudge cookies. Girl Scout thin mint cookies would also work."
   ]
  },
  {
@@ -2124,28 +2158,31 @@ export const RECIPES = [
   "serves": "6",
   "calories": 401,
   "ingredients": [
-   "2 lbs boneless, skinless chicken",
+   "homemade dressing",
+   "2 lbs boneless, skinless chicken breasts, sliced",
    "¼ cup soy sauce",
    "1 Tbsp brown sugar",
    "1 tsp garlic powder",
    "2 tsps sesame oil",
+   "serving day",
    "3 Romaine lettuce hearts, chopped",
-   "15 oz can Mandarin oranges,",
+   "15 oz can Mandarin oranges, drained",
    "½ cup sliced almonds",
    "½ cup cilantro, chopped",
    "3 green onions, sliced",
-   "1 ½ cups wonton strips or",
+   "1 ½ cups wonton strips or chow mein noodles",
    "2 Tbsps sesame seeds",
-   "store bought Asian dressing"
+   "store bought Asian dressing or homemade sesame vinaigrette dressing"
   ],
   "steps": [
-   "Add chicken, soy sauce, brown sugar, garlic powder and",
+   "Add chicken, soy sauce, brown sugar, garlic powder and sesame oil to a gallon-size zip-top bag. Label, and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Add contents of freezer bag to slow cooker. Cover and cook",
+   "Add contents of freezer bag to slow cooker. Cover and cook on low 4 hours or on high 2 hours.",
    "Toss all salad ingredients together, and top with sliced chicken.",
-   "Serve with your favorite Asian dressing or follow",
-   "In a small saucepan, heat ½ cup rice vinegar, ¼ cup sugar and",
-   "Pour into a glass jar, and add 1 tablespoon sesame oil, ¼ cup"
+   "Serve with your favorite Asian dressing or follow instructions for the homemade sesame vinaigrette dressing in the note below.",
+   "Note: Nutritional information does not include dressing.",
+   "In a small saucepan, heat ½ cup rice vinegar, ¼ cup sugar and 4 cloves minced garlic over medium heat. Allow to boil one minute or until sugar dissolves.",
+   "Pour into a glass jar, and add 1 tablespoon sesame oil, ¼ cup vegetable oil, 2 tablespoons soy sauce and 1 tablespoon sesame seeds; shake well. Refrigerate before using."
   ]
  },
  {
@@ -2163,22 +2200,23 @@ export const RECIPES = [
   "serves": "4",
   "calories": 506,
   "ingredients": [
-   "2 (15 oz) cans black beans, rinsed",
+   "2 (15 oz) cans black beans, rinsed and drained",
    "1 ¼ cups enchilada sauce, divided",
-   "1 cup shredded Mexican-blend",
+   "1 cup shredded Mexican-blend cheese, divided",
    "½ tsp ground cumin",
    "8 (6-inch) corn tortillas, divided",
-   "optional taco toppings: sour cream,"
+   "optional taco toppings: sour cream, sliced green onions, sliced olives, diced avocado or guacamole"
   ],
   "steps": [
    "Spray an 8x8-inch disposable foil pan with cooking spray.",
-   "In a large bowl, stir together beans, ¾ cup enchilada sauce, ½",
-   "Place 4 corn tortillas into the bottom of prepared pan, tearing",
-   "Top with half of the bean mixture, and drizzle with ¼ cup",
+   "In a large bowl, stir together beans, ¾ cup enchilada sauce, ½ cup cheese and cumin.",
+   "Place 4 corn tortillas into the bottom of prepared pan, tearing them as necessary to cover the bottom.",
+   "Top with half of the bean mixture, and drizzle with ¼ cup enchilada sauce. Repeat layers one more time, ending with remaining ½ cup of cheese on top. Cover with plastic wrap and tightly with foil.",
    "Label, and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Preheat oven to 350°F. Bake casserole, covered, 30",
-   "Serve with optional taco toppings, if desired."
+   "Preheat oven to 350°F. Bake casserole, covered, 30 minutes. Uncover, and bake an additional 5-10 minutes.",
+   "Serve with optional taco toppings, if desired.",
+   "Note: You can double all of the ingredients, and prepare casserole in a 13x9-inch baking dish to serve a larger crowd."
   ]
  },
  {
@@ -2196,7 +2234,7 @@ export const RECIPES = [
   "serves": "6-8",
   "calories": 278,
   "ingredients": [
-   "1 ½ lbs boneless, skinless",
+   "1 ½ lbs boneless, skinless chicken breasts",
    "2 cloves garlic, minced",
    "1 large yellow onion, diced",
    "2 cups fresh mushrooms, sliced",
@@ -2208,18 +2246,19 @@ export const RECIPES = [
    "2 tsps garlic powder",
    "½ Tbsp mustard",
    "½ tsp dried thyme",
+   "serving day",
    "6 cups low-sodium chicken broth",
    "1 ½ cups milk",
    "fresh parsley, for garnish"
   ],
   "steps": [
-   "Add all ingredients except chicken broth, milk and parsley to a",
+   "Add all ingredients except chicken broth, milk and parsley to a gallon-size zip-top bag. Label, and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
    "Add contents of bag and 6 cups chicken broth to slow cooker.",
    "Cover and cook on low, 8-10 hours.",
    "After cooking, remove chicken and shred with a fork.",
-   "Add 1 ½ cups milk, and pulse with an immersion blender or",
-   "Put shredded chicken back into slow cooker, sprinkle with"
+   "Add 1 ½ cups milk, and pulse with an immersion blender or whisk until soup is desired thickness.",
+   "Put shredded chicken back into slow cooker, sprinkle with fresh parsley and serve."
   ]
  },
  {
@@ -2237,7 +2276,7 @@ export const RECIPES = [
   "serves": "6",
   "calories": 618,
   "ingredients": [
-   "7 oz can chipotle peppers",
+   "7 oz can chipotle peppers in adobo sauce",
    "3 lb boneless beef chuck roast",
    "½ cup apple cider vinegar",
    "½ large yellow onion, diced",
@@ -2246,19 +2285,21 @@ export const RECIPES = [
    "1 tsp salt",
    "1 tsp pepper",
    "4 Tbsps fresh lime juice",
+   "serving day",
    "½ cup low-sodium beef broth",
    "3 cups cooked white rice",
    "8 oz pkg shredded iceberg lettuce",
-   "2 (15 oz) cans pinto beans, drained",
+   "2 (15 oz) cans pinto beans, drained and rinsed",
    "1 red onion, diced",
    "1 ½ cups shredded cheddar cheese"
   ],
   "steps": [
-   "Dice 2 chipotle peppers from can, and add to a gallon-size",
+   "Dice 2 chipotle peppers from can, and add to a gallon-size zip-top bag along with 1 tablespoon adobo sauce. Add remaining ingredients to bag. Label, and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Add contents of bag to slow cooker along with ½ cup beef",
-   "Remove beef and shred. Stir back into slow cooker, cover and",
-   "Serve on top of rice, with shredded lettuce, pinto beans,"
+   "Add contents of bag to slow cooker along with ½ cup beef broth. Cover and cook on low 9-10 hours or on high 4-5 hours.",
+   "Remove beef and shred. Stir back into slow cooker, cover and cook another 30 minutes. Discard bay leaf.",
+   "Serve on top of rice, with shredded lettuce, pinto beans, diced red onion and shredded cheddar cheese.",
+   "Note: Rice can be prepared ahead of time and frozen."
   ]
  },
  {
@@ -2281,8 +2322,9 @@ export const RECIPES = [
    "¼ cup butter, melted",
    "⅓ cup pure maple syrup",
    "2 tsps vanilla extract",
-   "10 oz loaf sourdough bread,",
-   "1 ½ cups fresh or frozen",
+   "10 oz loaf sourdough bread, cubed (stale)",
+   "1 ½ cups fresh or frozen blueberries, divided",
+   "vanilla glaze",
    "1 Tbsp milk (or more)",
    "½ tsp vanilla extract",
    "pinch of salt",
@@ -2290,12 +2332,13 @@ export const RECIPES = [
   ],
   "steps": [
    "In a large bowl, whisk together first five ingredients.",
-   "Spray 8x8-inch foil pan with cooking spray. Add bread and",
+   "Spray 8x8-inch foil pan with cooking spray. Add bread and 1 cup blueberries to pan. Pour egg mixture over, and toss to cover bread. Top with remaining blueberries.",
    "Cover with plastic wrap and aluminum foil. Label, and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Set casserole on counter while oven preheats to 350°F.",
-   "To make the vanilla glaze, stir together milk, vanilla and salt in",
-   "Let casserole cool about 10 minutes. Use a spoon to drizzle"
+   "Set casserole on counter while oven preheats to 350°F. Bake, uncovered, 50 minutes or until golden brown and set in the middle.",
+   "To make the vanilla glaze, stir together milk, vanilla and salt in a small bowl. Add powdered sugar and whisk until a thin, white glaze forms.",
+   "Let casserole cool about 10 minutes. Use a spoon to drizzle glaze over casserole. Serve warm.",
+   "Notes: Do not thaw frozen berries before using as they will color the casserole too much. If not freezing, cover and refrigerate at least 3 hours or up to 24 hours before following baking directions above."
   ]
  },
  {
@@ -2326,10 +2369,10 @@ export const RECIPES = [
   "steps": [
    "Preheat oven to 350°F.",
    "Grease a 13x9-inch baking dish or disposable foil pan.",
-   "Line a rimmed baking sheet with aluminum foil. In a bowl, stir",
-   "In a large bowl, whip egg whites and lemon juice with an electric",
-   "In a separate bowl, whip the cream with an electric mixer",
-   "Remove from freezer, and set on counter 10-15 minutes to"
+   "Line a rimmed baking sheet with aluminum foil. In a bowl, stir together flour, brown sugar, pecans and melted butter. Toast on baking sheet in the oven until pecans are fragrant, about 15 minutes; stir occasionally. Sprinkle ⅔ of the pecan mixture evenly over the bottom of the 13x9-inch dish.",
+   "In a large bowl, whip egg whites and lemon juice with an electric mixer until they can hold a soft peak. Gradually add white sugar while continuing to whip to firm peaks. Fold in strawberries.",
+   "In a separate bowl, whip the cream with an electric mixer until stiff but not grainy. Fold into the strawberry mixture. Spoon over the crust in the dish and spread evenly. Top with the remaining pecan mixture. Label, and freeze 6 hours, or overnight.",
+   "Remove from freezer, and set on counter 10-15 minutes to soften before cutting."
   ]
  },
  {
@@ -2347,26 +2390,27 @@ export const RECIPES = [
   "serves": "6",
   "calories": 338,
   "ingredients": [
-   "1 ½ lbs boneless, skinless chicken",
+   "1 ½ lbs boneless, skinless chicken breasts or tenderloins",
    "1 large egg, beaten",
-   "⅔ cup long or short unsweetened",
+   "⅔ cup long or short unsweetened coconut flakes",
    "¼ cup flour",
    "½ tsp garlic powder",
    "½ tsp salt",
    "¼ tsp pepper",
+   "sauce",
    "½ cup orange marmalade",
    "¼ cup honey",
    "¼ cup Dijon mustard",
    "3-4 drops hot pepper sauce"
   ],
   "steps": [
-   "Cut chicken breasts into 1-inch wide strips (or use",
-   "Add beaten egg to a shallow bowl. Combine coconut flakes,",
-   "Dip both sides of each chicken into egg wash, then coat in",
-   "Flash freeze coated, uncooked chicken fingers on a baking",
-   "In a small bowl, combine all sauce ingredients together,",
-   "When ready to cook, preheat oven to 425°F. Place frozen",
-   "Bake 30-35 minutes. Turn chicken at the halfway point",
+   "Cut chicken breasts into 1-inch wide strips (or use chicken tenderloins).",
+   "Add beaten egg to a shallow bowl. Combine coconut flakes, flour, garlic powder, salt and pepper in another shallow bowl.",
+   "Dip both sides of each chicken into egg wash, then coat in coconut mixture.",
+   "Flash freeze coated, uncooked chicken fingers on a baking sheet for a few hours, then transfer to a gallon-size zip-top bag and freeze.",
+   "In a small bowl, combine all sauce ingredients together, and pour into a quart-size zip-top bag. Label and freeze with chicken.",
+   "When ready to cook, preheat oven to 425°F. Place frozen chicken tenders onto a baking sheet, and spray with cooking spray.",
+   "Bake 30-35 minutes. Turn chicken at the halfway point for more even cooking.",
    "Let sauce thaw on countertop while chicken is cooking.",
    "Serve sauce alongside chicken tenders for dipping."
   ]
@@ -2388,21 +2432,22 @@ export const RECIPES = [
   "ingredients": [
    "1 ½ lbs lean ground beef",
    "1 oz pkg taco seasoning",
-   "8 oz pkg light cream cheese,",
+   "8 oz pkg light cream cheese, room temperature",
    "½ cup salsa",
-   "1 cup shredded",
+   "1 cup shredded Mexican-blend cheese",
    "12 taco-size flour tortillas",
+   "serving day",
    "2 Tbsps butter, melted"
   ],
   "steps": [
-   "In a large skillet, cook ground beef until browned and",
-   "Add taco seasoning, and follow package directions to season",
-   "In a medium mixing bowl, beat cream cheese until almost",
-   "Take a tortilla, and spread a spoonful of the salsa mixture",
-   "Fold the tortilla up as you would a burrito, and place onto",
-   "Cover baking sheet with plastic wrap or foil, then place into",
-   "Once they are frozen enough not to stick to each other,",
-   "When ready to serve, preheat oven to 350°F. Place frozen"
+   "In a large skillet, cook ground beef until browned and crumbly; drain.",
+   "Add taco seasoning, and follow package directions to season ground beef.",
+   "In a medium mixing bowl, beat cream cheese until almost fluffy; slowly add in salsa and mix well.",
+   "Take a tortilla, and spread a spoonful of the salsa mixture in the center. Spoon some ground beef on top of the salsa mixture (enough to cover the salsa). Top with cheese.",
+   "Fold the tortilla up as you would a burrito, and place onto baking sheet.",
+   "Cover baking sheet with plastic wrap or foil, then place into freezer to flash freeze.",
+   "Once they are frozen enough not to stick to each other, transfer to an airtight container or gallon-size zip-top bag.",
+   "When ready to serve, preheat oven to 350°F. Place frozen pockets onto baking sheet, brush with melted butter and tent with a sheet of foil. Bake 20-25 minutes, or until steaming hot."
   ]
  },
  {
@@ -2412,8 +2457,8 @@ export const RECIPES = [
   "week": 15,
   "category": "main",
   "dish": "pasta",
-  "protein": "pork",
-  "method": "stovetop",
+  "protein": "chicken",
+  "method": "oven",
   "prep": "25 minutes",
   "cookLabel": "cook",
   "cook": "1 hour",
@@ -2430,18 +2475,19 @@ export const RECIPES = [
    "½ cup grated Parmesan cheese",
    "½ cup shredded Swiss cheese",
    "¾ cup ranch salad dressing",
-   "2 cups coarsely chopped",
+   "2 cups coarsely chopped cooked chicken",
+   "topping",
    "⅓ cup seasoned bread crumbs",
    "2 Tbsps butter, melted",
-   "8 slices of bacon, cooked"
+   "8 slices of bacon, cooked and crumbled"
   ],
   "steps": [
-   "Cook macaroni according to package directions for al dente;",
-   "Meanwhile, in a medium saucepan, melt butter over medium",
-   "Add chicken and sauce to macaroni, tossing to combine.",
-   "Toss bread crumbs with melted butter; sprinkle over",
+   "Cook macaroni according to package directions for al dente; drain and return to pot.",
+   "Meanwhile, in a medium saucepan, melt butter over medium heat. Stir in flour, salt and pepper until smooth; gradually whisk in milk. Bring to a boil, stirring constantly; cook and stir until thickened, 1-2 minutes. Stir in cheeses until blended, then stir in ranch dressing.",
+   "Add chicken and sauce to macaroni, tossing to combine. Transfer to a greased 13x9-inch disposable foil pan.",
+   "Toss bread crumbs with melted butter; sprinkle over macaroni. Top with bacon. Cover with plastic wrap and aluminum foil. Label, and freeze.",
    "When ready to cook, partially thaw in refrigerator overnight.",
-   "Remove from refrigerator 30 minutes before baking. Preheat"
+   "Remove from refrigerator 30 minutes before baking. Preheat oven to 350°F. Remove foil and plastic wrap. Re-cover foil, and bake 30 minutes. Uncover; continue baking 30-35 minutes or until topping is golden brown."
   ]
  },
  {
@@ -2461,18 +2507,18 @@ export const RECIPES = [
   "ingredients": [
    "1 lb lean ground beef",
    "10 oz can Ro-tel tomatoes",
-   "15 oz can dark red kidney beans,",
+   "15 oz can dark red kidney beans, rinsed and drained",
    "15 oz can ranch style beans",
    "11 oz can shoepeg corn",
    "1 ½ cups water",
    "1 oz pkg taco seasoning",
    "1 oz pkg ranch dressing mix",
-   "1 cup shredded"
+   "1 cup shredded Mexican-blend cheese"
   ],
   "steps": [
-   "In a large skillet, cook ground beef until browned and crumbly;",
+   "In a large skillet, cook ground beef until browned and crumbly; drain. Add cooked ground beef and remaining ingredients except cheese to a gallon-size zip-top bag. Add cheese to a quart-size zip-top bag. Label, and freeze bags together.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Pour soup contents into a large stock-pot. Turn heat to",
+   "Pour soup contents into a large stock-pot. Turn heat to medium-high just until soup is about to boil. Reduce heat, and simmer 15-20 minutes.",
    "Sprinkle with cheese to serve."
   ]
  },
@@ -2500,15 +2546,15 @@ export const RECIPES = [
    "12 whole-wheat English muffins"
   ],
   "steps": [
-   "Grease a 13x9-inch baking dish well, and preheat oven",
-   "Beat eggs, milk, salt and pepper using an electric mixer",
-   "Pour into baking dish, and bake 18-22 minutes until eggs are",
+   "Grease a 13x9-inch baking dish well, and preheat oven to 325° F.",
+   "Beat eggs, milk, salt and pepper using an electric mixer or whisk.",
+   "Pour into baking dish, and bake 18-22 minutes until eggs are cooked through but not overcooked.",
    "Let cool, then cut into 12 squares.",
-   "For sandwiches, add cheese, egg and Canadian bacon to",
-   "Wrap in parchment paper or foil. Label, and freeze in a couple",
-   "To cook, remove paper, and wrap in a slightly dampened",
+   "For sandwiches, add cheese, egg and Canadian bacon to sliced muffins.",
+   "Wrap in parchment paper or foil. Label, and freeze in a couple of gallon-size zip-top bags.",
+   "To cook, remove paper, and wrap in a slightly dampened paper towel.",
    "Defrost in microwave one minute, turning halfway through.",
-   "Microwave 30-60 seconds on regular power, being careful"
+   "Microwave 30-60 seconds on regular power, being careful not to overcook."
   ]
  },
  {
@@ -2519,7 +2565,7 @@ export const RECIPES = [
   "category": "dessert",
   "dish": "dessert",
   "protein": "none",
-  "method": "oven",
+  "method": "stovetop",
   "prep": "1 hour",
   "cookLabel": "freeze",
   "cook": "4 hours",
@@ -2528,17 +2574,17 @@ export const RECIPES = [
   "ingredients": [
    "21 oz can apple pie filling",
    "1 graham cracker crust",
-   "2 cups butter pecan",
-   "12 oz jar caramel ice cream",
-   "½ cup chopped, toasted"
+   "2 cups butter pecan ice cream, softened",
+   "12 oz jar caramel ice cream topping, divided",
+   "½ cup chopped, toasted pecans, divided"
   ],
   "steps": [
-   "Spread half of pie filling over crust. Top with half of the ice",
-   "Drizzle with half of the caramel topping, ¼ cup pecans then",
-   "Spread remaining ice cream over top. Cover with plastic wrap",
+   "Spread half of pie filling over crust. Top with half of the ice cream; freeze 30 minutes.",
+   "Drizzle with half of the caramel topping, ¼ cup pecans then layer with remaining pie filling. Freeze 30 minutes.",
+   "Spread remaining ice cream over top. Cover with plastic wrap and aluminum foil. Label, and freeze until firm.",
    "Remove from freezer 30 minutes before serving.",
    "In a microwave, warm remaining caramel topping.",
-   "Serve pie with warm caramel topping, and sprinkle with"
+   "Serve pie with warm caramel topping, and sprinkle with remaining ¼ cup chopped pecans."
   ]
  },
  {
@@ -2548,7 +2594,7 @@ export const RECIPES = [
   "week": 16,
   "category": "breakfast",
   "dish": "breakfast",
-  "protein": "chicken",
+  "protein": "pork",
   "method": "oven",
   "prep": "30 minutes",
   "cookLabel": "cook",
@@ -2563,21 +2609,21 @@ export const RECIPES = [
    "¼ tsp salt",
    "½ tsp pepper",
    "2 cups quick-cooking grits",
-   "12 oz Velveeta cheese, cubed",
+   "12 oz Velveeta cheese, cubed (about 2 ⅓ cups)",
    "½ cup butter, cubed",
    "½ cup milk",
-   "4 large eggs, room temperature,",
-   "2 cups shredded white"
+   "4 large eggs, room temperature, lightly beaten",
+   "2 cups shredded white cheddar cheese"
   ],
   "steps": [
-   "In a large saucepan, cook bacon over medium heat until crisp,",
-   "Add water, stock, garlic powder, salt and pepper to bacon",
-   "Reduce heat to medium-low; cook, covered, 5-7 minutes or",
-   "Add Velveeta and butter; stir until melted. Stir in milk, and",
-   "Transfer to a greased 13x9-inch disposable foil pan. Sprinkle",
-   "Cool casserole; cover with plastic wrap and aluminum foil.",
-   "When ready to serve, partially thaw in refrigerator overnight.",
-   "Preheat oven to 350°F. Bake, uncovered, 50-60 minutes or"
+   "In a large saucepan, cook bacon over medium heat until crisp, stirring occasionally. Remove pan from heat. Remove bacon with a slotted spoon; drain on paper towels.",
+   "Add water, stock, garlic powder, salt and pepper to bacon drippings; bring to a boil. Slowly stir in grits.",
+   "Reduce heat to medium-low; cook, covered, 5-7 minutes or until thickened, stirring occasionally. Remove from heat.",
+   "Add Velveeta and butter; stir until melted. Stir in milk, and slowly stir in eggs until blended.",
+   "Transfer to a greased 13x9-inch disposable foil pan. Sprinkle with bacon and shredded cheese.",
+   "Cool casserole; cover with plastic wrap and aluminum foil. Label, and freeze.",
+   "When ready to serve, partially thaw in refrigerator overnight. Remove casserole from refrigerator 30 minutes before baking.",
+   "Preheat oven to 350°F. Bake, uncovered, 50-60 minutes or until heated through and a thermometer inserted in center reads 165°F. Let stand 10 minutes before serving."
   ]
  },
  {
@@ -2595,7 +2641,7 @@ export const RECIPES = [
   "serves": "8",
   "calories": 501,
   "ingredients": [
-   "2 ½ lbs boneless, skinless",
+   "2 ½ lbs boneless, skinless chicken breasts",
    "½ large yellow onion, diced",
    "1 green bell pepper, diced",
    "2 stalks celery, diced",
@@ -2603,8 +2649,9 @@ export const RECIPES = [
    "3 cloves garlic, minced",
    "½ tsp salt",
    "1 tsp pepper",
-   "2 (10.5 oz) cans cream of",
+   "2 (10.5 oz) cans cream of chicken soup",
    "2 cups low-sodium chicken broth",
+   "serving day",
    "8 oz pkg cream cheese, diced",
    "¼ cup water",
    "2 Tbsps cornstarch",
@@ -2612,15 +2659,15 @@ export const RECIPES = [
    "8-count can jumbo biscuits"
   ],
   "steps": [
-   "In a small bowl, mix together cream of chicken soup and",
-   "Add to a gallon-size zip-top bag, along with remaining",
+   "In a small bowl, mix together cream of chicken soup and chicken broth.",
+   "Add to a gallon-size zip-top bag, along with remaining ingredients. Label, and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Add contents of bag to slow cooker. Cover and cook on low",
+   "Add contents of bag to slow cooker. Cover and cook on low 6-8 hours or on high 3-4 hours.",
    "Shred chicken, and return to crockpot.",
-   "Stir together water and cornstarch; mix into crockpot with",
-   "Cover and cook on low an additional 30 minutes or on high",
+   "Stir together water and cornstarch; mix into crockpot with the cream cheese and peas.",
+   "Cover and cook on low an additional 30 minutes or on high 15 minutes.",
    "In the meantime, cook biscuits according to package directions.",
-   "Serve by cutting biscuits in half and topping with desired"
+   "Serve by cutting biscuits in half and topping with desired amount of chicken mixture."
   ]
  },
  {
@@ -2630,7 +2677,7 @@ export const RECIPES = [
   "week": 16,
   "category": "main",
   "dish": "soup",
-  "protein": "seafood",
+  "protein": "chicken",
   "method": "slow cooker",
   "prep": "10 minutes",
   "cookLabel": "cook",
@@ -2638,8 +2685,8 @@ export const RECIPES = [
   "serves": "6",
   "calories": 535,
   "ingredients": [
-   "2 lbs boneless, skinless chicken",
-   "12 oz pkg andouille sausage,",
+   "2 lbs boneless, skinless chicken thighs (or breasts)",
+   "12 oz pkg andouille sausage, cut into rounds",
    "1 green bell pepper, diced",
    "½ large yellow onion, diced",
    "2 stalks celery, diced",
@@ -2649,15 +2696,17 @@ export const RECIPES = [
    "15 oz can diced tomatoes",
    "4 tsps Cajun (or Creole) seasoning",
    "1 bay leaf",
-   "1 lb uncooked large shrimp, peeled",
+   "serving day",
+   "1 lb uncooked large shrimp, peeled and deveined",
    "2 cups cooked rice"
   ],
   "steps": [
-   "Add all ingredients except shrimp and rice to a gallon-size zip-",
+   "Add all ingredients except shrimp and rice to a gallon-size zip- top bag, and knead to combine. Label, and freeze.",
    "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Place contents of gumbo bag into slow cooker. Stir to mix",
-   "Stir in shrimp. Cover, and cook an additional 5-10 minutes or",
-   "Serve over warmed rice."
+   "Place contents of gumbo bag into slow cooker. Stir to mix well. Cover, and cook on low 4-6 hours or on high 2-3 hours.",
+   "Stir in shrimp. Cover, and cook an additional 5-10 minutes or until shrimp is cooked. Remove bay leaf before serving.",
+   "Serve over warmed rice.",
+   "Note: Rice can be prepared ahead of time and frozen."
   ]
  },
  {
@@ -2671,104 +2720,4 @@ export const RECIPES = [
   "method": "stovetop",
   "prep": "20 minutes",
   "cookLabel": "cook",
-  "cook": "25 minutes",
-  "serves": "8",
-  "calories": 361,
-  "ingredients": [
-   "1 lb lean ground beef",
-   "1 lb ground pork",
-   "½ cup finely chopped yellow onion",
-   "1 cup fine dry bread crumbs",
-   "2 Tbsps snipped fresh parsley",
-   "2 tsps salt",
-   "¼ tsp pepper",
-   "1 ½ tsps Worcestershire sauce",
-   "2 large eggs, beaten",
-   "½-¾ cup milk",
-   "2-3 Tbsps vegetable oil",
-   "32 oz jar sauerkraut, undrained"
-  ],
-  "steps": [
-   "In a large bowl, combine first 10 ingredients; shape into 24",
-   "Heat oil in a large skillet; add meatballs and brown on all sides.",
-   "Remove meatballs and drain fat.",
-   "Spoon sauerkraut into skillet, then place meatballs over top.",
-   "Cover and simmer 15-20 minutes or until meatballs are",
-   "Allow everything to cool, then transfer to a gallon-size zip-top",
-   "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Reheat in a covered skillet until heated through. Or place into"
-  ]
- },
- {
-  "id": "chicken-rice-bake",
-  "name": "chicken & rice bake",
-  "box": "freezer-expansion",
-  "week": 16,
-  "category": "main",
-  "dish": "casserole",
-  "protein": "chicken",
-  "method": "oven",
-  "prep": "25 minutes",
-  "cookLabel": "cook",
-  "cook": "30 minutes",
-  "serves": "6",
-  "calories": 442,
-  "ingredients": [
-   "2–3 Tbsps olive oil, divided",
-   "½ large yellow onion, diced",
-   "2 large carrots, finely chopped",
-   "2–3 stalks celery, finely chopped",
-   "2 cups finely chopped broccoli",
-   "2 cloves garlic, minced",
-   "1 tsp poultry seasoning",
-   "1 tsp Italian seasoning",
-   "salt and pepper",
-   "2 cups cooked chicken, diced",
-   "2 cups cooked rice",
-   "1 cup sour cream",
-   "1 ½ cups low-sodium chicken broth",
-   "½ cup freshly grated",
-   "2 cups shredded cheddar cheese"
-  ],
-  "steps": [
-   "In a large skillet, heat 1-2 tablespoons oil over medium-high",
-   "In a large mixing bowl, whisk together sour cream and chicken",
-   "Spray a 13x9-inch disposable foil pan with cooking spray.",
-   "When ready to cook, thaw in refrigerator 1-2 days.",
-   "Preheat oven to 375°F. Remove foil and plastic wrap. Bake"
-  ]
- },
- {
-  "id": "chocolate-icebox-cake",
-  "name": "chocolate icebox cake",
-  "box": "freezer-expansion",
-  "week": 16,
-  "category": "dessert",
-  "dish": "dessert",
-  "protein": "none",
-  "method": "no-cook",
-  "prep": "15 minutes",
-  "cookLabel": "freeze",
-  "cook": "4+ hours",
-  "serves": "12",
-  "calories": 566,
-  "ingredients": [
-   "8 oz pkg cream cheese, softened",
-   "5.9 oz box instant chocolate pudding",
-   "2 ½ cups milk",
-   "8 oz container whipped",
-   "14.4 oz box chocolate",
-   "1 cup heavy whipping cream",
-   "3 cups semi-sweet chocolate chips"
-  ],
-  "steps": [
-   "Using a mixer, beat softened cream cheese in a large bowl",
-   "Slowly pour in milk, and mix until minimal lumps are left; fold",
-   "Spread ½ cup pudding mixture onto the bottom of a 13x9-inch",
-   "To make the ganache, microwave heavy whipping cream",
-   "Pour half of the remaining pudding mixture on top of the",
-   "Let cool and cover with plastic wrap and aluminum foil.",
-   "Label, and freeze 4 hours or overnight. Remove from freezer,"
-  ]
- }
-];
+  "cook": "25 minute
