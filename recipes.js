@@ -2720,4 +2720,106 @@ export const RECIPES = [
   "method": "stovetop",
   "prep": "20 minutes",
   "cookLabel": "cook",
-  "cook": "25 minute
+  "cook": "25 minutes",
+  "serves": "8",
+  "calories": 361,
+  "ingredients": [
+   "1 lb lean ground beef",
+   "1 lb ground pork",
+   "½ cup finely chopped yellow onion",
+   "1 cup fine dry bread crumbs",
+   "2 Tbsps snipped fresh parsley",
+   "2 tsps salt",
+   "¼ tsp pepper",
+   "1 ½ tsps Worcestershire sauce",
+   "2 large eggs, beaten",
+   "½-¾ cup milk",
+   "2-3 Tbsps vegetable oil",
+   "32 oz jar sauerkraut, undrained"
+  ],
+  "steps": [
+   "In a large bowl, combine first 10 ingredients; shape into 24 meatballs, about 2-inches each.",
+   "Heat oil in a large skillet; add meatballs and brown on all sides.",
+   "Remove meatballs and drain fat.",
+   "Spoon sauerkraut into skillet, then place meatballs over top.",
+   "Cover and simmer 15-20 minutes or until meatballs are cooked through, adding water if necessary.",
+   "Allow everything to cool, then transfer to a gallon-size zip-top bag. Label, and freeze.",
+   "When ready to cook, thaw in refrigerator 1-2 days.",
+   "Reheat in a covered skillet until heated through. Or place into a microwave safe dish, cover and microwave until warmed."
+  ]
+ },
+ {
+  "id": "chicken-rice-bake",
+  "name": "chicken & rice bake",
+  "box": "freezer-expansion",
+  "week": 16,
+  "category": "main",
+  "dish": "casserole",
+  "protein": "chicken",
+  "method": "oven",
+  "prep": "25 minutes",
+  "cookLabel": "cook",
+  "cook": "30 minutes",
+  "serves": "6",
+  "calories": 442,
+  "ingredients": [
+   "2–3 Tbsps olive oil, divided",
+   "½ large yellow onion, diced",
+   "2 large carrots, finely chopped (about ¾ cup)",
+   "2–3 stalks celery, finely chopped (about ¾ cup)",
+   "2 cups finely chopped broccoli",
+   "2 cloves garlic, minced",
+   "1 tsp poultry seasoning",
+   "1 tsp Italian seasoning",
+   "salt and pepper",
+   "2 cups cooked chicken, diced or shredded",
+   "2 cups cooked rice",
+   "1 cup sour cream",
+   "1 ½ cups low-sodium chicken broth",
+   "½ cup freshly grated Parmesan cheese",
+   "2 cups shredded cheddar cheese"
+  ],
+  "steps": [
+   "In a large skillet, heat 1-2 tablespoons oil over medium-high heat. Sauté onion, carrots, celery and broccoli about 5 minutes, just until soft. Add garlic during the last 30-60 seconds. Stir in poultry seasoning, Italian seasoning and a pinch of salt and pepper while veggies cook. Remove from heat.",
+   "In a large mixing bowl, whisk together sour cream and chicken broth. Stir in cheeses. Lastly, add cooked chicken, cooked rice and sautéed veggies; stir to combine.",
+   "Spray a 13x9-inch disposable foil pan with cooking spray. Spoon rice mixture into prepared pan, and press down to evenly distribute. Cover with plastic wrap and aluminum foil. Label, and freeze.",
+   "When ready to cook, thaw in refrigerator 1-2 days.",
+   "Preheat oven to 375°F. Remove foil and plastic wrap. Bake 25-30 minutes or until casserole is slightly bubbling around the edges."
+  ]
+ },
+ {
+  "id": "chocolate-icebox-cake",
+  "name": "chocolate icebox cake",
+  "box": "freezer-expansion",
+  "week": 16,
+  "category": "dessert",
+  "dish": "dessert",
+  "protein": "none",
+  "method": "no-cook",
+  "prep": "15 minutes",
+  "cookLabel": "freeze",
+  "cook": "4+ hours",
+  "serves": "12",
+  "calories": 566,
+  "ingredients": [
+   "8 oz pkg cream cheese, softened",
+   "5.9 oz box instant chocolate pudding",
+   "2 ½ cups milk",
+   "8 oz container whipped topping, thawed",
+   "14.4 oz box chocolate graham crackers",
+   "ganache",
+   "1 cup heavy whipping cream",
+   "3 cups semi-sweet chocolate chips"
+  ],
+  "steps": [
+   "Using a mixer, beat softened cream cheese in a large bowl until light and fluffy, about 2 minutes; add chocolate pudding and blend until uniform in consistency.",
+   "Slowly pour in milk, and mix until minimal lumps are left; fold in whipped topping.",
+   "Spread ½ cup pudding mixture onto the bottom of a 13x9-inch disposable foil pan. Layer crackers as best you can, in one layer. You may need to break pieces of graham crackers to fill in the spaces.",
+   "To make the ganache, microwave heavy whipping cream 30 seconds to 1 minute. Add chocolate chips to the bowl and whisk until smooth.",
+   "Pour half of the remaining pudding mixture on top of the graham crackers and spread evenly; repeat with graham crackers, pudding mixture and graham crackers. Top with ganache.",
+   "Let cool and cover with plastic wrap and aluminum foil.",
+   "Label, and freeze 4 hours or overnight. Remove from freezer, and set on counter 15-20 minutes to soften before cutting.",
+   "Note: Icebox cake can be thawed completely and stored in the refrigerator."
+  ]
+ }
+];
