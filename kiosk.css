@@ -136,7 +136,14 @@ html, body {
 }
 
 .view { height: 100%; }
-.view.hidden { display: none; }
+.view.hidden { display: none !important; }
+
+/* The dashboard is a grid, so its panels are stretched to fit by the
+   grid itself. The single-panel views are not, which left their panels
+   free to grow past the bottom of the screen instead of scrolling
+   inside. Make them fill the viewport the same way. */
+.view:not(.grid) { display: flex; flex-direction: column; }
+.view:not(.grid) > .panel { flex: 1; min-height: 0; }
 
 .grid {
   display: grid;
@@ -537,6 +544,8 @@ html, body {
   align-content: start;
   gap: 14px;
   padding: 18px;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .wish {
