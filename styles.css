@@ -542,3 +542,16 @@
   letter-spacing: .03em; color: #fff;
   padding: 4px 8px; border-radius: 999px; white-space: nowrap;
 }
+
+/* ── Recipe ratings ──────────────────────────────────────────── */
+.rx-stars { display: flex; gap: 4px; }
+.rx-star {
+  font-family: inherit; font-size: 27px; line-height: 1;
+  border: 0; background: none; color: #ccc;
+  cursor: pointer; padding: 2px 3px;
+}
+.rx-star.on { color: #E8A33D; }
+
+.rx-stars-mini {
+  font-size: 13px; letter-spacing: 1px; color: #E8A33D;
+}

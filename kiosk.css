@@ -840,3 +840,24 @@ html, body {
 .week-toggle button.on {
   background: var(--ink); border-color: var(--ink); color: #fff;
 }
+
+/* ── Recipe ratings ──────────────────────────────────────────── */
+.rsheet-stars {
+  flex: 0 0 auto;
+  display: flex; align-items: center; gap: 4px;
+  padding: 10px 22px;
+  border-bottom: 2px solid var(--line);
+}
+.rsheet-star-label {
+  font-size: 13px; font-weight: 700; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--ink-faint);
+  margin-right: 12px;
+}
+.rstar {
+  font-family: inherit; font-size: 30px; line-height: 1;
+  border: 0; background: none; color: var(--line-heavy);
+  cursor: pointer; padding: 2px 4px;
+}
+.rstar.on { color: #E8A33D; }
+
+.rcard-stars { font-size: 16px; letter-spacing: 2px; color: #E8A33D; }

@@ -429,6 +429,30 @@ function render() {
 // straight through to ingredients you can add to the grocery list or
 // a night you want to cook it.
 
+// ── Ratings ──────────────────────────────────────────────────────
+// One rating per recipe, shared across the family — this is "did we
+// like it", not "what does each of us think", and a single number is
+// what makes the filter useful.
+function ratingOf(r) { return ratings[r.id] || 0; }
+
+function ratingBucket(r) {
+  const n = ratingOf(r);
+  if (!n)     return "none";
+  if (n >= 5) return "5";
+  if (n >= 4) return "4";
+  return "low";
+}
+
+async function setRating(id, stars) {
+  const path = `recipeRatings/${id}`;
+  if (stars) await set(ref(db, path), stars);
+  else       await remove(ref(db, path));
+}
+
+function starString(n) {
+  return "\u2605".repeat(n) + "\u2606".repeat(5 - n);
+}
+
 // ── Time ─────────────────────────────────────────────────────────
 // Times on the cards are free text ("8-10 hours", "30-35 minutes",
 // "1 hour"). Take the top of any range, since that is the number you
@@ -467,6 +491,8 @@ function timeBucket(r) {
 }
 
 const RX_FILTERS = [
+  { key: "rating", label: "Rating", get: r => ratingBucket(r), options: [
+    ["5","\u2605 5"], ["4","\u2605 4"], ["low","\u2605 3 or less"], ["none","Not rated"] ] },
   { key: "time", label: "Time", get: timeBucket, options: [
     ["quick","30 min or less"], ["hour","30\u201360 min"],
     ["medium","1\u20133 hrs"], ["long","3+ hrs"] ] },
@@ -485,8 +511,9 @@ const RX_FILTERS = [
     ["grill","Grill"], ["no-cook","No-cook"] ] },
 ];
 
-const rxActive = { time: new Set(), protein: new Set(), dish: new Set(), method: new Set() };
+const rxActive = { rating: new Set(), time: new Set(), protein: new Set(), dish: new Set(), method: new Set() };
 let rxStore   = "shopping";
+let ratings   = {};   // recipe id -> 1..5, shared by the whole family
 let myRecipes = [];   // yours, live from Firebase
 let rxEditing = null;
 
@@ -574,6 +601,13 @@ function renderRecipes() {
       r.prep && `${r.prep} prep`,
       tot && `${tot} total`,
     ].filter(Boolean).join(" · ");
+    const stars = ratingOf(r);
+    if (stars) {
+      const el = document.createElement("span");
+      el.className   = "rx-stars-mini";
+      el.textContent = starString(stars);
+      card.querySelector(".rx-cmeta").after(el);
+    }
     const tags = card.querySelector(".rx-tags");
     if (r.protein !== "none") tags.appendChild(rxTag(r.protein, "p-" + r.protein));
     if (r.method) tags.appendChild(rxTag(r.method));
@@ -628,6 +662,7 @@ function openRecipe(r) {
     meta.after(wrap);
   }
 
+  renderStars(r);
   renderRxStores();
 
   const ings = document.getElementById("rx-ings");
@@ -766,6 +801,23 @@ function openRecipe(r) {
   }
 
   document.getElementById("rx-overlay").classList.remove("hidden");
+}
+
+function renderStars(r) {
+  const wrap = document.getElementById("rx-stars");
+  wrap.innerHTML = "";
+  const current = ratingOf(r);
+  for (let i = 1; i <= 5; i++) {
+    const b = document.createElement("button");
+    b.className   = "rx-star" + (i <= current ? " on" : "");
+    b.textContent = i <= current ? "\u2605" : "\u2606";
+    b.setAttribute("aria-label", `${i} star${i === 1 ? "" : "s"}`);
+    b.onclick = async () => {
+      await setRating(r.id, current === i ? 0 : i);
+      renderStars(r);
+    };
+    wrap.appendChild(b);
+  }
 }
 
 function renderRxStores() {
@@ -1031,6 +1083,11 @@ document.getElementById("rxf-delete").onclick = async () => {
   closeRecipeForm();
   showToast("Recipe deleted");
 };
+
+onValue(ref(db, "recipeRatings"), snap => {
+  ratings = snap.val() || {};
+  if (activeStore === "recipes") renderRecipes();
+});
 
 onValue(ref(db, "customRecipes"), snap => {
   const val = snap.val() || {};

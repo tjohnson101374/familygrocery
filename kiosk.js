@@ -99,6 +99,7 @@ let activeStore = "shopping";
 const lists     = {};
 let favorites   = {};
 let weeklyMeals = {};
+let ratings     = {};   // recipe id -> 1..5, shared by the whole family
 let mealWeek    = 0;   // 0 = this week, 1 = next
 
 ALL_IDS.forEach(id => { lists[id] = {}; });
@@ -650,6 +651,28 @@ function setView(id) {
 // list narrows. Filters are additive within a group, so tapping both
 // "chicken" and "beef" shows either.
 
+// ── Ratings ──────────────────────────────────────────────────────
+// One rating per recipe, shared by the family.
+function ratingOf(r) { return ratings[r.id] || 0; }
+
+function ratingBucket(r) {
+  const n = ratingOf(r);
+  if (!n)     return "none";
+  if (n >= 5) return "5";
+  if (n >= 4) return "4";
+  return "low";
+}
+
+async function setRating(id, stars) {
+  const path = `recipeRatings/${id}`;
+  if (stars) await set(ref(db, path), stars);
+  else       await remove(ref(db, path));
+}
+
+function starString(n) {
+  return "\u2605".repeat(n) + "\u2606".repeat(5 - n);
+}
+
 // ── Time ─────────────────────────────────────────────────────────
 // Times on the cards are free text ("8-10 hours", "30-35 minutes",
 // "1 hour"). Take the top of any range, since that is the number you
@@ -688,6 +711,8 @@ function timeBucket(r) {
 }
 
 const FILTERS = [
+  { key: "rating", label: "Rating", get: r => ratingBucket(r), options: [
+    ["5","\u2605 5"], ["4","\u2605 4"], ["low","\u2605 3 or less"], ["none","Not rated"] ] },
   { key: "time", label: "Time", get: timeBucket, options: [
     ["quick","30 min or less"], ["hour","30\u201360 min"],
     ["medium","1\u20133 hrs"], ["long","3+ hrs"] ] },
@@ -706,7 +731,7 @@ const FILTERS = [
     ["grill","Grill"], ["no-cook","No-cook"] ] },
 ];
 
-const activeFilters = { time: new Set(), protein: new Set(), dish: new Set(), method: new Set() };
+const activeFilters = { rating: new Set(), time: new Set(), protein: new Set(), dish: new Set(), method: new Set() };
 
 // Recipes you add from your phone live in Firebase; the PPP library
 // is fixed data in code. The browser shows one merged list.
@@ -784,6 +809,17 @@ function renderRecipes() {
       formatMinutes(totalMinutes(r)) && `${formatMinutes(totalMinutes(r))} total`,
     ].filter(Boolean).join(" · ");
 
+    const stars = ratingOf(r);
+    if (stars) {
+      const el = document.createElement("div");
+      el.className   = "rcard-stars";
+      el.textContent = starString(stars);
+      card.appendChild(name);
+      card.appendChild(el);
+    } else {
+      card.appendChild(name);
+    }
+
     const tags = document.createElement("div");
     tags.className = "rtags";
     if (r.protein !== "none") tags.appendChild(tag(r.protein, "p-" + r.protein));
@@ -791,7 +827,6 @@ function renderRecipes() {
     if (r.custom)    tags.appendChild(tag("ours", "p-ours"));
     else if (r.week) tags.appendChild(tag(`wk ${r.week}`));
 
-    card.appendChild(name);
     card.appendChild(meta);
     card.appendChild(tags);
     card.addEventListener("click", () => openRecipe(r));
@@ -837,6 +872,27 @@ function openRecipe(r) {
     s.textContent = t;
     meta.appendChild(s);
   });
+
+  const starWrap = document.getElementById("rsheet-stars");
+  const paintStars = () => {
+    starWrap.innerHTML = "";
+    const current = ratingOf(r);
+    const lbl = document.createElement("span");
+    lbl.className   = "rsheet-star-label";
+    lbl.textContent = "Rating";
+    starWrap.appendChild(lbl);
+    for (let i = 1; i <= 5; i++) {
+      const b = document.createElement("button");
+      b.className   = "rstar" + (i <= current ? " on" : "");
+      b.textContent = i <= current ? "\u2605" : "\u2606";
+      b.addEventListener("click", async () => {
+        await setRating(r.id, current === i ? 0 : i);
+        paintStars();
+      });
+      starWrap.appendChild(b);
+    }
+  };
+  paintStars();
 
   const ings = document.getElementById("rsheet-ings");
   ings.innerHTML = "";
@@ -1074,6 +1130,11 @@ function renderTrips() {
     shownTripId = trip.id;
   }
 }
+
+onValue(ref(db, "recipeRatings"), snap => {
+  ratings = snap.val() || {};
+  if (activeView === "recipes") renderRecipes();
+});
 
 onValue(ref(db, "customRecipes"), snap => {
   const val = snap.val() || {};
