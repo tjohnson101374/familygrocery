@@ -732,6 +732,7 @@ const FILTERS = [
 ];
 
 const activeFilters = { rating: new Set(), time: new Set(), protein: new Set(), dish: new Set(), method: new Set() };
+let recipeSearch = "";
 
 // Recipes you add from your phone live in Firebase; the PPP library
 // is fixed data in code. The browser shows one merged list.
@@ -742,8 +743,15 @@ function recipeById(id) {
   return allRecipes().find(r => r.id === id) || null;
 }
 
+function recipeSearchMatch(r, needle) {
+  if (r.name && r.name.toLowerCase().includes(needle)) return true;
+  return (r.ingredients || []).some(i => i.toLowerCase().includes(needle));
+}
+
 function matchingRecipes() {
+  const needle = recipeSearch.trim().toLowerCase();
   return allRecipes().filter(r =>
+    (!needle || recipeSearchMatch(r, needle)) &&
     FILTERS.every(f => {
       const sel = activeFilters[f.key];
       return sel.size === 0 || sel.has(f.get ? f.get(r) : r[f.key]);
@@ -843,6 +851,13 @@ function tag(text, cls) {
 
 document.getElementById("recipe-reset").addEventListener("click", () => {
   Object.values(activeFilters).forEach(s => s.clear());
+  recipeSearch = "";
+  document.getElementById("recipe-search").value = "";
+  renderRecipes();
+});
+
+document.getElementById("recipe-search").addEventListener("input", e => {
+  recipeSearch = e.target.value;
   renderRecipes();
 });
 

@@ -300,6 +300,14 @@
 /* ── Recipes ─────────────────────────────────────────────────── */
 .recipes-area { padding: 12px 16px 90px; }
 
+.rx-search {
+  display: block; width: 100%; font-family: inherit; font-size: 14.5px;
+  color: #222; padding: 11px 13px; margin-bottom: 12px;
+  border: 1.5px solid #ddd; border-radius: 10px; background: #fff;
+  -webkit-appearance: none;
+}
+.rx-search:focus { outline: none; border-color: #B96C25; }
+
 .rx-filters { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
 
 .rx-frow {

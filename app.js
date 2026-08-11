@@ -512,6 +512,7 @@ const RX_FILTERS = [
 ];
 
 const rxActive = { rating: new Set(), time: new Set(), protein: new Set(), dish: new Set(), method: new Set() };
+let rxSearch  = "";
 let rxStore   = "shopping";
 let ratings   = {};   // recipe id -> 1..5, shared by the whole family
 let myRecipes = [];   // yours, live from Firebase
@@ -527,8 +528,15 @@ function recipeById(id) {
   return allRecipes().find(r => r.id === id) || null;
 }
 
+function rxSearchMatch(r, needle) {
+  if (r.name && r.name.toLowerCase().includes(needle)) return true;
+  return (r.ingredients || []).some(i => i.toLowerCase().includes(needle));
+}
+
 function rxMatches() {
+  const needle = rxSearch.trim().toLowerCase();
   return allRecipes().filter(r =>
+    (!needle || rxSearchMatch(r, needle)) &&
     RX_FILTERS.every(f => {
       const sel = rxActive[f.key];
       return sel.size === 0 || sel.has(f.get ? f.get(r) : r[f.key]);
@@ -573,9 +581,11 @@ function renderRecipes() {
   if (list.length !== total) {
     const clear = document.createElement("button");
     clear.className   = "rx-clear";
-    clear.textContent = "Clear filters";
+    clear.textContent = "Clear";
     clear.onclick = () => {
       Object.values(rxActive).forEach(s => s.clear());
+      rxSearch = "";
+      document.getElementById("rx-search").value = "";
       renderRecipes();
     };
     count.appendChild(clear);
@@ -1016,6 +1026,7 @@ function closeRecipeForm() {
 }
 
 document.getElementById("rx-add-btn").onclick   = () => openRecipeForm(null);
+document.getElementById("rx-search").oninput    = e => { rxSearch = e.target.value; renderRecipes(); };
 document.getElementById("rxf-close").onclick    = closeRecipeForm;
 document.getElementById("rxf-mode-paste").onclick = () => rxfSetMode("paste");
 document.getElementById("rxf-mode-form").onclick  = () => rxfSetMode("form");
