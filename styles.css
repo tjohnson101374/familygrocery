@@ -72,7 +72,7 @@
     .list-label { font-size: 11px; font-weight: 700; color: #aaa; letter-spacing: 0.08em;
       text-transform: uppercase; margin-bottom: 8px; }
     .item-row { background: #fff; border-radius: 14px; margin-bottom: 8px; padding: 14px;
-      display: flex; align-items: center; gap: 12px;
+      display: flex; align-items: center; gap: 12px; position: relative;
       box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #f0f0f2;
       animation: slideIn 0.18s ease; cursor: pointer; }
     .item-row.item-checked { background: #f8f8f8; }
@@ -81,10 +81,23 @@
       flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
     .item-text { flex: 1; font-size: 15px; color: #111; }
     .item-text.done { text-decoration: line-through; color: #bbb; }
-    .del-btn { background: none; border: none; cursor: pointer; font-size: 20px; opacity: 0.25;
+    .del-btn, .move-btn { background: none; border: none; cursor: pointer; font-size: 20px; opacity: 0.25;
       padding: 4px 6px; line-height: 1; transition: opacity 0.15s; flex-shrink: 0; }
-    .del-btn:hover { opacity: 0.6; }
-    .del-btn:active { opacity: 1; }
+    .del-btn:hover, .move-btn:hover { opacity: 0.6; }
+    .del-btn:active, .move-btn:active { opacity: 1; }
+
+    .move-menu {
+      position: absolute; top: calc(100% + 4px); right: 14px; z-index: 20;
+      background: #fff; border-radius: 12px; border: 1px solid #e8e8ec;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.14); padding: 6px; display: flex;
+      flex-direction: column; gap: 2px; min-width: 160px;
+    }
+    .move-menu-item {
+      font-family: inherit; font-size: 14px; font-weight: 500; color: #333;
+      background: none; border: none; border-radius: 8px; padding: 9px 12px;
+      text-align: left; cursor: pointer; white-space: nowrap;
+    }
+    .move-menu-item:hover, .move-menu-item:active { background: #f4f4f7; }
 
     /* ── Meals Tab ────────────────────────────────────────── */
     .meals-area { padding: 12px 16px 100px; }

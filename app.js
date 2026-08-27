@@ -379,6 +379,13 @@ function renderList() {
     textEl.className   = "item-text" + (item.checked ? " done" : "");
     textEl.textContent = item.text;
 
+    // Move to another store (stops propagation so row-click doesn't also toggle)
+    const moveBtn = document.createElement("button");
+    moveBtn.className   = "move-btn";
+    moveBtn.textContent = "📤";
+    moveBtn.title       = "Move to another store";
+    moveBtn.onclick = e => { e.stopPropagation(); toggleMoveMenu(moveBtn, item); };
+
     // Delete (stops propagation so row-click doesn't also toggle)
     const delBtn = document.createElement("button");
     delBtn.className   = "del-btn";
@@ -390,6 +397,7 @@ function renderList() {
 
     row.appendChild(circle);
     row.appendChild(textEl);
+    row.appendChild(moveBtn);
     row.appendChild(delBtn);
     area.appendChild(row);
   });
@@ -1475,6 +1483,42 @@ async function removeItem(storeId, key, sourceId) {
   const item = lists[actualSource]?.[key];
   await remove(ref(db, `lists/${actualSource}/${key}`));
   if (item) showToast(`Removed "${item.text}"`);
+}
+
+// ── Grocery: move between store tabs ────────────────────────────
+let openMoveMenu = null;
+
+function closeMoveMenu() {
+  if (openMoveMenu) { openMoveMenu.remove(); openMoveMenu = null; }
+}
+
+function toggleMoveMenu(anchorEl, item) {
+  if (openMoveMenu) { closeMoveMenu(); return; }
+  const menu = document.createElement("div");
+  menu.className = "move-menu";
+  STORES.filter(s => s.id !== activeStore).forEach(s => {
+    const btn = document.createElement("button");
+    btn.className   = "move-menu-item";
+    btn.textContent = `${s.emoji} ${s.name}`;
+    btn.onclick = e => { e.stopPropagation(); moveItem(item, s.id); closeMoveMenu(); };
+    menu.appendChild(btn);
+  });
+  anchorEl.closest(".item-row").appendChild(menu);
+  openMoveMenu = menu;
+}
+
+document.addEventListener("click", e => {
+  if (openMoveMenu && !openMoveMenu.contains(e.target) && !e.target.closest(".move-btn")) closeMoveMenu();
+});
+
+async function moveItem(item, destStoreId) {
+  const destName = STORES.find(s => s.id === destStoreId)?.name;
+  if (getItems(destStoreId).some(i => i.text.toLowerCase() === item.text.toLowerCase())) {
+    showToast(`"${item.text}" is already on ${destName}`); return;
+  }
+  await push(ref(db, `lists/${destStoreId}`), { text: item.text, checked: item.checked });
+  await remove(ref(db, `lists/${item.sourceId}/${item.key}`));
+  showToast(`Moved "${item.text}" to ${destName}`);
 }
 
 // ── Meals: main render ────────────────────────────────────────────
