@@ -119,6 +119,62 @@ body::after {
   font-variant-numeric: tabular-nums;
 }
 
+/* ── Forecast strip ──────────────────────────────────────────── */
+.forecast-strip {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--glass);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  box-shadow: var(--shadow-sm);
+  overflow-x: auto;
+}
+.forecast-strip::-webkit-scrollbar { display: none; }
+.forecast-strip.hidden { display: none; }
+
+.fc-day {
+  flex: 1;
+  min-width: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+.fc-day img { width: 34px; height: 34px; }
+
+.fc-name {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.fc-temp {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.fc-desc {
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  text-align: center;
+  line-height: 1.2;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .bar-date { display: flex; align-items: baseline; gap: 14px; min-width: 0; }
 
 .bar-weekday {

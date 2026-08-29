@@ -163,9 +163,47 @@ async function loadWeather() {
     el.textContent = `${Math.round(data.tempF)}°`;
     document.getElementById("weather").title =
       `Feels like ${Math.round(data.feelsLikeF)}° · ${data.humidity}% humidity · wind ${Math.round(data.windMph)} mph`;
+    renderForecast(data.forecast);
   } catch {
     el.textContent = "—°";
+    renderForecast(null);
   }
+}
+
+function renderForecast(days) {
+  const strip = document.getElementById("forecast-strip");
+  strip.innerHTML = "";
+
+  if (!days || !days.length) {
+    strip.classList.add("hidden");
+    return;
+  }
+
+  days.forEach(d => {
+    const el = document.createElement("div");
+    el.className = "fc-day";
+
+    const img = document.createElement("img");
+    img.src = d.icon;
+    img.alt = d.shortForecast;
+
+    const name = document.createElement("span");
+    name.className   = "fc-name";
+    name.textContent = d.name;
+
+    const temp = document.createElement("span");
+    temp.className   = "fc-temp";
+    temp.textContent = `${Math.round(d.tempF)}°`;
+
+    const desc = document.createElement("span");
+    desc.className   = "fc-desc";
+    desc.textContent = d.shortForecast;
+
+    el.append(img, name, temp, desc);
+    strip.appendChild(el);
+  });
+
+  strip.classList.remove("hidden");
 }
 
 // ── Grocery ──────────────────────────────────────────────────────
