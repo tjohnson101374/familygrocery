@@ -149,6 +149,25 @@ function renderClock() {
     now.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
 }
 
+// ── Weather ──────────────────────────────────────────────────────
+// Reads the family's own backyard station via a small serverless
+// function (api/weather.js) so the Wunderground API key never reaches
+// the browser. Refreshed occasionally, not live — a wall display
+// doesn't need second-by-second accuracy.
+async function loadWeather() {
+  const el = document.getElementById("weather-temp");
+  try {
+    const res = await fetch("/api/weather");
+    if (!res.ok) throw new Error("weather request failed");
+    const data = await res.json();
+    el.textContent = `${Math.round(data.tempF)}°`;
+    document.getElementById("weather").title =
+      `Feels like ${Math.round(data.feelsLikeF)}° · ${data.humidity}% humidity · wind ${Math.round(data.windMph)} mph`;
+  } catch {
+    el.textContent = "—°";
+  }
+}
+
 // ── Grocery ──────────────────────────────────────────────────────
 function storeById(id) { return STORES.find(s => s.id === id) || STORES[0]; }
 
@@ -1180,6 +1199,7 @@ renderStoreStrip();
 renderGrocery();
 renderMealWeekToggle();
 renderMeals();
+loadWeather();
 
 // The Google Calendar embeds resolve "this week" and "today" when
 // they load, so a tablet left running for days would quietly drift
@@ -1194,3 +1214,5 @@ setInterval(() => {
     location.reload();
   }
 }, 20000);
+
+setInterval(loadWeather, 10 * 60 * 1000);
