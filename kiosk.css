@@ -20,6 +20,11 @@
   --kelsey:  #7A367A;
 
   --gap: 14px;
+
+  --shadow-sm: 0 1px 2px rgba(16,18,22,.04), 0 2px 8px rgba(16,18,22,.06);
+  --shadow-md: 0 4px 14px rgba(16,18,22,.10);
+  --shadow-lg: 0 16px 48px rgba(16,18,22,.28);
+  --shadow-accent: 0 3px 10px rgba(41,82,163,.32);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,7 +32,7 @@
 html, body {
   height: 100%;
   overflow: hidden;
-  background: var(--bg);
+  background: linear-gradient(165deg, #eef0f4 0%, #e3e6ec 55%, #dde1e8 100%);
   color: var(--ink);
   font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -49,7 +54,11 @@ html, body {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  padding: 0 4px;
+  padding: 14px 22px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
 }
 
 .bar-date { display: flex; align-items: baseline; gap: 14px; min-width: 0; }
@@ -95,11 +104,13 @@ html, body {
   color: var(--ink-faint);
   cursor: pointer;
   white-space: nowrap;
+  transition: background-color .15s ease, color .15s ease, box-shadow .15s ease;
 }
 
 .nav button.on {
-  background: var(--ink);
+  background: var(--family);
   color: #fff;
+  box-shadow: var(--shadow-accent);
 }
 
 .cal-legend {
@@ -161,18 +172,20 @@ html, body {
 /* ── Panels ──────────────────────────────────────────────────── */
 .panel {
   background: var(--card);
-  border: 1px solid var(--line-heavy);
-  border-radius: 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   min-height: 0;
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
 .panel-head {
   flex: 0 0 auto;
   padding: 13px 18px;
   border-bottom: 2px solid var(--line);
+  background: linear-gradient(180deg, #fbfbfd 0%, #f4f5f7 100%);
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.09em;
@@ -242,6 +255,7 @@ html, body {
   line-height: 1.25;
   cursor: pointer;
   border-bottom: 1px solid #eef0f3;
+  transition: background-color .12s ease;
 }
 
 .item:last-child { border-bottom: 0; }
@@ -345,9 +359,11 @@ html, body {
   border-radius: 999px;
   padding: 8px 18px;
   cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: opacity .12s ease, transform .12s ease;
 }
 
-.add-btn:active { opacity: 0.75; }
+.add-btn:active { opacity: 0.75; transform: scale(.96); }
 
 .store-strip {
   flex: 0 0 auto;
@@ -371,9 +387,10 @@ html, body {
   background: #fff;
   color: var(--ink-soft);
   cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
 }
 
-.store-tab.on { color: #fff; }
+.store-tab.on { color: #fff; box-shadow: var(--shadow-md); }
 
 .store-tab .n {
   font-weight: 800;
@@ -386,6 +403,8 @@ html, body {
   position: fixed;
   inset: 0;
   background: rgba(16, 18, 22, 0.55);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -397,12 +416,13 @@ html, body {
 
 .sheet {
   background: var(--card);
-  border-radius: 18px;
+  border-radius: 20px;
   width: min(880px, 100%);
   max-height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  box-shadow: var(--shadow-lg);
 }
 
 .sheet-head {
@@ -427,7 +447,10 @@ html, body {
   width: 44px;
   height: 44px;
   cursor: pointer;
+  transition: background-color .12s ease, transform .12s ease;
 }
+
+.sheet-close:active { transform: scale(.92); }
 
 .sheet-tabs {
   flex: 0 0 auto;
@@ -460,9 +483,10 @@ html, body {
   background: #fff;
   color: var(--ink);
   cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease, transform .12s ease;
 }
 
-.chip:active { opacity: 0.7; }
+.chip:active { opacity: 0.7; transform: scale(.96); }
 .chip.added { background: #e6f5ea; border-color: #0D7813; color: #0D7813; }
 
 .sheet-empty {
@@ -504,11 +528,13 @@ html, body {
   border-radius: 12px;
   padding: 14px 30px;
   cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: opacity .12s ease, transform .12s ease;
 }
 
-.sheet-save:active { opacity: 0.75; }
+.sheet-save:active { opacity: 0.75; transform: scale(.97); }
 
-.meal { cursor: pointer; }
+.meal { cursor: pointer; transition: background-color .12s ease; }
 .meal:active { background: #eef4ff; }
 
 /* ── Christmas + Trips ───────────────────────────────────────── */
@@ -532,9 +558,10 @@ html, body {
   color: var(--ink-soft);
   cursor: pointer;
   white-space: nowrap;
+  transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
 }
 
-.tab-row button.on { color: #fff; }
+.tab-row button.on { color: #fff; box-shadow: var(--shadow-md); }
 
 .add-btn.xmas { background: #C41E3A; }
 
@@ -549,14 +576,19 @@ html, body {
 }
 
 .wish {
-  border: 2px solid var(--line);
-  border-radius: 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
   padding: 16px 18px;
   display: flex;
   flex-direction: column;
   gap: 7px;
   position: relative;
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow .15s ease;
 }
+
+.wish:active { box-shadow: var(--shadow-md); }
 
 .wish .wish-name {
   font-size: 21px;
@@ -619,7 +651,7 @@ html, body {
   color: var(--ink);
 }
 
-#recipe-search:focus { outline: none; border-color: var(--ink); }
+#recipe-search:focus { outline: none; border-color: var(--family); }
 
 .filters {
   flex: 0 0 auto;
@@ -630,6 +662,7 @@ html, body {
   border-bottom: 2px solid var(--line);
   max-height: 132px;
   overflow-y: auto;
+  background: #fafbfc;
 }
 
 .filters .fgroup {
@@ -658,25 +691,30 @@ html, body {
   color: var(--ink-soft);
   cursor: pointer;
   white-space: nowrap;
+  transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
 }
 
 .filters button.on {
-  background: var(--ink);
-  border-color: var(--ink);
+  background: var(--family);
+  border-color: var(--family);
   color: #fff;
+  box-shadow: var(--shadow-accent);
 }
 
 .rcard {
-  border: 2px solid var(--line);
-  border-radius: 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
   padding: 14px 16px;
   display: flex;
   flex-direction: column;
   gap: 8px;
   cursor: pointer;
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow .15s ease, background-color .15s ease;
 }
 
-.rcard:active { background: #eef4ff; }
+.rcard:active { background: #eef4ff; box-shadow: var(--shadow-md); }
 
 .rcard .rname {
   font-size: 19px;
@@ -804,6 +842,7 @@ html, body {
   background: #fff;
   color: var(--ink);
   cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease;
 }
 
 .plan-days button.today { border-color: var(--family); color: var(--family); }
@@ -828,6 +867,7 @@ html, body {
   padding: 11px 15px; border-radius: 10px;
   border: 2px solid var(--line-heavy); background: #fff; color: var(--ink);
   cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease;
 }
 .mv.today   { border-color: var(--family); color: var(--family); }
 .mv.current { background: var(--bg); color: var(--ink-faint); }
@@ -855,9 +895,11 @@ html, body {
   padding: 7px 13px; border-radius: 999px;
   border: 2px solid var(--line-heavy); background: #fff;
   color: var(--ink-soft); cursor: pointer; white-space: nowrap;
+  transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
 }
 .week-toggle button.on {
-  background: var(--ink); border-color: var(--ink); color: #fff;
+  background: var(--family); border-color: var(--family); color: #fff;
+  box-shadow: var(--shadow-accent);
 }
 
 /* ── Recipe ratings ──────────────────────────────────────────── */
