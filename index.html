@@ -186,11 +186,19 @@
       </div>
       <div class="rx-scroll">
         <div class="rxf-modes">
-          <button class="rxf-mode on" id="rxf-mode-paste">Paste a recipe</button>
+          <button class="rxf-mode on" id="rxf-mode-link">Paste a link</button>
+          <button class="rxf-mode" id="rxf-mode-paste">Paste text</button>
           <button class="rxf-mode" id="rxf-mode-form">Type it out</button>
         </div>
 
-        <div id="rxf-paste-pane">
+        <div id="rxf-link-pane">
+          <div class="rx-h">Recipe web address</div>
+          <p class="rxf-note">Paste the link to a recipe page. I'll pull in the name, ingredients and steps, and you can fix anything before saving.</p>
+          <input class="rxf-input" id="rxf-url" type="url" inputmode="url" autocomplete="off" autocapitalize="off" placeholder="https://www.example.com/best-chili-recipe">
+          <button class="rxf-parse" id="rxf-fetch">Import recipe &#8594;</button>
+        </div>
+
+        <div id="rxf-paste-pane" class="hidden">
           <div class="rx-h">Paste the whole thing</div>
           <p class="rxf-note">Copy a recipe from a website or type it in — name, ingredients and steps all together. I'll split it up, and you can fix anything before saving.</p>
           <textarea class="rxf-area tall" id="rxf-paste" placeholder="Chicken Tortilla Soup&#10;&#10;Ingredients&#10;1 lb chicken breast&#10;2 cans diced tomatoes&#10;&#10;Directions&#10;1. Add everything to the slow cooker.&#10;2. Cook on low 6 hours."></textarea>

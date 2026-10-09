@@ -999,10 +999,10 @@ function rxfSplit(raw) {
 }
 
 function rxfSetMode(mode) {
-  document.getElementById("rxf-mode-paste").classList.toggle("on", mode === "paste");
-  document.getElementById("rxf-mode-form").classList.toggle("on",  mode === "form");
-  document.getElementById("rxf-paste-pane").classList.toggle("hidden", mode !== "paste");
-  document.getElementById("rxf-form-pane").classList.toggle("hidden",  mode !== "form");
+  ["link", "paste", "form"].forEach(m => {
+    document.getElementById("rxf-mode-" + m).classList.toggle("on", mode === m);
+    document.getElementById(`rxf-${m}-pane`).classList.toggle("hidden", mode !== m);
+  });
 }
 
 function openRecipeForm(existing) {
@@ -1010,6 +1010,7 @@ function openRecipeForm(existing) {
   document.getElementById("rxf-title").textContent = existing ? "Edit recipe" : "Add a recipe";
   document.getElementById("rxf-delete").classList.toggle("hidden", !existing);
   document.getElementById("rxf-paste").value = "";
+  document.getElementById("rxf-url").value   = "";
 
   const g = id => document.getElementById(id);
   g("rxf-name").value   = existing ? existing.name   : "";
@@ -1024,7 +1025,7 @@ function openRecipeForm(existing) {
     : { protein: "chicken", dish: "skillet", method: "oven" };
 
   renderRxfPicks();
-  rxfSetMode(existing ? "form" : "paste");
+  rxfSetMode(existing ? "form" : "link");
   document.getElementById("rxf-overlay").classList.remove("hidden");
 }
 
@@ -1036,6 +1037,7 @@ function closeRecipeForm() {
 document.getElementById("rx-add-btn").onclick   = () => openRecipeForm(null);
 document.getElementById("rx-search").oninput    = e => { rxSearch = e.target.value; renderRecipes(); };
 document.getElementById("rxf-close").onclick    = closeRecipeForm;
+document.getElementById("rxf-mode-link").onclick  = () => rxfSetMode("link");
 document.getElementById("rxf-mode-paste").onclick = () => rxfSetMode("paste");
 document.getElementById("rxf-mode-form").onclick  = () => rxfSetMode("form");
 document.getElementById("rxf-overlay").addEventListener("click", e => {
@@ -1069,6 +1071,46 @@ document.getElementById("rxf-parse").onclick = () => {
   rxfSetMode("form");
   showToast(`Found ${out.ings.length} ingredients, ${out.steps.length} steps`);
 };
+
+// Import from a web address. The server reads the page's embedded recipe
+// data (api/recipe.js); the result lands in the same review form as a
+// pasted recipe, so nothing is saved until it's looked over.
+async function rxfImportUrl() {
+  const input = document.getElementById("rxf-url");
+  const btn   = document.getElementById("rxf-fetch");
+  const url   = input.value.trim();
+  if (!url) { showToast("Paste a recipe link first"); return; }
+
+  btn.disabled    = true;
+  btn.textContent = "Importing…";
+  try {
+    const res  = await fetch("/api/recipe?url=" + encodeURIComponent(url));
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      showToast(data.error || "Couldn't import that link");
+      return;
+    }
+    const g = id => document.getElementById(id);
+    g("rxf-name").value   = data.name;
+    g("rxf-serves").value = data.serves;
+    g("rxf-prep").value   = data.prep;
+    g("rxf-cook").value   = data.cook;
+    g("rxf-source").value = data.source;
+    g("rxf-ings").value   = data.ingredients.join("\n");
+    g("rxf-steps").value  = data.steps.join("\n");
+    rxfPicked = rxfGuess([data.name, ...data.ingredients, ...data.steps].join("\n"));
+    renderRxfPicks();
+    rxfSetMode("form");
+    showToast(`Found ${data.ingredients.length} ingredients, ${data.steps.length} steps`);
+  } catch {
+    showToast("Couldn't import that link");
+  } finally {
+    btn.disabled    = false;
+    btn.textContent = "Import recipe →";
+  }
+}
+document.getElementById("rxf-fetch").onclick = rxfImportUrl;
+document.getElementById("rxf-url").addEventListener("keydown", e => { if (e.key === "Enter") rxfImportUrl(); });
 
 document.getElementById("rxf-save").onclick = async () => {
   const g   = id => document.getElementById(id).value.trim();
