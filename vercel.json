@@ -1,0 +1,5 @@
+{
+  "functions": {
+    "api/recipe-image.js": { "maxDuration": 60 }
+  }
+}

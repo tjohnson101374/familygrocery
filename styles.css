@@ -465,8 +465,8 @@
 
 .rxf-modes { display: flex; gap: 8px; margin-bottom: 16px; }
 .rxf-mode {
-  flex: 1; font-family: inherit; font-size: 13px; font-weight: 600;
-  padding: 10px; border-radius: 999px; border: 1.5px solid #ddd;
+  flex: 1; font-family: inherit; font-size: 12.5px; font-weight: 600;
+  padding: 10px 4px; border-radius: 999px; border: 1.5px solid #ddd;
   background: #fff; color: #666; cursor: pointer;
 }
 .rxf-mode.on { background: #B96C25; border-color: #B96C25; color: #fff; }

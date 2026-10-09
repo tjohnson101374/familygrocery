@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "description": "Family dashboard. The site itself is plain static files with no build step; this file exists only so Vercel installs the dependency the api/ functions need.",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.132.1"
+  }
+}

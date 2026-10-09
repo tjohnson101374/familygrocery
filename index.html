@@ -186,7 +186,8 @@
       </div>
       <div class="rx-scroll">
         <div class="rxf-modes">
-          <button class="rxf-mode on" id="rxf-mode-link">Paste a link</button>
+          <button class="rxf-mode on" id="rxf-mode-link">Link</button>
+          <button class="rxf-mode" id="rxf-mode-photo">Photo</button>
           <button class="rxf-mode" id="rxf-mode-paste">Paste text</button>
           <button class="rxf-mode" id="rxf-mode-form">Type it out</button>
         </div>
@@ -196,6 +197,14 @@
           <p class="rxf-note">Paste the link to a recipe page. I'll pull in the name, ingredients and steps, and you can fix anything before saving.</p>
           <input class="rxf-input" id="rxf-url" type="url" inputmode="url" autocomplete="off" autocapitalize="off" placeholder="https://www.example.com/best-chili-recipe">
           <button class="rxf-parse" id="rxf-fetch">Import recipe &#8594;</button>
+        </div>
+
+        <div id="rxf-photo-pane" class="hidden">
+          <div class="rx-h">Photo or screenshot</div>
+          <p class="rxf-note">Pick a screenshot or photo of a recipe &mdash; a video frame, a cookbook page, a clipping. If it's spread over a few screenshots, pick them all (up to 4). I'll read it and you can fix anything before saving.</p>
+          <input class="rxf-input" id="rxf-photos" type="file" accept="image/*" multiple>
+          <div class="rxf-note" id="rxf-photo-count"></div>
+          <button class="rxf-parse" id="rxf-read-photo">Read recipe &#8594;</button>
         </div>
 
         <div id="rxf-paste-pane" class="hidden">

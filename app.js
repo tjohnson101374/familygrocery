@@ -999,7 +999,7 @@ function rxfSplit(raw) {
 }
 
 function rxfSetMode(mode) {
-  ["link", "paste", "form"].forEach(m => {
+  ["link", "photo", "paste", "form"].forEach(m => {
     document.getElementById("rxf-mode-" + m).classList.toggle("on", mode === m);
     document.getElementById(`rxf-${m}-pane`).classList.toggle("hidden", mode !== m);
   });
@@ -1011,6 +1011,8 @@ function openRecipeForm(existing) {
   document.getElementById("rxf-delete").classList.toggle("hidden", !existing);
   document.getElementById("rxf-paste").value = "";
   document.getElementById("rxf-url").value   = "";
+  document.getElementById("rxf-photos").value = "";
+  document.getElementById("rxf-photo-count").textContent = "";
 
   const g = id => document.getElementById(id);
   g("rxf-name").value   = existing ? existing.name   : "";
@@ -1038,6 +1040,7 @@ document.getElementById("rx-add-btn").onclick   = () => openRecipeForm(null);
 document.getElementById("rx-search").oninput    = e => { rxSearch = e.target.value; renderRecipes(); };
 document.getElementById("rxf-close").onclick    = closeRecipeForm;
 document.getElementById("rxf-mode-link").onclick  = () => rxfSetMode("link");
+document.getElementById("rxf-mode-photo").onclick = () => rxfSetMode("photo");
 document.getElementById("rxf-mode-paste").onclick = () => rxfSetMode("paste");
 document.getElementById("rxf-mode-form").onclick  = () => rxfSetMode("form");
 document.getElementById("rxf-overlay").addEventListener("click", e => {
@@ -1072,45 +1075,92 @@ document.getElementById("rxf-parse").onclick = () => {
   showToast(`Found ${out.ings.length} ingredients, ${out.steps.length} steps`);
 };
 
-// Import from a web address. The server reads the page's embedded recipe
-// data (api/recipe.js); the result lands in the same review form as a
-// pasted recipe, so nothing is saved until it's looked over.
-async function rxfImportUrl() {
-  const input = document.getElementById("rxf-url");
-  const btn   = document.getElementById("rxf-fetch");
-  const url   = input.value.trim();
-  if (!url) { showToast("Paste a recipe link first"); return; }
+// Both importers (web link, photo) hand back the same shape and land in
+// the same review form as a pasted recipe, so nothing is saved until
+// it's been looked over.
+function rxfFillFromImport(data) {
+  const g = id => document.getElementById(id);
+  g("rxf-name").value   = data.name;
+  g("rxf-serves").value = data.serves;
+  g("rxf-prep").value   = data.prep;
+  g("rxf-cook").value   = data.cook;
+  g("rxf-source").value = data.source || "";
+  g("rxf-ings").value   = data.ingredients.join("\n");
+  g("rxf-steps").value  = data.steps.join("\n");
+  rxfPicked = rxfGuess([data.name, ...data.ingredients, ...data.steps].join("\n"));
+  renderRxfPicks();
+  rxfSetMode("form");
+  showToast(`Found ${data.ingredients.length} ingredients, ${data.steps.length} steps`);
+}
 
+// Run an import request with the button showing progress. `request`
+// returns a fetch Response; failures surface the server's own message.
+async function rxfRunImport(btn, busyLabel, idleLabel, failMsg, request) {
   btn.disabled    = true;
-  btn.textContent = "Importing…";
+  btn.textContent = busyLabel;
   try {
-    const res  = await fetch("/api/recipe?url=" + encodeURIComponent(url));
+    const res  = await request();
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      showToast(data.error || "Couldn't import that link");
-      return;
-    }
-    const g = id => document.getElementById(id);
-    g("rxf-name").value   = data.name;
-    g("rxf-serves").value = data.serves;
-    g("rxf-prep").value   = data.prep;
-    g("rxf-cook").value   = data.cook;
-    g("rxf-source").value = data.source;
-    g("rxf-ings").value   = data.ingredients.join("\n");
-    g("rxf-steps").value  = data.steps.join("\n");
-    rxfPicked = rxfGuess([data.name, ...data.ingredients, ...data.steps].join("\n"));
-    renderRxfPicks();
-    rxfSetMode("form");
-    showToast(`Found ${data.ingredients.length} ingredients, ${data.steps.length} steps`);
+    if (!res.ok) { showToast(data.error || failMsg); return; }
+    rxfFillFromImport(data);
   } catch {
-    showToast("Couldn't import that link");
+    showToast(failMsg);
   } finally {
     btn.disabled    = false;
-    btn.textContent = "Import recipe →";
+    btn.textContent = idleLabel;
   }
+}
+
+// Import from a web address (api/recipe.js reads the page's embedded
+// recipe data).
+function rxfImportUrl() {
+  const url = document.getElementById("rxf-url").value.trim();
+  if (!url) { showToast("Paste a recipe link first"); return; }
+  return rxfRunImport(
+    document.getElementById("rxf-fetch"),
+    "Importing…", "Import recipe →", "Couldn't import that link",
+    () => fetch("/api/recipe?url=" + encodeURIComponent(url)));
 }
 document.getElementById("rxf-fetch").onclick = rxfImportUrl;
 document.getElementById("rxf-url").addEventListener("keydown", e => { if (e.key === "Enter") rxfImportUrl(); });
+
+// Phone photos run to several MB each, past what the server accepts, and
+// far more detail than reading text needs. Shrink to a JPEG in the browser
+// before sending.
+const RXF_MAX_PHOTOS = 4;
+const RXF_MAX_SIDE   = 1600;
+
+async function rxfShrinkPhoto(file) {
+  const bitmap = await createImageBitmap(file);
+  const scale  = Math.min(1, RXF_MAX_SIDE / Math.max(bitmap.width, bitmap.height));
+  const canvas = document.createElement("canvas");
+  canvas.width  = Math.round(bitmap.width  * scale);
+  canvas.height = Math.round(bitmap.height * scale);
+  canvas.getContext("2d").drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  bitmap.close();
+  const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+  return { mediaType: "image/jpeg", data: dataUrl.slice(dataUrl.indexOf(",") + 1) };
+}
+
+document.getElementById("rxf-photos").addEventListener("change", e => {
+  const n = e.target.files.length;
+  document.getElementById("rxf-photo-count").textContent =
+    !n ? "" : n > RXF_MAX_PHOTOS ? `Pick up to ${RXF_MAX_PHOTOS} photos` : `${n} photo${n === 1 ? "" : "s"} selected`;
+});
+
+document.getElementById("rxf-read-photo").onclick = () => {
+  const files = [...document.getElementById("rxf-photos").files];
+  if (!files.length) { showToast("Pick a photo first"); return; }
+  if (files.length > RXF_MAX_PHOTOS) { showToast(`Pick up to ${RXF_MAX_PHOTOS} photos`); return; }
+  return rxfRunImport(
+    document.getElementById("rxf-read-photo"),
+    "Reading…", "Read recipe →", "Couldn't read that photo",
+    async () => fetch("/api/recipe-image", {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify({ images: await Promise.all(files.map(rxfShrinkPhoto)) }),
+    }));
+};
 
 document.getElementById("rxf-save").onclick = async () => {
   const g   = id => document.getElementById(id).value.trim();
