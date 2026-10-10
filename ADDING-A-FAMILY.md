@@ -48,7 +48,12 @@ feature pushed to `main` reaches every family's site.
    needs `WUNDERGROUND_API_KEY`) → Deploy.
 4. Push to `main`. Both sites redeploy.
 
-## Turning on shared recipes (one time)
+## Shared recipes — already set up
+
+The shared recipes project is `family-recipes-shared` and it's wired in through
+`RECIPES_FIREBASE` in `family-config.js`. A new family needs nothing extra: it
+reads and writes the same pool automatically. The steps below are only for
+rebuilding it from scratch.
 
 Do these **in order** — turning the shared database on before copying the existing
 recipes into it would make them appear to vanish.

@@ -12,9 +12,17 @@
 // Recipes the families add themselves live in one small database shared
 // by every family, and nothing else does. Lists, favorites, ratings, meal
 // plans and Christmas lists stay in each family's own database, so they
-// can't mix. Paste the shared project's web app config here once it
-// exists; until then each family keeps its recipes in its own database.
-export const RECIPES_FIREBASE = null;
+// can't mix. If this is null, each family keeps its recipes in its own
+// database instead.
+export const RECIPES_FIREBASE = {
+  apiKey: "AIzaSyBgsTUxwZ45mfh04nJOFurMMGqdvscKErc",
+  authDomain: "family-recipes-shared.firebaseapp.com",
+  databaseURL: "https://family-recipes-shared-default-rtdb.firebaseio.com",
+  projectId: "family-recipes-shared",
+  storageBucket: "family-recipes-shared.firebasestorage.app",
+  messagingSenderId: "715206307117",
+  appId: "1:715206307117:web:f0e921136f5d925e7677a4",
+};
 
 export const FAMILIES = {
   johnson: {
