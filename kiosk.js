@@ -8,8 +8,24 @@
 // ────────────────────────────────────────────────────────────────
 import { ref, onValue, push, remove, set, update }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-import { db } from "./firebase-init.js";
+import { db, recipesDb } from "./firebase-init.js";
 import { RECIPES } from "./recipes.js";
+import { family, familyId, FAMILIES, recipeOwner } from "./family-config.js";
+
+// The wall display (calendars, names, colors below) is still written for
+// one family. Families without it switched on in family-config.js get a
+// plain notice instead of someone else's kitchen.
+if (!family.features.kiosk) {
+  document.body.innerHTML =
+    '<div style="padding:48px 24px;font-family:Inter,system-ui,sans-serif;' +
+    'text-align:center;color:#666;font-size:15px;line-height:1.6;">' +
+    "The wall display isn't turned on for this dashboard.</div>";
+  throw new Error("Kiosk is disabled for " + family.name);
+}
+
+const LIBRARY = family.features.freezerRecipes
+  ? RECIPES
+  : RECIPES.filter(r => !String(r.box || "").startsWith("freezer"));
 
 // ── Calendars ────────────────────────────────────────────────────
 const CALENDARS = [
@@ -794,7 +810,11 @@ let recipeSearch = "";
 // Recipes you add from your phone live in Firebase; the PPP library
 // is fixed data in code. The browser shows one merged list.
 let myRecipes = [];
-function allRecipes() { return RECIPES.concat(myRecipes); }
+function allRecipes() { return LIBRARY.concat(myRecipes); }
+
+function ownerLabel(r) {
+  return recipeOwner(r) === familyId ? "ours" : (FAMILIES[recipeOwner(r)]?.shortName || recipeOwner(r));
+}
 
 function recipeById(id) {
   return allRecipes().find(r => r.id === id) || null;
@@ -889,7 +909,7 @@ function renderRecipes() {
     tags.className = "rtags";
     if (r.protein !== "none") tags.appendChild(tag(r.protein, "p-" + r.protein));
     if (r.method) tags.appendChild(tag(r.method));
-    if (r.custom)    tags.appendChild(tag("ours", "p-ours"));
+    if (r.custom)    tags.appendChild(tag(ownerLabel(r), "p-ours"));
     else if (r.week) tags.appendChild(tag(`wk ${r.week}`));
 
     card.appendChild(meta);
@@ -1208,7 +1228,7 @@ onValue(ref(db, "recipeRatings"), snap => {
   if (activeView === "recipes") renderRecipes();
 });
 
-onValue(ref(db, "customRecipes"), snap => {
+onValue(ref(recipesDb, "customRecipes"), snap => {
   const val = snap.val() || {};
   myRecipes = Object.entries(val).map(([key, v]) => ({
     ...v, id: "my-" + key, custom: true, week: null, box: "ours",

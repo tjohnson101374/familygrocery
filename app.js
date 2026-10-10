@@ -1,7 +1,16 @@
 import { ref, onValue, push, remove, set, update }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-import { db } from "./firebase-init.js";
+import { db, recipesDb } from "./firebase-init.js";
 import { RECIPES } from "./recipes.js";
+import { family, familyId, FAMILIES, recipeOwner } from "./family-config.js";
+
+// Page title and header come from the family's config.
+document.title = family.name;
+document.getElementById("app-title").textContent = `🏡 ${family.name}`;
+if (!family.features.trips) {
+  // No Trips tab (below) and no Trip Mode toggle in the meal planner.
+  document.querySelector(".trip-toggle-bar")?.classList.add("hidden");
+}
 
 // ────────────────────────────────────────────────────────────────
 // VACATIONS — self-service trip dashboards, fully managed from
@@ -55,16 +64,10 @@ const PLANNING_TABS = [
   { id: "christmas", name: "Christmas", emoji: "🎄", color: "#C41E3A", light: "#fff5f6" },
   { id: "recipes",   name: "Recipes",   emoji: "📖", color: "#B96C25", light: "#fdf4ea" },
   { id: "trip",      name: "Trips",     emoji: "🧳", color: "#1F5C73", light: "#eef4f6" },
-];
+].filter(t => t.id !== "trip" || family.features.trips);
 let activeSection = "shopping"; // "shopping" | "planning"
 
-const CHRISTMAS_MEMBERS = [
-  { id:"mom",     name:"Mom",     emoji:"👩" },
-  { id:"dad",     name:"Dad",     emoji:"👨" },
-  { id:"trinity", name:"Trinity", emoji:"⭐" },
-  { id:"sierra",  name:"Sierra",  emoji:"🌲" },
-  { id:"kelsey",  name:"Kelsey",  emoji:"✨" },
-];
+const CHRISTMAS_MEMBERS = family.members.map(({ id, name, emoji }) => ({ id, name, emoji }));
 const XMAS_COLOR = "#C41E3A";
 const XMAS_LIGHT = "#fff5f6";
 
@@ -89,7 +92,7 @@ let currentWeekStart   = getMonday(new Date());
 let mealModalCtx       = null;
 let selectedModalStore = "shopping";
 // Christmas
-let activeMember       = "mom";
+let activeMember       = family.members[0].id;
 let christmasData      = {};
 
 // ── Firebase: grocery lists ──────────────────────────────────────
@@ -528,8 +531,19 @@ let rxEditing = null;
 
 // The PPP library is fixed reference data in code; anything you add
 // lives in Firebase. Browsing sees one merged list.
+const LIBRARY = family.features.freezerRecipes
+  ? RECIPES
+  : RECIPES.filter(r => !String(r.box || "").startsWith("freezer"));
+
 function allRecipes() {
-  return RECIPES.concat(myRecipes);
+  return LIBRARY.concat(myRecipes);
+}
+
+// Recipes in the shared pool belong to whichever family added them.
+// Only that family edits or deletes them; everyone can cook from them.
+function isMine(r) { return recipeOwner(r) === familyId; }
+function ownerLabel(r) {
+  return isMine(r) ? "ours" : (FAMILIES[recipeOwner(r)]?.shortName || recipeOwner(r));
 }
 
 function recipeById(id) {
@@ -629,7 +643,7 @@ function renderRecipes() {
     const tags = card.querySelector(".rx-tags");
     if (r.protein !== "none") tags.appendChild(rxTag(r.protein, "p-" + r.protein));
     if (r.method) tags.appendChild(rxTag(r.method));
-    if (r.custom)     tags.appendChild(rxTag("ours", "ours"));
+    if (r.custom)     tags.appendChild(rxTag(ownerLabel(r), "ours"));
     else if (r.week)  tags.appendChild(rxTag("wk " + r.week));
     card.onclick = () => openRecipe(r);
     listEl.appendChild(card);
@@ -669,7 +683,7 @@ function openRecipe(r) {
 
   const editBtn = document.getElementById("rx-edit-wrap");
   if (editBtn) editBtn.remove();
-  if (r.custom) {
+  if (r.custom && isMine(r)) {
     const wrap = document.createElement("div");
     wrap.id = "rx-edit-wrap";
     const b = document.createElement("button");
@@ -1178,10 +1192,11 @@ document.getElementById("rxf-save").onclick = async () => {
             : rxfPicked.dish === "breakfast" ? "breakfast" : "main",
     ingredients: lines("rxf-ings"), steps: lines("rxf-steps"),
     source: g("rxf-source"), updatedAt: Date.now(),
+    addedBy: rxEditing ? recipeOwner(rxEditing) : familyId,
   };
 
-  if (rxEditing) await set(ref(db, `customRecipes/${rxEditing.fbKey}`), entry);
-  else           await push(ref(db, "customRecipes"), entry);
+  if (rxEditing) await set(ref(recipesDb, `customRecipes/${rxEditing.fbKey}`), entry);
+  else           await push(ref(recipesDb, "customRecipes"), entry);
 
   closeRecipeForm();
   showToast(rxEditing ? "Recipe updated" : "Recipe saved");
@@ -1190,7 +1205,7 @@ document.getElementById("rxf-save").onclick = async () => {
 document.getElementById("rxf-delete").onclick = async () => {
   if (!rxEditing) return;
   if (!confirm(`Delete "${rxEditing.name}"? This can't be undone.`)) return;
-  await remove(ref(db, `customRecipes/${rxEditing.fbKey}`));
+  await remove(ref(recipesDb, `customRecipes/${rxEditing.fbKey}`));
   closeRecipeForm();
   showToast("Recipe deleted");
 };
@@ -1200,7 +1215,7 @@ onValue(ref(db, "recipeRatings"), snap => {
   if (activeStore === "recipes") renderRecipes();
 });
 
-onValue(ref(db, "customRecipes"), snap => {
+onValue(ref(recipesDb, "customRecipes"), snap => {
   const val = snap.val() || {};
   myRecipes = Object.entries(val).map(([key, v]) => ({
     ...v, fbKey: key, id: "my-" + key, custom: true, week: null, box: "ours",
@@ -1213,12 +1228,8 @@ onValue(ref(db, "customRecipes"), snap => {
 // Whoever is making dinner that night. Colours match the calendars so
 // a glance at the wall reads the same way as the schedule does.
 const COOKS = [
-  { id: "mom",     name: "Mom",     color: "#B0306A" },
-  { id: "dad",     name: "Dad",     color: "#2952A3" },
-  { id: "trinity", name: "Trinity", color: "#A32929" },
-  { id: "sierra",  name: "Sierra",  color: "#0D7813" },
-  { id: "kelsey",  name: "Kelsey",  color: "#7A367A" },
-  { id: "out",     name: "Eating out", color: "#5F5E5A" },
+  ...family.members.map(({ id, name, color }) => ({ id, name, color })),
+  { id: "out", name: "Eating out", color: "#5F5E5A" },
 ];
 
 function cookById(id) { return COOKS.find(c => c.id === id) || null; }

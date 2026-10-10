@@ -2,39 +2,53 @@
 // Shared Firebase connection for every page in this app
 // (index.html on phones, kiosk.html on the kitchen tablet).
 //
-// Importing this module gives you a ready-to-use `db` that is already
-// signed in — the top-level await below blocks the import until auth
+// Importing this module gives you ready-to-use, already signed-in
+// databases — the top-level await below blocks the import until auth
 // completes, so no listener anywhere can fire unauthenticated.
+//
+//   db          this family's own data (lists, favorites, ratings,
+//               meal plans, Christmas lists...)
+//   recipesDb   where family-added recipes live. A small database shared
+//               by every family when one is configured, otherwise the
+//               same as db. Nothing else is ever stored there.
+//
+// Which family this is comes from the site address — see
+// family-config.js.
 // ────────────────────────────────────────────────────────────────
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase }   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { getAuth, signInAnonymously }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { family, RECIPES_FIREBASE } from "./family-config.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBQMTnC06QUKdZqFnBg2KJdO0_POiiBrtk",
-  authDomain: "family-grocery-list-93322.firebaseapp.com",
-  databaseURL: "https://family-grocery-list-93322-default-rtdb.firebaseio.com",
-  projectId: "family-grocery-list-93322",
-  storageBucket: "family-grocery-list-93322.firebasestorage.app",
-  messagingSenderId: "652454540194",
-  appId: "1:652454540194:web:6039c7afbccc05b43578fb"
-};
+function showStopper(html) {
+  document.body.innerHTML =
+    '<div style="padding:48px 24px;font-family:Inter,system-ui,sans-serif;' +
+    'text-align:center;color:#666;font-size:15px;line-height:1.6;">' + html + "</div>";
+}
 
-const fbApp = initializeApp(firebaseConfig);
-const auth  = getAuth(fbApp);
+if (!family) {
+  showStopper("This site isn't set up for a family yet.");
+  throw new Error("No family configured for " + location.hostname);
+}
+if (!family.firebase) {
+  showStopper(`${family.name} isn't finished being set up yet.<br>Check back soon.`);
+  throw new Error("No Firebase config for " + family.name);
+}
 
+const fbApp = initializeApp(family.firebase);
 export const db = getDatabase(fbApp);
+
+let recipesApp = fbApp;
+if (RECIPES_FIREBASE) recipesApp = initializeApp(RECIPES_FIREBASE, "recipes");
+export const recipesDb = RECIPES_FIREBASE ? getDatabase(recipesApp) : db;
 
 // Nobody sees a login screen — the app signs itself in silently.
 try {
-  await signInAnonymously(auth);
+  const signIns = [signInAnonymously(getAuth(fbApp))];
+  if (RECIPES_FIREBASE) signIns.push(signInAnonymously(getAuth(recipesApp)));
+  await Promise.all(signIns);
 } catch (err) {
-  document.body.innerHTML =
-    '<div style="padding:48px 24px;font-family:Inter,system-ui,sans-serif;' +
-    'text-align:center;color:#666;font-size:15px;line-height:1.6;">' +
-    "Couldn't connect to the family database.<br>" +
-    "Check your internet connection and reload." +
-    "</div>";
+  showStopper("Couldn't connect to the family database.<br>Check your internet connection and reload.");
   throw err;
 }
