@@ -57,10 +57,18 @@ export const FAMILIES = {
     shortName: "McDaris",
     hosts: ["mcdaris-family-dashboard"],
 
-    // Paste the web app config from the McDaris Firebase project here
-    // (Project settings > Your apps > Config). Until then the site shows
-    // a "not set up yet" page rather than touching any database.
-    firebase: null,
+    // From the McDaris Firebase project (Project settings > Your apps > Config).
+    // If this is ever null the site shows a "not set up yet" page rather
+    // than touching any database.
+    firebase: {
+      apiKey: "AIzaSyB8UCrD6zGNUrrRqJ4EQRRGWyOagO_MDek",
+      authDomain: "mcdaris-family-dashboard.firebaseapp.com",
+      databaseURL: "https://mcdaris-family-dashboard-default-rtdb.firebaseio.com",
+      projectId: "mcdaris-family-dashboard",
+      storageBucket: "mcdaris-family-dashboard.firebasestorage.app",
+      messagingSenderId: "859041990257",
+      appId: "1:859041990257:web:764112745d6ea9708d3dd0",
+    },
 
     members: [
       { id: "kristah", name: "Kristah", emoji: "👩", color: "#B0306A" },
