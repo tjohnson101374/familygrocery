@@ -213,6 +213,15 @@ function renderSectionSwitcher() {
     const btn = document.createElement("button");
     btn.className = "section-btn" + (activeSection === s.id ? " active" : "");
     btn.textContent = s.label;
+    // The Recipes tab lives under Planning, so flag new recipes up here too.
+    const fresh = s.id === "planning" && activeStore !== "recipes" ? unseenRecipeCount() : 0;
+    if (fresh > 0) {
+      const dot = document.createElement("span");
+      dot.className   = "badge";
+      dot.style.cssText = "background:#B96C25;margin-left:6px";
+      dot.textContent = fresh;
+      btn.appendChild(dot);
+    }
     btn.onclick = () => {
       if (activeSection === s.id) return;
       activeSection = s.id;
@@ -231,7 +240,9 @@ function renderTabs() {
 
   const tabSet = activeSection === "shopping" ? STORES : PLANNING_TABS;
   tabSet.forEach(s => {
-    const count    = activeSection === "shopping" ? getItems(s.id).filter(i => !i.checked).length : 0;
+    const count    = activeSection === "shopping" ? getItems(s.id).filter(i => !i.checked).length
+                   : s.id === "recipes"            ? unseenRecipeCount()
+                   : 0;
     const isActive = s.id === activeStore;
     const btn      = document.createElement("button");
     btn.className  = "store-tab" + (isActive ? " active" : "");
@@ -418,6 +429,7 @@ function render() {
   const onXmas  = activeStore === "christmas";
   const onTrip  = activeStore === "trip";
   const onRecipes = activeStore === "recipes";
+  if (onRecipes) markRecipesSeen();          // opening Recipes clears the "new" badge
   renderTabs();
   renderAddBar();
   renderFavs();
@@ -546,6 +558,47 @@ function ownerLabel(r) {
   return isMine(r) ? "ours" : (FAMILIES[recipeOwner(r)]?.shortName || recipeOwner(r));
 }
 
+// ── Knowing when a recipe was added ──────────────────────────────
+// Firebase push keys start with the creation time (milliseconds, in a
+// base-64 alphabet), so the date a recipe was added can be read back
+// from its key without storing anything — it works for old recipes too.
+const PUSH_CHARS = "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz";
+
+function pushKeyTime(key) {
+  if (!key || key.length < 8) return null;
+  let t = 0;
+  for (let i = 0; i < 8; i++) {
+    const n = PUSH_CHARS.indexOf(key[i]);
+    if (n < 0) return null;
+    t = t * 64 + n;
+  }
+  return t;
+}
+
+function addedAt(r) { return pushKeyTime(r.fbKey) ?? r.updatedAt ?? null; }
+
+const NEW_DAYS = 7;
+function isNewRecipe(r) {
+  const t = r.custom && addedAt(r);
+  return !!t && Date.now() - t < NEW_DAYS * 864e5;
+}
+
+// "Added since you last looked" is tracked per device. The first time a
+// device ever loads, it counts as having seen everything so far, rather
+// than flagging the whole library as new.
+const RX_SEEN_KEY = "fam-rx-seen-v1";
+function rxSeen() {
+  try { return Number(localStorage.getItem(RX_SEEN_KEY)) || null; } catch { return null; }
+}
+function markRecipesSeen() {
+  try { localStorage.setItem(RX_SEEN_KEY, String(Date.now())); } catch { /* storage blocked: no badge, no harm */ }
+}
+function unseenRecipeCount() {
+  const seen = rxSeen();
+  if (!seen) return 0;
+  return myRecipes.filter(r => (addedAt(r) || 0) > seen).length;
+}
+
 function recipeById(id) {
   return allRecipes().find(r => r.id === id) || null;
 }
@@ -645,6 +698,7 @@ function renderRecipes() {
     if (r.method) tags.appendChild(rxTag(r.method));
     if (r.custom)     tags.appendChild(rxTag(ownerLabel(r), "ours"));
     else if (r.week)  tags.appendChild(rxTag("wk " + r.week));
+    if (isNewRecipe(r)) tags.prepend(rxTag("new", "new"));
     card.onclick = () => openRecipe(r);
     listEl.appendChild(card);
   });
@@ -674,6 +728,10 @@ function openRecipe(r) {
     formatMinutes(totalMinutes(r)) && `${formatMinutes(totalMinutes(r))} total`,
     r.method,
     r.week ? `Week ${r.week}` : null,
+    r.custom && addedAt(r)
+      ? `Added ${new Date(addedAt(r)).toLocaleDateString("en-US", { month: "short", day: "numeric" })}`
+        + (isMine(r) ? "" : ` by ${ownerLabel(r)}`)
+      : null,
     r.source || null,
   ].filter(Boolean).forEach(t => {
     const el = document.createElement("span");
@@ -1221,7 +1279,9 @@ onValue(ref(recipesDb, "customRecipes"), snap => {
     ...v, fbKey: key, id: "my-" + key, custom: true, week: null, box: "ours",
     ingredients: v.ingredients || [], steps: v.steps || [],
   }));
+  if (rxSeen() === null || activeStore === "recipes") markRecipesSeen();
   if (activeStore === "recipes") renderRecipes();
+  renderTabs();
 });
 
 

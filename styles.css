@@ -462,6 +462,7 @@
 .rx-add-btn:active { opacity: .8; }
 
 .rx-tag.ours { background: #EDE8F7; color: #534AB7; }
+.rx-tag.new  { background: #E3F4E4; color: #1B6B2A; }
 
 .rxf-modes { display: flex; gap: 8px; margin-bottom: 16px; }
 .rxf-mode {

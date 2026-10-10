@@ -81,7 +81,7 @@ export const FAMILIES = {
     members: [
       { id: "kristah", name: "Kristah", emoji: "👩", color: "#B0306A" },
       { id: "daniel",  name: "Daniel",  emoji: "👨", color: "#2952A3" },
-      { id: "savanah", name: "Savanah", emoji: "⭐", color: "#A32929" },
+      { id: "savanah", name: "Savannah", emoji: "⭐", color: "#A32929" },   // id keeps the old spelling: it's what's saved in their data
       { id: "leah",    name: "Leah",    emoji: "🌸", color: "#0D7813" },
     ],
 
