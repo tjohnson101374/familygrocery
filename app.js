@@ -1950,11 +1950,17 @@ function renderChristmasItems() {
     const nameEl  = document.createElement("span");
     nameEl.className   = "xmas-item-name";
     nameEl.textContent = item.name;
+    const editBtn = document.createElement("button");
+    editBtn.className   = "edit-btn";
+    editBtn.textContent = "✏️";
+    editBtn.title       = "Edit";
+    editBtn.onclick = () => openChristmasModal(item);
     const delBtn  = document.createElement("button");
     delBtn.className   = "del-btn";
     delBtn.textContent = "🗑️";
     delBtn.onclick = () => removeChristmasItem(activeMember, item.key);
     topRow.appendChild(nameEl);
+    topRow.appendChild(editBtn);
     topRow.appendChild(delBtn);
     card.appendChild(topRow);
 
@@ -1988,19 +1994,26 @@ async function removeChristmasItem(memberId, key) {
   showToast("Removed from list");
 }
 
-// Christmas modal
-document.getElementById("xmas-add-btn").onclick = openChristmasModal;
-function openChristmasModal() {
+// Christmas modal — one form for adding a wish and for editing one.
+// xmasEditing is null when adding, or which wish is being changed.
+let xmasEditing = null;
+
+document.getElementById("xmas-add-btn").onclick = () => openChristmasModal(null);
+function openChristmasModal(item) {
   const member = CHRISTMAS_MEMBERS.find(m => m.id === activeMember);
-  document.getElementById("xmas-modal-title").textContent = `🎄 Add to ${member.name}'s List`;
-  document.getElementById("xmas-modal-item").value  = "";
-  document.getElementById("xmas-modal-link").value  = "";
-  document.getElementById("xmas-modal-store").value = "";
+  xmasEditing = item ? { memberId: activeMember, key: item.key } : null;
+  document.getElementById("xmas-modal-title").textContent =
+    item ? `✏️ Edit ${member.name}'s wish` : `🎄 Add to ${member.name}'s List`;
+  document.getElementById("xmas-modal-add").textContent = item ? "Save changes" : "Add to List 🎁";
+  document.getElementById("xmas-modal-item").value  = item ? item.name        : "";
+  document.getElementById("xmas-modal-link").value  = item ? (item.link  || "") : "";
+  document.getElementById("xmas-modal-store").value = item ? (item.store || "") : "";
   document.getElementById("xmas-modal-overlay").classList.remove("hidden");
   setTimeout(() => document.getElementById("xmas-modal-item").focus(), 50);
 }
 function closeChristmasModal() {
   document.getElementById("xmas-modal-overlay").classList.add("hidden");
+  xmasEditing = null;
 }
 document.getElementById("xmas-modal-cancel").onclick = closeChristmasModal;
 document.getElementById("xmas-modal-overlay").addEventListener("click", e => {
@@ -2015,6 +2028,22 @@ document.getElementById("xmas-modal-add").onclick = async () => {
   const link  = document.getElementById("xmas-modal-link").value.trim();
   const store = document.getElementById("xmas-modal-store").value.trim();
   if (!name) { showToast("Enter an item name"); return; }
+
+  if (xmasEditing) {
+    const { memberId, key } = xmasEditing;
+    // Someone may have removed it while the form was open; don't bring it back.
+    if (!christmasData[memberId]?.[key]) {
+      showToast("That wish was removed");
+      closeChristmasModal();
+      return;
+    }
+    // null clears a field, so blanking the link or store really removes it.
+    await update(ref(db, `christmas/${memberId}/${key}`), { name, link: link || null, store: store || null });
+    showToast("Wish updated");
+    closeChristmasModal();
+    return;
+  }
+
   const entry = { name };
   if (link)  entry.link  = link;
   if (store) entry.store = store;

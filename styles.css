@@ -81,10 +81,10 @@
       flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
     .item-text { flex: 1; font-size: 15px; color: #111; }
     .item-text.done { text-decoration: line-through; color: #bbb; }
-    .del-btn, .move-btn { background: none; border: none; cursor: pointer; font-size: 20px; opacity: 0.25;
+    .del-btn, .move-btn, .edit-btn { background: none; border: none; cursor: pointer; font-size: 20px; opacity: 0.25;
       padding: 4px 6px; line-height: 1; transition: opacity 0.15s; flex-shrink: 0; }
-    .del-btn:hover, .move-btn:hover { opacity: 0.6; }
-    .del-btn:active, .move-btn:active { opacity: 1; }
+    .del-btn:hover, .move-btn:hover, .edit-btn:hover { opacity: 0.6; }
+    .del-btn:active, .move-btn:active, .edit-btn:active { opacity: 1; }
 
     .move-menu {
       position: absolute; top: calc(100% + 4px); right: 14px; z-index: 20;
