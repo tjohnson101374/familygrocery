@@ -393,6 +393,13 @@ function renderList() {
     textEl.className   = "item-text" + (item.checked ? " done" : "");
     textEl.textContent = item.text;
 
+    // Edit the item's name (stops propagation so row-click doesn't also toggle)
+    const editBtn = document.createElement("button");
+    editBtn.className   = "edit-btn";
+    editBtn.textContent = "✏️";
+    editBtn.title       = "Edit";
+    editBtn.onclick = e => { e.stopPropagation(); openItemEdit(item); };
+
     // Move to another store (stops propagation so row-click doesn't also toggle)
     const moveBtn = document.createElement("button");
     moveBtn.className   = "move-btn";
@@ -411,6 +418,7 @@ function renderList() {
 
     row.appendChild(circle);
     row.appendChild(textEl);
+    row.appendChild(editBtn);
     row.appendChild(moveBtn);
     row.appendChild(delBtn);
     area.appendChild(row);
@@ -1647,6 +1655,56 @@ async function removeItem(storeId, key, sourceId) {
   await remove(ref(db, `lists/${actualSource}/${key}`));
   if (item) showToast(`Removed "${item.text}"`);
 }
+
+// ── Grocery: edit an item's name ─────────────────────────────────
+// A small form rather than editing in the row, because the list redraws
+// whenever anyone's change syncs in, which would wipe half-typed text.
+let itemEditing = null;   // { sourceId, key, text } while the form is open
+
+function openItemEdit(item) {
+  const store = STORES.find(s => s.id === activeStore);
+  itemEditing = { sourceId: item.sourceId, key: item.key, text: item.text };
+  const input = document.getElementById("item-edit-input");
+  input.value = item.text;
+  document.getElementById("item-edit-save").style.background = store.color;
+  document.getElementById("item-edit-overlay").classList.remove("hidden");
+  setTimeout(() => { input.focus(); input.select(); }, 50);
+}
+
+function closeItemEdit() {
+  document.getElementById("item-edit-overlay").classList.add("hidden");
+  itemEditing = null;
+}
+
+async function saveItemEdit() {
+  if (!itemEditing) return;
+  const { sourceId, key, text: oldText } = itemEditing;
+  const text = document.getElementById("item-edit-input").value.trim();
+
+  if (!text) { showToast("Enter an item name"); return; }
+  if (text === oldText) { closeItemEdit(); return; }
+  // Someone may have removed it while the form was open; don't bring it back.
+  if (!lists[sourceId]?.[key]) { showToast("That item was removed"); closeItemEdit(); return; }
+  // Same rule as adding: no second copy of an item already on this list.
+  const clash = getItems(activeStore).some(i =>
+    !(i.sourceId === sourceId && i.key === key) && i.text.toLowerCase() === text.toLowerCase());
+  if (clash) { showToast(`"${text}" is already on the list`); return; }
+
+  // Only the name changes, so checked-off items stay checked-off.
+  await update(ref(db, `lists/${sourceId}/${key}`), { text });
+  showToast("Item updated");
+  closeItemEdit();
+}
+
+document.getElementById("item-edit-cancel").onclick = closeItemEdit;
+document.getElementById("item-edit-save").onclick   = saveItemEdit;
+document.getElementById("item-edit-overlay").addEventListener("click", e => {
+  if (e.target === document.getElementById("item-edit-overlay")) closeItemEdit();
+});
+document.getElementById("item-edit-input").addEventListener("keydown", e => {
+  if (e.key === "Enter")  saveItemEdit();
+  if (e.key === "Escape") closeItemEdit();
+});
 
 // ── Grocery: move between store tabs ────────────────────────────
 let openMoveMenu = null;

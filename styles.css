@@ -85,6 +85,8 @@
       padding: 4px 6px; line-height: 1; transition: opacity 0.15s; flex-shrink: 0; }
     .del-btn:hover, .move-btn:hover, .edit-btn:hover { opacity: 0.6; }
     .del-btn:active, .move-btn:active, .edit-btn:active { opacity: 1; }
+    /* Three buttons per grocery row: keep them slim so names keep their room on a phone. */
+    .item-row .edit-btn, .item-row .move-btn, .item-row .del-btn { padding: 4px 3px; font-size: 18px; }
 
     .move-menu {
       position: absolute; top: calc(100% + 4px); right: 14px; z-index: 20;
