@@ -1785,10 +1785,19 @@ function fzInfoOf(r) {
   return info;
 }
 
-// The words that say which cut a freezer item is, e.g. "Chicken thighs (skinless)" -> ["thigh"].
-function fzItemTokens(name) {
-  const tokens = fzWords(name.replace(/\(.*?\)/g, " ")).filter(w => !FZ_NOISE.has(w));
-  return tokens.flatMap(t => [t, ...(FZ_SYNONYMS[t] || [])]);
+// Words in an item's name that may be left out of a recipe: "filet" for filet
+// mignon, "lamb chops" for lamb loin chops.
+const FZ_OPTIONAL = new Set(["mignon", "loin"]);
+
+// What a recipe has to say to count as calling for this item. Every word that
+// identifies it is needed ("Pork rib roast" needs rib AND roast, so it isn't a
+// match for "ribs"); each is a list of acceptable spellings, e.g. leg / drumstick.
+//   "Chicken thighs (skinless)" -> [["thigh"]]
+function fzItemNeeds(name) {
+  let tokens = fzWords(name.replace(/\(.*?\)/g, " ")).filter(w => !FZ_NOISE.has(w));
+  const core = tokens.filter(t => !FZ_OPTIONAL.has(t));
+  if (core.length) tokens = core;
+  return tokens.map(t => [t, ...(FZ_SYNONYMS[t] || [])]);
 }
 
 function freezerMatches(r) {
@@ -1797,10 +1806,10 @@ function freezerMatches(r) {
   return freezerItems.filter(i => {
     const protein = fzCategory(i.category).protein;
     if (i.qty <= 0 || !protein || protein !== r.protein) return false;
-    const tokens = fzItemTokens(i.name);
+    const needs = fzItemNeeds(i.name);
     // An item with no cut in its name ("Assorted seafood") is matched by the protein word itself.
-    return (tokens.length ? tokens : [protein]).some(t =>
-      FZ_MODIFIERS.has(t) ? new RegExp(`\\b${t}\\s+${protein}`).test(text) : words.has(t));
+    return (needs.length ? needs : [[protein]]).every(options =>
+      options.some(t => FZ_MODIFIERS.has(t) ? new RegExp(`\\b${t}\\s+${protein}`).test(text) : words.has(t)));
   });
 }
 
