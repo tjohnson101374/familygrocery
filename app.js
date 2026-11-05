@@ -547,6 +547,7 @@ const RX_FILTERS = [
 ];
 
 const rxActive = { rating: new Set(), time: new Set(), protein: new Set(), dish: new Set(), method: new Set() };
+let rxFromFreezer = false;   // "From my freezer" filter
 let rxSearch  = "";
 let rxStore   = "shopping";
 let ratings   = {};   // recipe id -> 1..5, shared by the whole family
@@ -624,6 +625,7 @@ function rxMatches() {
   const needle = rxSearch.trim().toLowerCase();
   return allRecipes().filter(r =>
     (!needle || rxSearchMatch(r, needle)) &&
+    (!rxFromFreezer || freezerMatches(r).length > 0) &&
     RX_FILTERS.every(f => {
       const sel = rxActive[f.key];
       return sel.size === 0 || sel.has(f.get ? f.get(r) : r[f.key]);
@@ -634,6 +636,23 @@ function rxMatches() {
 function renderRecipes() {
   const wrap = document.getElementById("rx-filters");
   wrap.innerHTML = "";
+
+  // What can I make from the freezer? Only offered on dashboards that have one.
+  if (family.features.freezer) {
+    const row = document.createElement("div");
+    row.className = "rx-frow";
+    const lbl = document.createElement("span");
+    lbl.className   = "rx-flabel";
+    lbl.textContent = "Have";
+    row.appendChild(lbl);
+    const btn = document.createElement("button");
+    const n = allRecipes().filter(r => freezerMatches(r).length > 0).length;
+    btn.className   = "rx-chip" + (rxFromFreezer ? " on" : "");
+    btn.textContent = `🧊 From my freezer (${n})`;
+    btn.onclick = () => { rxFromFreezer = !rxFromFreezer; renderRecipes(); };
+    row.appendChild(btn);
+    wrap.appendChild(row);
+  }
 
   RX_FILTERS.forEach(f => {
     const row = document.createElement("div");
@@ -671,6 +690,7 @@ function renderRecipes() {
     clear.textContent = "Clear";
     clear.onclick = () => {
       Object.values(rxActive).forEach(s => s.clear());
+      rxFromFreezer = false;
       rxSearch = "";
       document.getElementById("rx-search").value = "";
       renderRecipes();
@@ -711,6 +731,7 @@ function renderRecipes() {
     if (r.custom)     tags.appendChild(rxTag(ownerLabel(r), "ours"));
     else if (r.week)  tags.appendChild(rxTag("wk " + r.week));
     if (isNewRecipe(r)) tags.prepend(rxTag("new", "new"));
+    if (freezerMatches(r).length) tags.appendChild(rxTag("🧊 have it", "have"));
     card.onclick = () => openRecipe(r);
     listEl.appendChild(card);
   });
@@ -744,6 +765,7 @@ function openRecipe(r) {
       ? `Added ${new Date(addedAt(r)).toLocaleDateString("en-US", { month: "short", day: "numeric" })}`
         + (isMine(r) ? "" : ` by ${ownerLabel(r)}`)
       : null,
+    freezerLine(r),
     r.source || null,
   ].filter(Boolean).forEach(t => {
     const el = document.createElement("span");
@@ -1727,7 +1749,61 @@ if (family.features.freezer) {
       unit: v.unit || "",
     }));
     if (activeStore === "freezer") renderFreezer();
+    if (activeStore === "recipes") renderRecipes();      // "have it" tags follow the counts
   });
+}
+
+// ── Freezer ↔ recipes ────────────────────────────────────────────
+// A recipe "matches" when something of its protein is in stock. Where the
+// recipe names a particular cut, the freezer has to have that cut: a thigh
+// recipe isn't a match if you only have breasts. A recipe that names no cut
+// ("chicken, shredded") matches anything of that protein.
+const FZ_CUT_WORDS = {
+  chicken: ["thigh", "breast", "leg", "drumstick", "wing", "tender", "tenderloin", "cutlet", "rotisserie", "whole"],
+  beef:    ["ribeye", "filet", "mignon", "tritip", "sirloin", "strip", "chuck", "brisket", "roast", "ground", "flank", "stew", "meatball", "patty"],
+  pork:    ["tenderloin", "chop", "loin", "shoulder", "butt", "roast", "rib", "bacon", "sausage", "ham", "ground"],
+  lamb:    ["chop", "rack", "leg", "shank", "ground", "loin"],
+  seafood: ["shrimp", "prawn", "salmon", "cod", "tilapia", "scallop", "crab", "lobster", "halibut", "tuna", "mahi"],
+};
+// Words that describe an item without saying which cut it is.
+const FZ_NOISE = new Set(["chicken", "beef", "pork", "lamb", "seafood", "steak", "meat", "boneless", "skinless", "bone",
+  "in", "skin", "on", "assorted", "mixed", "frozen", "fresh", "of", "the", "and", "with", "pack", "bag", "lb"]);
+
+// Lower-case words with hyphens joined (tri-tip -> tritip) and plurals trimmed.
+const fzStem  = w => (w.length > 3 && w.endsWith("s") && !w.endsWith("ss") ? w.slice(0, -1) : w);
+const fzWords = text => text.toLowerCase().replace(/-/g, "").split(/[^a-z]+/).filter(Boolean).map(fzStem);
+
+const fzRecipeWords = new WeakMap();
+function fzWordsOf(r) {
+  let set = fzRecipeWords.get(r);
+  if (!set) {
+    const text = `${r.name} ${(r.ingredients || []).join(" ")}`;
+    set = new Set(fzWords(text));
+    if (/whole\s+chicken/i.test(text)) set.add("whole"); else set.delete("whole");   // "whole milk" isn't a cut
+    fzRecipeWords.set(r, set);
+  }
+  return set;
+}
+
+// The words that say which cut a freezer item is, e.g. "Chicken thighs (skinless)" -> ["thigh"].
+const fzItemTokens = name => fzWords(name.replace(/\(.*?\)/g, " ")).filter(w => !FZ_NOISE.has(w));
+
+function freezerMatches(r) {
+  if (!family.features.freezer || !freezerItems.length) return [];
+  const stock = freezerItems.filter(i => i.qty > 0 && fzCategory(i.category).protein === r.protein);
+  if (!stock.length) return [];
+  const words    = fzWordsOf(r);
+  const named    = (FZ_CUT_WORDS[r.protein] || []).some(w => words.has(w));
+  if (!named) return stock;
+  return stock.filter(i => { const t = fzItemTokens(i.name); return !t.length || t.some(w => words.has(w)); });
+}
+
+function freezerLine(r) {
+  const have = freezerMatches(r);
+  if (!have.length) return null;
+  const label = i => { const u = fzUnitLabel(i.unit, i.qty); return `${i.name.replace(/\s*\(.*?\)/g, "")} (${i.qty}${u ? " " + u : ""})`; };
+  const shown = have.slice(0, 3).map(label).join(", ");
+  return `🧊 In your freezer: ${shown}${have.length > 3 ? ` +${have.length - 3} more` : ""}`;
 }
 
 const fzCategory = id => FREEZER_CATEGORIES.find(c => c.id === id) || FREEZER_CATEGORIES[FREEZER_CATEGORIES.length - 1];
@@ -1850,6 +1926,75 @@ function fzSuggestions() {
   return seen;
 }
 
+// A visible list under the name box that narrows as you type. Matches that
+// start with what you typed come first, then any word that does, then any
+// text that contains it; things already in the freezer come before new ones.
+let fzSugIndex = -1;
+let fzSugItems = [];
+
+function fzHideSuggestions() {
+  const box = document.getElementById("fz-suggest-list");
+  box.classList.add("hidden");
+  box.innerHTML = "";
+  fzSugIndex = -1;
+  fzSugItems = [];
+}
+
+function fzPickSuggestion(s) {
+  document.getElementById("fz-name").value = s.name;
+  document.getElementById("fz-cat").value  = s.category;      // picking a named item decides its category
+  fzHideSuggestions();
+  fzRefreshForm();
+  const qty = document.getElementById("fz-qty");
+  qty.focus();
+  qty.select();
+}
+
+function fzShowSuggestions() {
+  const typed = document.getElementById("fz-name").value.trim().toLowerCase();
+  if (!typed || fzEditing) { fzHideSuggestions(); return; }
+
+  const rank = name => {
+    const n = name.toLowerCase();
+    return n.startsWith(typed) ? 0 : n.split(/[^a-z0-9]+/).some(w => w.startsWith(typed)) ? 1 : n.includes(typed) ? 2 : 3;
+  };
+  const hits = [...fzSuggestions().values()]
+    .map(s => ({ ...s, rank: rank(s.name), have: fzFind(s.name) }))
+    .filter(s => s.rank < 3)
+    .sort((a, b) => a.rank - b.rank || (!!b.have - !!a.have) || a.name.localeCompare(b.name))
+    .slice(0, 5);
+
+  // Nothing to offer, or what's typed is already the one thing on offer.
+  if (!hits.length || (hits.length === 1 && hits[0].name.toLowerCase() === typed)) { fzHideSuggestions(); return; }
+
+  fzSugItems = hits;
+  fzSugIndex = -1;
+  const box = document.getElementById("fz-suggest-list");
+  box.innerHTML = "";
+  hits.forEach(s => {
+    const row = document.createElement("div");
+    row.className = "fz-sug";
+    row.setAttribute("role", "option");
+    const label = document.createElement("span");
+    label.textContent = `${fzCategory(s.category).emoji} ${s.name}`;
+    const meta = document.createElement("span");
+    meta.className = "fz-sug-meta";
+    meta.textContent = s.have ? (s.have.qty > 0 ? `have ${s.have.qty}` : "out") : fzCategory(s.category).name;
+    row.append(label, meta);
+    // pointerdown, not click, so the name box keeps focus while you pick.
+    row.addEventListener("pointerdown", e => { e.preventDefault(); fzPickSuggestion(s); });
+    box.appendChild(row);
+  });
+  box.classList.remove("hidden");
+}
+
+function fzMoveSuggestion(step) {
+  if (!fzSugItems.length) return false;
+  fzSugIndex = (fzSugIndex + step + fzSugItems.length) % fzSugItems.length;
+  [...document.querySelectorAll("#fz-suggest-list .fz-sug")].forEach((el, i) => el.classList.toggle("on", i === fzSugIndex));
+  return true;
+}
+
 function fzRefreshForm() {
   const typed = document.getElementById("fz-name").value;
   const known = fzSuggestions().get(typed.trim().toLowerCase());
@@ -1869,8 +2014,7 @@ function openFreezerModal(item) {
   const cat = document.getElementById("fz-cat");
   cat.innerHTML = FREEZER_CATEGORIES.map(c => `<option value="${c.id}">${c.emoji} ${c.name}</option>`).join("");
 
-  document.getElementById("fz-suggest").innerHTML =
-    [...fzSuggestions().values()].map(s => `<option value="${s.name.replace(/"/g, "&quot;")}"></option>`).join("");
+  fzHideSuggestions();
 
   document.getElementById("fz-modal-title").textContent = item ? "✏️ Edit item" : "🧊 Add to the freezer";
   document.getElementById("fz-save").textContent        = item ? "Save" : "Add";
@@ -1939,11 +2083,21 @@ document.getElementById("fz-delete").onclick  = deleteFreezerItem;
 document.getElementById("fz-modal-overlay").addEventListener("click", e => {
   if (e.target === document.getElementById("fz-modal-overlay")) closeFreezerModal();
 });
-document.getElementById("fz-name").addEventListener("input", fzRefreshForm);
+document.getElementById("fz-name").addEventListener("input", () => { fzRefreshForm(); fzShowSuggestions(); });
 document.getElementById("fz-name").addEventListener("change", fzRefreshForm);
+document.getElementById("fz-name").addEventListener("blur", fzHideSuggestions);
+document.getElementById("fz-name").addEventListener("keydown", e => {
+  if (e.key === "ArrowDown" && fzMoveSuggestion(1))  { e.preventDefault(); return; }
+  if (e.key === "ArrowUp"   && fzMoveSuggestion(-1)) { e.preventDefault(); return; }
+  if (e.key === "Escape" && fzSugItems.length)       { e.stopPropagation(); fzHideSuggestions(); return; }
+  if (e.key === "Enter") {
+    if (fzSugIndex >= 0) fzPickSuggestion(fzSugItems[fzSugIndex]);   // Enter takes the highlighted suggestion
+    else saveFreezerItem();
+  }
+});
 document.getElementById("fz-cat").addEventListener("change", () => { fzCatTouched = true; });
 document.getElementById("fz-unit").addEventListener("input", () => { fzUnitTouched = true; });
-["fz-name", "fz-qty", "fz-unit", "fz-note"].forEach(id =>
+["fz-qty", "fz-unit", "fz-note"].forEach(id =>
   document.getElementById(id).addEventListener("keydown", e => { if (e.key === "Enter") saveFreezerItem(); }));
 document.getElementById("fz-search").oninput = e => { fzSearch = e.target.value; renderFreezer(); };
 document.getElementById("fz-hide-empty").onclick = () => { fzHideEmpty = !fzHideEmpty; renderFreezer(); };
