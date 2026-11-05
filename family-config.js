@@ -55,6 +55,7 @@ export const FAMILIES = {
 
     features: {
       trips: true,            // Trips tab and Trip Mode in the meal planner
+      freezer: true,          // Freezer inventory tab
       kiosk: true,            // the wall display (kiosk.html)
       freezerRecipes: true,   // the Passionate Penny Pincher freezer-menu library
     },
@@ -87,6 +88,7 @@ export const FAMILIES = {
 
     features: {
       trips: false,
+      freezer: false,         // switch on if they want it
       kiosk: false,
       freezerRecipes: false,  // flip on only if you're licensed to share those menus
     },

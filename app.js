@@ -1,4 +1,4 @@
-import { ref, onValue, push, remove, set, update }
+import { ref, onValue, push, remove, set, update, runTransaction }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { db, recipesDb } from "./firebase-init.js";
 import { RECIPES } from "./recipes.js";
@@ -63,8 +63,9 @@ const PLANNING_TABS = [
   { id: "meals",     name: "Meals",     emoji: "🍽️", color: "#2E7D32", light: "#f1f8f1" },
   { id: "christmas", name: "Christmas", emoji: "🎄", color: "#C41E3A", light: "#fff5f6" },
   { id: "recipes",   name: "Recipes",   emoji: "📖", color: "#B96C25", light: "#fdf4ea" },
+  { id: "freezer",   name: "Freezer",   emoji: "🧊", color: "#2A7FA8", light: "#eef6fa" },
   { id: "trip",      name: "Trips",     emoji: "🧳", color: "#1F5C73", light: "#eef4f6" },
-].filter(t => t.id !== "trip" || family.features.trips);
+].filter(t => (t.id !== "trip" || family.features.trips) && (t.id !== "freezer" || family.features.freezer));
 let activeSection = "shopping"; // "shopping" | "planning"
 
 const CHRISTMAS_MEMBERS = family.members.map(({ id, name, emoji }) => ({ id, name, emoji }));
@@ -153,7 +154,7 @@ onValue(ref(db, "favorites"), snap => {
 });
 
 // ── Helpers ──────────────────────────────────────────────────────
-function isSpecialTab() { return activeStore === "meals" || activeStore === "christmas" || activeStore === "trip" || activeStore === "recipes"; }
+function isSpecialTab() { return activeStore === "meals" || activeStore === "christmas" || activeStore === "trip" || activeStore === "recipes" || activeStore === "freezer"; }
 
 function saveFavs() { set(ref(db, "favorites"), favorites); }
 
@@ -437,19 +438,22 @@ function render() {
   const onXmas  = activeStore === "christmas";
   const onTrip  = activeStore === "trip";
   const onRecipes = activeStore === "recipes";
+  const onFreezer = activeStore === "freezer";
   if (onRecipes) markRecipesSeen();          // opening Recipes clears the "new" badge
   renderTabs();
   renderAddBar();
   renderFavs();
-  document.getElementById("list-area").classList.toggle("hidden", onMeals || onXmas || onTrip || onRecipes);
+  document.getElementById("list-area").classList.toggle("hidden", onMeals || onXmas || onTrip || onRecipes || onFreezer);
   document.getElementById("meals-area").classList.toggle("hidden", !onMeals);
   document.getElementById("christmas-area").classList.toggle("hidden", !onXmas);
   document.getElementById("vacation-area").classList.toggle("hidden", !onTrip);
   document.getElementById("recipes-area").classList.toggle("hidden", !onRecipes);
+  document.getElementById("freezer-area").classList.toggle("hidden", !onFreezer);
   if (onMeals)     renderMeals();
   else if (onXmas) renderChristmas();
   else if (onTrip) renderVacations();
   else if (onRecipes) renderRecipes();
+  else if (onFreezer) renderFreezer();
   else             renderList();
   renderTotal();
 }
@@ -1655,6 +1659,270 @@ async function removeItem(storeId, key, sourceId) {
   await remove(ref(db, `lists/${actualSource}/${key}`));
   if (item) showToast(`Removed "${item.text}"`);
 }
+
+// ── Freezer inventory ────────────────────────────────────────────
+// What's in the freezer, grouped by category, with a quantity that gets
+// nudged up when you stock and down when you cook. Stored per family at
+// freezer/{id} = { name, category, qty, note }. Each category records the
+// recipe "protein" it matches, which is how recipes will be tied in.
+const FREEZER_CATEGORIES = [
+  { id: "chicken",  name: "Chicken",         emoji: "🍗", protein: "chicken" },
+  { id: "beef",     name: "Beef",            emoji: "🥩", protein: "beef" },
+  { id: "pork",     name: "Pork",            emoji: "🥓", protein: "pork" },
+  { id: "lamb",     name: "Lamb",            emoji: "🍖", protein: "lamb" },
+  { id: "seafood",  name: "Seafood",         emoji: "🦐", protein: "seafood" },
+  { id: "prepared", name: "Meals & Sauces",  emoji: "🍲", protein: null },
+  { id: "sides",    name: "Veggies & Sides", emoji: "🥦", protein: null },
+  { id: "other",    name: "Other",           emoji: "🧊", protein: null },
+];
+
+// Added in one tap from the empty freezer screen, at quantity 0.
+const FREEZER_STARTER = [
+  ["chicken", "Chicken thighs (bone-in, skin-on)"], ["chicken", "Chicken thighs (skinless)"],
+  ["chicken", "Chicken breasts"], ["chicken", "Chicken legs"], ["chicken", "Whole chicken"],
+  ["beef", "Ribeye steaks"], ["beef", "Filet mignon"], ["beef", "Tri-tip"],
+  ["pork", "Pork tenderloin"], ["pork", "Pork chops"],
+  ["lamb", "Lamb loin chops"], ["lamb", "Rack of lamb"],
+  ["seafood", "Shrimp"], ["seafood", "Assorted seafood"],
+  ["prepared", "Marinara sauce"], ["prepared", "Tomato basil soup"],
+  ["sides", "Cheesy garlic bread"], ["sides", "Mixed veggies"],
+];
+
+// More names that only feed the autofill, so typing "bac" offers "Bacon".
+const FREEZER_COMMON = [
+  ["chicken", "Chicken tenders"], ["chicken", "Chicken wings"], ["chicken", "Ground chicken"], ["chicken", "Chicken sausage"], ["chicken", "Turkey"],
+  ["beef", "Ground beef"], ["beef", "Chuck roast"], ["beef", "Brisket"], ["beef", "New York strip"], ["beef", "Sirloin"], ["beef", "Short ribs"],
+  ["beef", "Stew meat"], ["beef", "Burger patties"], ["beef", "Meatballs"], ["beef", "Flank steak"],
+  ["pork", "Bacon"], ["pork", "Italian sausage"], ["pork", "Breakfast sausage"], ["pork", "Pork shoulder"], ["pork", "Pork ribs"], ["pork", "Ham"], ["pork", "Ground pork"], ["pork", "Hot dogs"],
+  ["lamb", "Ground lamb"], ["lamb", "Lamb shanks"], ["lamb", "Leg of lamb"],
+  ["seafood", "Salmon"], ["seafood", "Tilapia"], ["seafood", "Cod"], ["seafood", "Halibut"], ["seafood", "Scallops"], ["seafood", "Crab legs"],
+  ["seafood", "Lobster tails"], ["seafood", "Mahi mahi"], ["seafood", "Ahi tuna"], ["seafood", "Fish sticks"],
+  ["prepared", "Chili"], ["prepared", "Chicken stock"], ["prepared", "Beef stock"], ["prepared", "Spaghetti sauce"], ["prepared", "Lasagna"],
+  ["prepared", "Pizza"], ["prepared", "Burritos"], ["prepared", "Tamales"], ["prepared", "Enchiladas"], ["prepared", "Mac and cheese"], ["prepared", "Soup"],
+  ["sides", "Broccoli"], ["sides", "Green beans"], ["sides", "Corn"], ["sides", "Peas"], ["sides", "Hash browns"], ["sides", "French fries"],
+  ["sides", "Tater tots"], ["sides", "Stir-fry veggies"], ["sides", "Cauliflower rice"], ["sides", "Dinner rolls"], ["sides", "Waffles"],
+  ["other", "Ice cream"], ["other", "Frozen berries"], ["other", "Butter"], ["other", "Tortillas"], ["other", "Bread"], ["other", "Pizza dough"],
+];
+
+let freezerItems  = [];
+let fzHideEmpty   = false;
+let fzSearch      = "";
+let fzEditing     = null;      // the item being edited, or null when adding
+let fzCatTouched  = false;     // true once someone picks a category by hand
+
+if (family.features.freezer) {
+  onValue(ref(db, "freezer"), snap => {
+    freezerItems = Object.entries(snap.val() || {}).map(([key, v]) => ({
+      key, name: v.name || "", category: v.category || "other", qty: Number(v.qty) || 0, note: v.note || "",
+    }));
+    if (activeStore === "freezer") renderFreezer();
+  });
+}
+
+const fzCategory = id => FREEZER_CATEGORIES.find(c => c.id === id) || FREEZER_CATEGORIES[FREEZER_CATEGORIES.length - 1];
+const fzClean    = s  => s.trim().replace(/\s+/g, " ").replace(/^./, c => c.toUpperCase());
+const fzFind     = name => freezerItems.find(i => i.name.toLowerCase() === name.trim().toLowerCase());
+
+function renderFreezer() {
+  const list = document.getElementById("fz-list");
+  list.innerHTML = "";
+
+  const inStock = freezerItems.filter(i => i.qty > 0);
+  document.getElementById("fz-summary").textContent = freezerItems.length
+    ? `${inStock.length} kind${inStock.length === 1 ? "" : "s"} in stock · ${inStock.reduce((n, i) => n + i.qty, 0)} total`
+    : "";
+  document.getElementById("fz-hide-empty").classList.toggle("on", fzHideEmpty);
+
+  if (!freezerItems.length) {
+    list.innerHTML = '<div class="fz-empty"><div class="empty-emoji">🧊</div><h3>The freezer is empty</h3>' +
+      "<p>Add things as you stock up, or start with the usual items and set how many you have.</p></div>";
+    const seed = document.createElement("button");
+    seed.className   = "fz-seed";
+    seed.textContent = `Start with my usual items (${FREEZER_STARTER.length})`;
+    seed.onclick = seedFreezer;
+    list.firstChild.appendChild(seed);
+    return;
+  }
+
+  const needle = fzSearch.trim().toLowerCase();
+  const shown = freezerItems.filter(i =>
+    (!fzHideEmpty || i.qty > 0) &&
+    (!needle || `${i.name} ${i.note} ${fzCategory(i.category).name}`.toLowerCase().includes(needle)));
+
+  if (!shown.length) {
+    list.innerHTML = '<div class="fz-empty"><p>Nothing matches that.</p></div>';
+    return;
+  }
+
+  FREEZER_CATEGORIES.forEach(cat => {
+    const items = shown.filter(i => fzCategory(i.category).id === cat.id)
+      .sort((a, b) => (b.qty > 0) - (a.qty > 0) || a.name.localeCompare(b.name));
+    if (!items.length) return;
+
+    const head = document.createElement("div");
+    head.className = "fz-cat";
+    head.textContent = `${cat.emoji} ${cat.name} · ${items.reduce((n, i) => n + i.qty, 0)}`;
+    list.appendChild(head);
+
+    items.forEach(item => {
+      const row = document.createElement("div");
+      row.className = "fz-row" + (item.qty === 0 ? " empty" : "");
+
+      const info = document.createElement("div");
+      info.className = "fz-info";
+      info.onclick = () => openFreezerModal(item);
+      const name = document.createElement("div");
+      name.className   = "fz-name";
+      name.textContent = item.name;
+      info.appendChild(name);
+      if (item.note) {
+        const note = document.createElement("div");
+        note.className   = "fz-note";
+        note.textContent = item.note;
+        info.appendChild(note);
+      }
+
+      const step  = document.createElement("div");
+      step.className = "fz-step";
+      const minus = document.createElement("button");
+      minus.textContent = "−";
+      minus.setAttribute("aria-label", `One less ${item.name}`);
+      minus.disabled = item.qty === 0;
+      minus.onclick  = () => bumpFreezer(item.key, -1);
+      const qty   = document.createElement("span");
+      qty.className   = "fz-qty";
+      qty.textContent = item.qty;
+      const plus  = document.createElement("button");
+      plus.textContent = "+";
+      plus.setAttribute("aria-label", `One more ${item.name}`);
+      plus.onclick = () => bumpFreezer(item.key, 1);
+      step.append(minus, qty, plus);
+
+      row.append(info, step);
+      list.appendChild(row);
+    });
+  });
+}
+
+// A transaction, so two phones tapping at once both count, and an item that
+// was just deleted doesn't spring back to life.
+function bumpFreezer(key, delta) {
+  return runTransaction(ref(db, `freezer/${key}/qty`),
+    cur => (typeof cur === "number" ? Math.max(0, cur + delta) : undefined));
+}
+
+async function seedFreezer() {
+  const updates = {};
+  FREEZER_STARTER.forEach(([category, name]) => {
+    if (fzFind(name)) return;
+    updates[push(ref(db, "freezer")).key] = { name, category, qty: 0, note: "" };
+  });
+  if (!Object.keys(updates).length) { showToast("Those are already in the list"); return; }
+  await update(ref(db, "freezer"), updates);
+  showToast("Added — tap + to set how many you have");
+}
+
+// Autofill: what you've used before, then the usual items, then common ones.
+function fzSuggestions() {
+  const seen = new Map();   // lower-case name -> { name, category }
+  freezerItems.forEach(i => seen.set(i.name.toLowerCase(), { name: i.name, category: i.category }));
+  [...FREEZER_STARTER, ...FREEZER_COMMON].forEach(([category, name]) => {
+    if (!seen.has(name.toLowerCase())) seen.set(name.toLowerCase(), { name, category });
+  });
+  return seen;
+}
+
+function fzRefreshForm() {
+  const typed = document.getElementById("fz-name").value;
+  const known = fzSuggestions().get(typed.trim().toLowerCase());
+  // A recognised name picks its category, unless someone chose one by hand.
+  if (known && !fzCatTouched && !fzEditing) document.getElementById("fz-cat").value = known.category;
+  const have = !fzEditing && typed.trim() ? fzFind(typed) : null;
+  document.getElementById("fz-modal-sub").textContent =
+    have ? `Already in the freezer (${have.qty}) — this adds to it.` : "";
+}
+
+function openFreezerModal(item) {
+  fzEditing    = item || null;
+  fzCatTouched = !!item;
+  const cat = document.getElementById("fz-cat");
+  cat.innerHTML = FREEZER_CATEGORIES.map(c => `<option value="${c.id}">${c.emoji} ${c.name}</option>`).join("");
+
+  document.getElementById("fz-suggest").innerHTML =
+    [...fzSuggestions().values()].map(s => `<option value="${s.name.replace(/"/g, "&quot;")}"></option>`).join("");
+
+  document.getElementById("fz-modal-title").textContent = item ? "✏️ Edit item" : "🧊 Add to the freezer";
+  document.getElementById("fz-save").textContent        = item ? "Save" : "Add";
+  document.getElementById("fz-delete").classList.toggle("hidden", !item);
+  document.getElementById("fz-name").value = item ? item.name : "";
+  document.getElementById("fz-qty").value  = item ? item.qty  : 1;
+  document.getElementById("fz-note").value = item ? item.note : "";
+  cat.value = item ? fzCategory(item.category).id : (fzLastCategory || "chicken");
+  document.getElementById("fz-modal-sub").textContent = "";
+  document.getElementById("fz-modal-overlay").classList.remove("hidden");
+  setTimeout(() => document.getElementById("fz-name").focus(), 50);
+}
+
+let fzLastCategory = null;   // new items start in the category you used last
+
+function closeFreezerModal() {
+  document.getElementById("fz-modal-overlay").classList.add("hidden");
+  fzEditing = null;
+}
+
+async function saveFreezerItem() {
+  const name = fzClean(document.getElementById("fz-name").value);
+  const category = document.getElementById("fz-cat").value;
+  const qty  = Math.max(0, Math.floor(Number(document.getElementById("fz-qty").value) || 0));
+  const note = document.getElementById("fz-note").value.trim();
+  if (!name) { showToast("What is it?"); return; }
+
+  if (fzEditing) {
+    const key = fzEditing.key;
+    if (!freezerItems.some(i => i.key === key)) { showToast("That item was removed"); closeFreezerModal(); return; }
+    const clash = freezerItems.find(i => i.key !== key && i.name.toLowerCase() === name.toLowerCase());
+    if (clash) { showToast(`"${name}" is already in the freezer`); return; }
+    await update(ref(db, `freezer/${key}`), { name, category, qty, note });
+    showToast("Updated");
+    closeFreezerModal();
+    return;
+  }
+
+  fzLastCategory = category;
+  const have = fzFind(name);
+  if (have) {
+    // Buying more of something you already track adds to it, not a second line.
+    if (qty > 0) await bumpFreezer(have.key, qty);
+    showToast(qty > 0 ? `${have.name}: now ${have.qty + qty}` : `${have.name} is already in the freezer`);
+  } else {
+    await push(ref(db, "freezer"), { name, category, qty, note });
+    showToast(`Added ${name}`);
+  }
+  closeFreezerModal();
+}
+
+async function deleteFreezerItem() {
+  if (!fzEditing) return;
+  if (!confirm(`Remove "${fzEditing.name}" from the freezer list?`)) return;
+  await remove(ref(db, `freezer/${fzEditing.key}`));
+  showToast("Removed");
+  closeFreezerModal();
+}
+
+document.getElementById("fz-add-btn").onclick = () => openFreezerModal(null);
+document.getElementById("fz-cancel").onclick  = closeFreezerModal;
+document.getElementById("fz-save").onclick    = saveFreezerItem;
+document.getElementById("fz-delete").onclick  = deleteFreezerItem;
+document.getElementById("fz-modal-overlay").addEventListener("click", e => {
+  if (e.target === document.getElementById("fz-modal-overlay")) closeFreezerModal();
+});
+document.getElementById("fz-name").addEventListener("input", fzRefreshForm);
+document.getElementById("fz-name").addEventListener("change", fzRefreshForm);
+document.getElementById("fz-cat").addEventListener("change", () => { fzCatTouched = true; });
+["fz-name", "fz-qty", "fz-note"].forEach(id =>
+  document.getElementById(id).addEventListener("keydown", e => { if (e.key === "Enter") saveFreezerItem(); }));
+document.getElementById("fz-search").oninput = e => { fzSearch = e.target.value; renderFreezer(); };
+document.getElementById("fz-hide-empty").onclick = () => { fzHideEmpty = !fzHideEmpty; renderFreezer(); };
 
 // ── Grocery: edit an item's name ─────────────────────────────────
 // A small form rather than editing in the row, because the list redraws

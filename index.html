@@ -106,6 +106,19 @@
     <div class="rx-list" id="rx-list"></div>
   </div>
 
+  <!-- ── Freezer inventory ─────────────────────────────────────── -->
+  <div class="freezer-area hidden" id="freezer-area">
+    <div class="fz-top">
+      <div class="fz-summary" id="fz-summary"></div>
+      <button class="fz-add-btn" id="fz-add-btn">+ Add item</button>
+    </div>
+    <div class="fz-tools">
+      <input class="fz-search" id="fz-search" type="search" placeholder="Search the freezer&#8230;" autocomplete="off">
+      <button class="fz-chip" id="fz-hide-empty">Hide empty</button>
+    </div>
+    <div class="fz-list" id="fz-list"></div>
+  </div>
+
   <div class="vacation-area hidden" id="vacation-area">
     <div class="vacation-toolbar">
       <div class="vacation-subtabs hidden" id="vacation-subtabs"></div>
@@ -275,6 +288,34 @@
         <ol id="rx-steps"></ol>
         <div class="rx-h">Plan it for</div>
         <div class="rx-days" id="rx-days"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Freezer: add / edit an item -->
+  <div class="meal-modal-overlay hidden" id="fz-modal-overlay">
+    <div class="meal-modal">
+      <div class="meal-modal-title" id="fz-modal-title">🧊 Add to the freezer</div>
+      <div class="meal-modal-subtitle" id="fz-modal-sub"></div>
+      <div class="meal-modal-label">What is it?</div>
+      <input class="meal-modal-input" id="fz-name" type="text" list="fz-suggest" autocomplete="off" autocapitalize="sentences" placeholder="Start typing&#8230; e.g. chicken thighs">
+      <datalist id="fz-suggest"></datalist>
+      <div class="fz-form-row">
+        <div class="fz-form-col">
+          <div class="meal-modal-label">Category</div>
+          <select class="meal-modal-input" id="fz-cat"></select>
+        </div>
+        <div class="fz-form-col fz-qty-col">
+          <div class="meal-modal-label">How many?</div>
+          <input class="meal-modal-input" id="fz-qty" type="number" inputmode="numeric" min="0" step="1" value="1">
+        </div>
+      </div>
+      <div class="meal-modal-label">Note (optional)</div>
+      <input class="meal-modal-input" id="fz-note" type="text" autocomplete="off" placeholder="e.g. 1 lb packs, vacuum sealed">
+      <div class="meal-modal-actions">
+        <button class="fz-delete hidden" id="fz-delete">Delete</button>
+        <button class="meal-modal-cancel" id="fz-cancel">Cancel</button>
+        <button class="meal-modal-add" id="fz-save">Add</button>
       </div>
     </div>
   </div>
