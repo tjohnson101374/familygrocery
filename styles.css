@@ -510,8 +510,9 @@
 }
 .fz-step button:active { background: #dcecf4; }
 .fz-step button:disabled { opacity: .3; cursor: default; }
-.fz-qty { min-width: 28px; text-align: center; font-size: 17px; font-weight: 700; color: #111; font-variant-numeric: tabular-nums; }
+.fz-qty { min-width: 44px; text-align: center; font-size: 17px; font-weight: 700; color: #111; font-variant-numeric: tabular-nums; line-height: 1.1; }
 .fz-row.empty .fz-qty { color: #bbb; }
+.fz-unit { display: block; font-size: 10px; font-weight: 600; color: #8aa; letter-spacing: .02em; margin-top: 1px; }
 
 .fz-empty { text-align: center; padding: 36px 16px; color: #999; font-size: 14px; }
 .fz-empty h3 { font-size: 16px; font-weight: 600; color: #777; margin-bottom: 6px; }

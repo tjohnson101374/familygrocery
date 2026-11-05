@@ -1676,9 +1676,12 @@ const FREEZER_CATEGORIES = [
   { id: "other",    name: "Other",           emoji: "🧊", protein: null },
 ];
 
-// Added in one tap from the empty freezer screen, at quantity 0.
+// Added in one tap from the empty freezer screen, at quantity 0. The optional
+// third and fourth entries are what the item is counted in, and a note.
+const THIGH_NOTE = "Costco bag = 6 packs of 3–5";
 const FREEZER_STARTER = [
-  ["chicken", "Chicken thighs (bone-in, skin-on)"], ["chicken", "Chicken thighs (skinless)"],
+  ["chicken", "Chicken thighs (bone-in, skin-on)", "pack", THIGH_NOTE],
+  ["chicken", "Chicken thighs (skinless)", "pack", THIGH_NOTE],
   ["chicken", "Chicken breasts"], ["chicken", "Chicken legs"], ["chicken", "Whole chicken"],
   ["beef", "Ribeye steaks"], ["beef", "Filet mignon"], ["beef", "Tri-tip"],
   ["pork", "Pork tenderloin"], ["pork", "Pork chops"],
@@ -1704,8 +1707,15 @@ const FREEZER_COMMON = [
   ["other", "Ice cream"], ["other", "Frozen berries"], ["other", "Butter"], ["other", "Tortillas"], ["other", "Bread"], ["other", "Pizza dough"],
 ];
 
+// Some things aren't counted one by one: thighs come in sealed packs, so the
+// number means packs. Typing one of these names fills in what it's counted in.
+const FREEZER_UNIT_HINTS = [[/\bthighs?\b/i, "pack"]];
+const fzUnitHint = name => (FREEZER_UNIT_HINTS.find(([re]) => re.test(name)) || [])[1] || "";
+const fzUnitLabel = (unit, qty) => !unit ? "" : (qty === 1 || /s$/i.test(unit) ? unit : unit + "s");
+
 let freezerItems  = [];
 let fzHideEmpty   = false;
+let fzUnitTouched = false;     // true once someone types in the "counted as" box
 let fzSearch      = "";
 let fzEditing     = null;      // the item being edited, or null when adding
 let fzCatTouched  = false;     // true once someone picks a category by hand
@@ -1714,6 +1724,7 @@ if (family.features.freezer) {
   onValue(ref(db, "freezer"), snap => {
     freezerItems = Object.entries(snap.val() || {}).map(([key, v]) => ({
       key, name: v.name || "", category: v.category || "other", qty: Number(v.qty) || 0, note: v.note || "",
+      unit: v.unit || "",
     }));
     if (activeStore === "freezer") renderFreezer();
   });
@@ -1792,6 +1803,13 @@ function renderFreezer() {
       const qty   = document.createElement("span");
       qty.className   = "fz-qty";
       qty.textContent = item.qty;
+      const unit = fzUnitLabel(item.unit, item.qty);
+      if (unit) {
+        const u = document.createElement("span");
+        u.className   = "fz-unit";
+        u.textContent = unit;
+        qty.appendChild(u);
+      }
       const plus  = document.createElement("button");
       plus.textContent = "+";
       plus.setAttribute("aria-label", `One more ${item.name}`);
@@ -1813,9 +1831,9 @@ function bumpFreezer(key, delta) {
 
 async function seedFreezer() {
   const updates = {};
-  FREEZER_STARTER.forEach(([category, name]) => {
+  FREEZER_STARTER.forEach(([category, name, unit, note]) => {
     if (fzFind(name)) return;
-    updates[push(ref(db, "freezer")).key] = { name, category, qty: 0, note: "" };
+    updates[push(ref(db, "freezer")).key] = { name, category, qty: 0, note: note || "", unit: unit || "" };
   });
   if (!Object.keys(updates).length) { showToast("Those are already in the list"); return; }
   await update(ref(db, "freezer"), updates);
@@ -1837,14 +1855,17 @@ function fzRefreshForm() {
   const known = fzSuggestions().get(typed.trim().toLowerCase());
   // A recognised name picks its category, unless someone chose one by hand.
   if (known && !fzCatTouched && !fzEditing) document.getElementById("fz-cat").value = known.category;
+  // Same for what it's counted in (thighs -> packs), unless they've typed their own.
+  if (!fzUnitTouched && !fzEditing) document.getElementById("fz-unit").value = fzUnitHint(typed);
   const have = !fzEditing && typed.trim() ? fzFind(typed) : null;
   document.getElementById("fz-modal-sub").textContent =
     have ? `Already in the freezer (${have.qty}) — this adds to it.` : "";
 }
 
 function openFreezerModal(item) {
-  fzEditing    = item || null;
-  fzCatTouched = !!item;
+  fzEditing     = item || null;
+  fzCatTouched  = !!item;
+  fzUnitTouched = !!item;
   const cat = document.getElementById("fz-cat");
   cat.innerHTML = FREEZER_CATEGORIES.map(c => `<option value="${c.id}">${c.emoji} ${c.name}</option>`).join("");
 
@@ -1857,6 +1878,7 @@ function openFreezerModal(item) {
   document.getElementById("fz-name").value = item ? item.name : "";
   document.getElementById("fz-qty").value  = item ? item.qty  : 1;
   document.getElementById("fz-note").value = item ? item.note : "";
+  document.getElementById("fz-unit").value = item ? item.unit : "";
   cat.value = item ? fzCategory(item.category).id : (fzLastCategory || "chicken");
   document.getElementById("fz-modal-sub").textContent = "";
   document.getElementById("fz-modal-overlay").classList.remove("hidden");
@@ -1875,6 +1897,7 @@ async function saveFreezerItem() {
   const category = document.getElementById("fz-cat").value;
   const qty  = Math.max(0, Math.floor(Number(document.getElementById("fz-qty").value) || 0));
   const note = document.getElementById("fz-note").value.trim();
+  const unit = document.getElementById("fz-unit").value.trim().toLowerCase();
   if (!name) { showToast("What is it?"); return; }
 
   if (fzEditing) {
@@ -1882,7 +1905,7 @@ async function saveFreezerItem() {
     if (!freezerItems.some(i => i.key === key)) { showToast("That item was removed"); closeFreezerModal(); return; }
     const clash = freezerItems.find(i => i.key !== key && i.name.toLowerCase() === name.toLowerCase());
     if (clash) { showToast(`"${name}" is already in the freezer`); return; }
-    await update(ref(db, `freezer/${key}`), { name, category, qty, note });
+    await update(ref(db, `freezer/${key}`), { name, category, qty, note, unit });
     showToast("Updated");
     closeFreezerModal();
     return;
@@ -1895,7 +1918,7 @@ async function saveFreezerItem() {
     if (qty > 0) await bumpFreezer(have.key, qty);
     showToast(qty > 0 ? `${have.name}: now ${have.qty + qty}` : `${have.name} is already in the freezer`);
   } else {
-    await push(ref(db, "freezer"), { name, category, qty, note });
+    await push(ref(db, "freezer"), { name, category, qty, note, unit });
     showToast(`Added ${name}`);
   }
   closeFreezerModal();
@@ -1919,7 +1942,8 @@ document.getElementById("fz-modal-overlay").addEventListener("click", e => {
 document.getElementById("fz-name").addEventListener("input", fzRefreshForm);
 document.getElementById("fz-name").addEventListener("change", fzRefreshForm);
 document.getElementById("fz-cat").addEventListener("change", () => { fzCatTouched = true; });
-["fz-name", "fz-qty", "fz-note"].forEach(id =>
+document.getElementById("fz-unit").addEventListener("input", () => { fzUnitTouched = true; });
+["fz-name", "fz-qty", "fz-unit", "fz-note"].forEach(id =>
   document.getElementById(id).addEventListener("keydown", e => { if (e.key === "Enter") saveFreezerItem(); }));
 document.getElementById("fz-search").oninput = e => { fzSearch = e.target.value; renderFreezer(); };
 document.getElementById("fz-hide-empty").onclick = () => { fzHideEmpty = !fzHideEmpty; renderFreezer(); };
