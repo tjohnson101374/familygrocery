@@ -1754,48 +1754,54 @@ if (family.features.freezer) {
 }
 
 // ── Freezer ↔ recipes ────────────────────────────────────────────
-// A recipe "matches" when something of its protein is in stock. Where the
-// recipe names a particular cut, the freezer has to have that cut: a thigh
-// recipe isn't a match if you only have breasts. A recipe that names no cut
-// ("chicken, shredded") matches anything of that protein.
-const FZ_CUT_WORDS = {
-  chicken: ["thigh", "breast", "leg", "drumstick", "wing", "tender", "tenderloin", "cutlet", "rotisserie", "whole"],
-  beef:    ["ribeye", "filet", "mignon", "tritip", "sirloin", "strip", "chuck", "brisket", "roast", "ground", "flank", "stew", "meatball", "patty"],
-  pork:    ["tenderloin", "chop", "loin", "shoulder", "butt", "roast", "rib", "bacon", "sausage", "ham", "ground"],
-  lamb:    ["chop", "rack", "leg", "shank", "ground", "loin"],
-  seafood: ["shrimp", "prawn", "salmon", "cod", "tilapia", "scallop", "crab", "lobster", "halibut", "tuna", "mahi"],
-};
+// A recipe only matches when it actually calls for what's in the freezer:
+// it has to be a recipe for that protein AND its name or ingredients have to
+// name the cut (thighs, ribeye, tri-tip, pork chops...). A recipe that just
+// says "chicken" or "beef" is close, not the thing, so it doesn't count.
+//
 // Words that describe an item without saying which cut it is.
 const FZ_NOISE = new Set(["chicken", "beef", "pork", "lamb", "seafood", "steak", "meat", "boneless", "skinless", "bone",
   "in", "skin", "on", "assorted", "mixed", "frozen", "fresh", "of", "the", "and", "with", "pack", "bag", "lb"]);
+// Only count next to the protein: "ground beef", "whole chicken" (not ground pepper, whole milk).
+const FZ_MODIFIERS = new Set(["ground", "whole"]);
+// Other names for the same cut.
+const FZ_SYNONYMS = { leg: ["drumstick"], tender: ["tenderloin"] };
 
-// Lower-case words with hyphens joined (tri-tip -> tritip) and plurals trimmed.
+// Lower-case, hyphens joined and spellings unified (tri-tip / tri tip, rib eye) ...
+const fzNormalize = text => text.toLowerCase()
+  .replace(/\btri[\s-]*tip\b/g, "tritip").replace(/\brib[\s-]*eye\b/g, "ribeye").replace(/-/g, "");
+// ... then split into words with plurals trimmed.
 const fzStem  = w => (w.length > 3 && w.endsWith("s") && !w.endsWith("ss") ? w.slice(0, -1) : w);
-const fzWords = text => text.toLowerCase().replace(/-/g, "").split(/[^a-z]+/).filter(Boolean).map(fzStem);
+const fzWords = text => fzNormalize(text).split(/[^a-z]+/).filter(Boolean).map(fzStem);
 
-const fzRecipeWords = new WeakMap();
-function fzWordsOf(r) {
-  let set = fzRecipeWords.get(r);
-  if (!set) {
-    const text = `${r.name} ${(r.ingredients || []).join(" ")}`;
-    set = new Set(fzWords(text));
-    if (/whole\s+chicken/i.test(text)) set.add("whole"); else set.delete("whole");   // "whole milk" isn't a cut
-    fzRecipeWords.set(r, set);
+const fzRecipeInfo = new WeakMap();
+function fzInfoOf(r) {
+  let info = fzRecipeInfo.get(r);
+  if (!info) {
+    const text = fzNormalize(`${r.name} ${(r.ingredients || []).join(" ")}`);
+    info = { text, words: new Set(fzWords(text)) };
+    fzRecipeInfo.set(r, info);
   }
-  return set;
+  return info;
 }
 
 // The words that say which cut a freezer item is, e.g. "Chicken thighs (skinless)" -> ["thigh"].
-const fzItemTokens = name => fzWords(name.replace(/\(.*?\)/g, " ")).filter(w => !FZ_NOISE.has(w));
+function fzItemTokens(name) {
+  const tokens = fzWords(name.replace(/\(.*?\)/g, " ")).filter(w => !FZ_NOISE.has(w));
+  return tokens.flatMap(t => [t, ...(FZ_SYNONYMS[t] || [])]);
+}
 
 function freezerMatches(r) {
   if (!family.features.freezer || !freezerItems.length) return [];
-  const stock = freezerItems.filter(i => i.qty > 0 && fzCategory(i.category).protein === r.protein);
-  if (!stock.length) return [];
-  const words    = fzWordsOf(r);
-  const named    = (FZ_CUT_WORDS[r.protein] || []).some(w => words.has(w));
-  if (!named) return stock;
-  return stock.filter(i => { const t = fzItemTokens(i.name); return !t.length || t.some(w => words.has(w)); });
+  const { text, words } = fzInfoOf(r);
+  return freezerItems.filter(i => {
+    const protein = fzCategory(i.category).protein;
+    if (i.qty <= 0 || !protein || protein !== r.protein) return false;
+    const tokens = fzItemTokens(i.name);
+    // An item with no cut in its name ("Assorted seafood") is matched by the protein word itself.
+    return (tokens.length ? tokens : [protein]).some(t =>
+      FZ_MODIFIERS.has(t) ? new RegExp(`\\b${t}\\s+${protein}`).test(text) : words.has(t));
+  });
 }
 
 function freezerLine(r) {
