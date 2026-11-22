@@ -548,6 +548,8 @@ const RX_FILTERS = [
 
 const rxActive = { rating: new Set(), time: new Set(), protein: new Set(), dish: new Set(), method: new Set() };
 let rxFromFreezer = false;   // "From my freezer" filter
+let rxOnlyNew     = false;   // "New this week" filter
+let rxNewestFirst = false;   // show recipes you've added, newest first
 let rxSearch  = "";
 let rxStore   = "shopping";
 let ratings   = {};   // recipe id -> 1..5, shared by the whole family
@@ -623,19 +625,50 @@ function rxSearchMatch(r, needle) {
 
 function rxMatches() {
   const needle = rxSearch.trim().toLowerCase();
-  return allRecipes().filter(r =>
+  const list = allRecipes().filter(r =>
     (!needle || rxSearchMatch(r, needle)) &&
     (!rxFromFreezer || freezerMatches(r).length > 0) &&
+    (!rxOnlyNew || isNewRecipe(r)) &&
     RX_FILTERS.every(f => {
       const sel = rxActive[f.key];
       return sel.size === 0 || sel.has(f.get ? f.get(r) : r[f.key]);
     })
   );
+  if (!rxNewestFirst) return list;
+  // Recipes you've added, newest first; the built-in library has no date, so it follows in its usual order.
+  return list
+    .map((r, i) => ({ r, i, t: r.custom ? (addedAt(r) || 0) : 0 }))
+    .sort((a, b) => b.t - a.t || a.i - b.i)
+    .map(x => x.r);
 }
 
 function renderRecipes() {
   const wrap = document.getElementById("rx-filters");
   wrap.innerHTML = "";
+
+  // Finding what was added lately: just the new ones, or everything newest first.
+  {
+    const row = document.createElement("div");
+    row.className = "rx-frow";
+    const lbl = document.createElement("span");
+    lbl.className   = "rx-flabel";
+    lbl.textContent = "New";
+    row.appendChild(lbl);
+
+    const onlyNew = document.createElement("button");
+    const nNew = allRecipes().filter(isNewRecipe).length;
+    onlyNew.className   = "rx-chip" + (rxOnlyNew ? " on" : "");
+    onlyNew.textContent = `🆕 Added this week (${nNew})`;
+    onlyNew.onclick = () => { rxOnlyNew = !rxOnlyNew; renderRecipes(); };
+    row.appendChild(onlyNew);
+
+    const newest = document.createElement("button");
+    newest.className   = "rx-chip" + (rxNewestFirst ? " on" : "");
+    newest.textContent = "↓ Newest first";
+    newest.onclick = () => { rxNewestFirst = !rxNewestFirst; renderRecipes(); };
+    row.appendChild(newest);
+    wrap.appendChild(row);
+  }
 
   // What can I make from the freezer? Only offered on dashboards that have one.
   if (family.features.freezer) {
@@ -691,6 +724,7 @@ function renderRecipes() {
     clear.onclick = () => {
       Object.values(rxActive).forEach(s => s.clear());
       rxFromFreezer = false;
+      rxOnlyNew = false;
       rxSearch = "";
       document.getElementById("rx-search").value = "";
       renderRecipes();
@@ -701,7 +735,10 @@ function renderRecipes() {
   const listEl = document.getElementById("rx-list");
   listEl.innerHTML = "";
   if (!list.length) {
-    listEl.innerHTML = '<div class="rx-empty">Nothing matches that combination — try clearing a filter.</div>';
+    const nothingNew = rxOnlyNew && !allRecipes().some(isNewRecipe);
+    listEl.innerHTML = nothingNew
+      ? `<div class="rx-empty">Nothing added in the last ${NEW_DAYS} days.</div>`
+      : '<div class="rx-empty">Nothing matches that combination — try clearing a filter.</div>';
     return;
   }
   list.forEach(r => {
