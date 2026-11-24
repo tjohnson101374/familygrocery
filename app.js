@@ -172,7 +172,7 @@ function getItems(storeId) {
   const items = [];
   ids.forEach(id => {
     Object.entries(lists[id] || {}).forEach(([key, val]) => {
-      if (val?.text) items.push({ key, text: val.text, sourceId: id, checked: val.checked || false });
+      if (val?.text) items.push({ key, text: val.text, sourceId: id, checked: val.checked || false, qty: Math.max(1, Math.floor(Number(val.qty)) || 1) });
     });
   });
   return items;
@@ -319,7 +319,7 @@ function renderFavs() {
       <span class="fav-chip-label${already?" already":""}" style="color:${already?"#bbb":store.color}">${fav}</span>
       <button class="fav-chip-edit">✏️</button>
       <button class="fav-chip-remove">×</button>`;
-    if (!already) chip.querySelector(".fav-chip-label").onclick = () => addItem(activeStore, fav);
+    if (!already) chip.querySelector(".fav-chip-label").onclick = () => addFromBar(fav);
     chip.querySelector(".fav-chip-edit").onclick   = () => { editingFav={storeId:activeStore,index:idx}; renderFavs(); };
     chip.querySelector(".fav-chip-remove").onclick = () => { favorites[activeStore].splice(idx,1); saveFavs(); renderFavs(); renderAddBar(); };
     chips.appendChild(chip);
@@ -393,6 +393,12 @@ function renderList() {
     const textEl = document.createElement("span");
     textEl.className   = "item-text" + (item.checked ? " done" : "");
     textEl.textContent = item.text;
+    if (item.qty > 1) {
+      const q = document.createElement("span");
+      q.className   = "item-qty";
+      q.textContent = `×${item.qty}`;
+      textEl.appendChild(q);
+    }
 
     // Edit the item's name (stops propagation so row-click doesn't also toggle)
     const editBtn = document.createElement("button");
@@ -1703,14 +1709,36 @@ async function toggleCheck(sourceId, key, currentlyChecked) {
 }
 
 // ── Grocery: add / remove ─────────────────────────────────────────
-async function addItem(storeId, text) {
-  const t = text.trim(); if (!t) return;
+// Quantity is only stored when it's more than one, so items without one look
+// exactly as they always have. Returns true when something was added.
+async function addItem(storeId, text, qty = 1) {
+  const t = text.trim(); if (!t) return false;
   if (getItems(storeId).some(i => i.text.toLowerCase() === t.toLowerCase())) {
-    showToast(`"${t}" is already on the list`); return;
+    showToast(`"${t}" is already on the list`); return false;
   }
-  await push(ref(db, `lists/${storeId}`), { text: t });
-  showToast(`Added "${t}" to ${STORES.find(s => s.id === storeId)?.name}`);
+  await push(ref(db, `lists/${storeId}`), qty > 1 ? { text: t, qty } : { text: t });
+  showToast(`Added "${t}"${qty > 1 ? ` ×${qty}` : ""} to ${STORES.find(s => s.id === storeId)?.name}`);
+  return true;
 }
+
+// The quantity picker beside the add box applies to the next thing you add, by
+// typing or by tapping a favorite, then goes back to 1.
+const QTY_MAX = 99;
+let addQty = 1;
+
+function renderAddQty() {
+  document.getElementById("add-qty").textContent = addQty;
+  document.getElementById("add-qty-minus").disabled = addQty <= 1;
+  document.getElementById("add-qty-plus").disabled  = addQty >= QTY_MAX;
+}
+
+async function addFromBar(text) {
+  if (await addItem(activeStore, text, addQty)) { addQty = 1; renderAddQty(); }
+}
+
+document.getElementById("add-qty-minus").onclick = () => { addQty = Math.max(1, addQty - 1); renderAddQty(); };
+document.getElementById("add-qty-plus").onclick  = () => { addQty = Math.min(QTY_MAX, addQty + 1); renderAddQty(); };
+renderAddQty();
 
 async function removeItem(storeId, key, sourceId) {
   const actualSource = sourceId || storeId;
@@ -2157,13 +2185,14 @@ document.getElementById("fz-hide-empty").onclick = () => { fzHideEmpty = !fzHide
 // ── Grocery: edit an item's name ─────────────────────────────────
 // A small form rather than editing in the row, because the list redraws
 // whenever anyone's change syncs in, which would wipe half-typed text.
-let itemEditing = null;   // { sourceId, key, text } while the form is open
+let itemEditing = null;   // { sourceId, key, text, qty } while the form is open
 
 function openItemEdit(item) {
   const store = STORES.find(s => s.id === activeStore);
-  itemEditing = { sourceId: item.sourceId, key: item.key, text: item.text };
+  itemEditing = { sourceId: item.sourceId, key: item.key, text: item.text, qty: item.qty };
   const input = document.getElementById("item-edit-input");
   input.value = item.text;
+  document.getElementById("item-edit-qty").value = item.qty;
   document.getElementById("item-edit-save").style.background = store.color;
   document.getElementById("item-edit-overlay").classList.remove("hidden");
   setTimeout(() => { input.focus(); input.select(); }, 50);
@@ -2176,11 +2205,12 @@ function closeItemEdit() {
 
 async function saveItemEdit() {
   if (!itemEditing) return;
-  const { sourceId, key, text: oldText } = itemEditing;
+  const { sourceId, key, text: oldText, qty: oldQty } = itemEditing;
   const text = document.getElementById("item-edit-input").value.trim();
+  const qty  = Math.min(QTY_MAX, Math.max(1, Math.floor(Number(document.getElementById("item-edit-qty").value)) || 1));
 
   if (!text) { showToast("Enter an item name"); return; }
-  if (text === oldText) { closeItemEdit(); return; }
+  if (text === oldText && qty === oldQty) { closeItemEdit(); return; }
   // Someone may have removed it while the form was open; don't bring it back.
   if (!lists[sourceId]?.[key]) { showToast("That item was removed"); closeItemEdit(); return; }
   // Same rule as adding: no second copy of an item already on this list.
@@ -2188,8 +2218,9 @@ async function saveItemEdit() {
     !(i.sourceId === sourceId && i.key === key) && i.text.toLowerCase() === text.toLowerCase());
   if (clash) { showToast(`"${text}" is already on the list`); return; }
 
-  // Only the name changes, so checked-off items stay checked-off.
-  await update(ref(db, `lists/${sourceId}/${key}`), { text });
+  // Only the name and quantity change, so checked-off items stay checked-off.
+  // A quantity of 1 is stored as nothing (null clears the field).
+  await update(ref(db, `lists/${sourceId}/${key}`), { text, qty: qty > 1 ? qty : null });
   showToast("Item updated");
   closeItemEdit();
 }
@@ -2199,10 +2230,11 @@ document.getElementById("item-edit-save").onclick   = saveItemEdit;
 document.getElementById("item-edit-overlay").addEventListener("click", e => {
   if (e.target === document.getElementById("item-edit-overlay")) closeItemEdit();
 });
-document.getElementById("item-edit-input").addEventListener("keydown", e => {
-  if (e.key === "Enter")  saveItemEdit();
-  if (e.key === "Escape") closeItemEdit();
-});
+["item-edit-input", "item-edit-qty"].forEach(id =>
+  document.getElementById(id).addEventListener("keydown", e => {
+    if (e.key === "Enter")  saveItemEdit();
+    if (e.key === "Escape") closeItemEdit();
+  }));
 
 // ── Grocery: move between store tabs ────────────────────────────
 let openMoveMenu = null;
@@ -2235,7 +2267,7 @@ async function moveItem(item, destStoreId) {
   if (getItems(destStoreId).some(i => i.text.toLowerCase() === item.text.toLowerCase())) {
     showToast(`"${item.text}" is already on ${destName}`); return;
   }
-  await push(ref(db, `lists/${destStoreId}`), { text: item.text, checked: item.checked });
+  await push(ref(db, `lists/${destStoreId}`), { text: item.text, checked: item.checked, ...(item.qty > 1 ? { qty: item.qty } : {}) });
   await remove(ref(db, `lists/${item.sourceId}/${item.key}`));
   showToast(`Moved "${item.text}" to ${destName}`);
 }
@@ -2611,7 +2643,7 @@ document.getElementById("xmas-modal-add").onclick = async () => {
 // ── Grocery: input wiring ─────────────────────────────────────────
 document.getElementById("add-btn").onclick = () => {
   const inp = document.getElementById("add-input");
-  addItem(activeStore, inp.value); inp.value = ""; inp.focus();
+  addFromBar(inp.value); inp.value = ""; inp.focus();
 };
 document.getElementById("add-input").onkeydown = e => { if(e.key==="Enter") document.getElementById("add-btn").click(); };
 document.getElementById("add-input").onfocus   = function() { const s=STORES.find(s=>s.id===activeStore); if(s) this.style.borderColor=s.color; };

@@ -33,10 +33,19 @@
     /* Add Bar */
     .add-bar { padding: 14px 16px; border-bottom: 2px solid rgba(0,0,0,0.05); }
     .add-form { display: flex; gap: 8px; }
-    .add-input { flex: 1; padding: 11px 14px; border-radius: 12px; border: 1.5px solid rgba(0,0,0,0.15);
+    .add-input { flex: 1; min-width: 0; padding: 11px 14px; border-radius: 12px; border: 1.5px solid rgba(0,0,0,0.15);
       font-size: 15px; background: #fff; color: #111; outline: none; font-family: inherit; transition: border-color 0.15s; }
-    .add-btn { color: #fff; border: none; border-radius: 12px; padding: 11px 18px;
+    .add-btn { flex-shrink: 0; color: #fff; border: none; border-radius: 12px; padding: 11px 18px;
       font-size: 20px; cursor: pointer; font-weight: 700; font-family: inherit; }
+    /* How many of the next item you add */
+    .qty-step { display: flex; align-items: center; flex-shrink: 0; background: #fff;
+      border: 1.5px solid rgba(0,0,0,0.15); border-radius: 12px; }
+    .qty-step button { width: 30px; align-self: stretch; border: 0; background: none; color: #555;
+      font-family: inherit; font-size: 20px; line-height: 1; cursor: pointer; padding: 0; }
+    .qty-step button:disabled { opacity: .3; cursor: default; }
+    .qty-step button:active:not(:disabled) { background: rgba(0,0,0,0.06); }
+    .qty-step span { min-width: 22px; text-align: center; font-size: 15px; font-weight: 700; color: #111;
+      font-variant-numeric: tabular-nums; }
     .fav-toggle { margin-top: 10px; background: none; border-radius: 20px; padding: 5px 14px;
       font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit;
       display: inline-flex; align-items: center; gap: 6px; }
@@ -81,6 +90,8 @@
       flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
     .item-text { flex: 1; font-size: 15px; color: #111; }
     .item-text.done { text-decoration: line-through; color: #bbb; }
+    .item-qty { margin-left: 8px; padding: 1px 7px; border-radius: 999px; background: #f0f0f3;
+      font-size: 12px; font-weight: 700; color: #666; white-space: nowrap; text-decoration: none; display: inline-block; }
     .del-btn, .move-btn, .edit-btn { background: none; border: none; cursor: pointer; font-size: 20px; opacity: 0.25;
       padding: 4px 6px; line-height: 1; transition: opacity 0.15s; flex-shrink: 0; }
     .del-btn:hover, .move-btn:hover, .edit-btn:hover { opacity: 0.6; }

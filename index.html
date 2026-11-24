@@ -27,6 +27,11 @@
   <div class="add-bar" id="add-bar">
     <div class="add-form">
       <input class="add-input" id="add-input" type="text" placeholder="Add item…" />
+      <div class="qty-step" title="How many">
+        <button type="button" id="add-qty-minus" aria-label="One less">&minus;</button>
+        <span id="add-qty">1</span>
+        <button type="button" id="add-qty-plus" aria-label="One more">+</button>
+      </div>
       <button class="add-btn" id="add-btn">+</button>
     </div>
     <button class="fav-toggle" id="fav-toggle">
@@ -326,8 +331,10 @@
   <div class="meal-modal-overlay hidden" id="item-edit-overlay">
     <div class="meal-modal">
       <div class="meal-modal-title">✏️ Edit item</div>
-      <div class="meal-modal-subtitle">Change the name; it stays on the same list.</div>
+      <div class="meal-modal-subtitle">Change the name or how many; it stays on the same list.</div>
       <input class="meal-modal-input" id="item-edit-input" type="text" autocomplete="off" placeholder="Item name">
+      <div class="meal-modal-label">How many</div>
+      <input class="meal-modal-input" id="item-edit-qty" type="number" inputmode="numeric" min="1" max="99" step="1" value="1">
       <div class="meal-modal-actions">
         <button class="meal-modal-cancel" id="item-edit-cancel">Cancel</button>
         <button class="meal-modal-add" id="item-edit-save">Save</button>

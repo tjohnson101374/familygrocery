@@ -230,7 +230,7 @@ function unchecked(storeId) {
   storeById(storeId).mergedIds.forEach(id => {
     Object.entries(lists[id] || {}).forEach(([key, val]) => {
       if (val && val.text && !val.checked) {
-        out.push({ key, text: val.text, sourceId: id });
+        out.push({ key, text: val.text, sourceId: id, qty: Math.max(1, Math.floor(Number(val.qty)) || 1) });
       }
     });
   });
@@ -286,6 +286,12 @@ function renderGrocery() {
 
       const txt = document.createElement("span");
       txt.textContent = it.text;
+      if (it.qty > 1) {
+        const q = document.createElement("span");
+        q.className   = "qty";
+        q.textContent = `×${it.qty}`;
+        txt.appendChild(q);
+      }
 
       row.appendChild(box);
       row.appendChild(txt);
